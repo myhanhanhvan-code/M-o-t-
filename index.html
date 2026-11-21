@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Quiz A2: Mạo Từ (Articles: a, an, the, Ø)</title>
+    <title>English Quiz A2: Mạo Từ (Articles: a, an, the, Ø) & Teacher Dashboard</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Nunito & Plus Jakarta Sans -->
@@ -14,7 +14,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #312e81 0%, #5b21b6 48%, #0284c7 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 45%, #0369a1 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -28,8 +28,8 @@
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.75);
-            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
         }
 
         .glass-pill {
@@ -90,7 +90,7 @@
         .is-speaking .sound-bar:nth-child(4) { animation: waveBounce 0.6s ease-in-out infinite 0.1s; }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar { width: 7px; height: 7px; }
         ::-webkit-scrollbar-track { background: rgba(148, 163, 184, 0.15); border-radius: 999px; }
         ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.45); border-radius: 999px; }
     </style>
@@ -104,41 +104,64 @@
         <div class="absolute -bottom-28 left-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl"></div>
     </div>
 
+    <!-- Custom Toast Notification (No alert() used) -->
+    <div id="toastBanner" class="fixed top-4 right-4 z-50 hidden transform transition-all duration-300 max-w-sm">
+        <div id="toastContent" class="px-4 py-3 rounded-2xl shadow-2xl border font-bold text-sm flex items-center gap-2.5 bg-slate-900 text-white border-slate-700">
+            <span id="toastIcon">✅</span>
+            <span id="toastMsg">Notification</span>
+        </div>
+    </div>
+
     <!-- Top Header Bar -->
-    <header class="relative z-10 max-w-4xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 mb-4">
-        <div class="flex items-center gap-3 text-white">
-            <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg">
-                <!-- Inline SVG Book/Sparkle Icon -->
+    <header class="relative z-10 max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div onclick="backToHome()" class="flex items-center gap-3 text-white cursor-pointer group">
+            <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg group-hover:scale-105 transition">
                 <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                 </svg>
             </div>
             <div>
-                <span class="text-[11px] font-extrabold uppercase tracking-widest text-sky-200 block">CEFR Level A2 • Grammar Quest</span>
+                <span class="text-[11px] font-extrabold uppercase tracking-widest text-sky-200 block">CEFR Level A2 • Smart Classroom</span>
                 <h1 class="text-lg sm:text-xl font-black leading-tight tracking-tight">Mạo Từ: A / An / The / Ø</h1>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 sm:gap-3">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <!-- Teacher Dashboard Button -->
+            <button id="teacherNavBtn" onclick="openTeacherGate()"
+                class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs sm:text-sm font-black transition cursor-pointer shadow-md">
+                <span>👩‍🏫</span>
+                <span>Giáo Viên</span>
+                <span id="submissionCountBadge" class="px-1.5 py-0.5 rounded-full bg-slate-900 text-amber-300 text-[11px] font-black">0</span>
+            </button>
+
+            <!-- Auto-Read Explanation Toggle -->
+            <button id="toggleAutoExplainBtn" onclick="toggleAutoReadExplanation()" title="Tự động đọc giải thích ngữ pháp bằng tiếng Anh sau mỗi câu"
+                class="glass-pill text-white hover:bg-white/25 px-3 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-bold transition cursor-pointer shadow-sm">
+                <span>📖</span>
+                <span id="autoExplainLabel" class="hidden md:inline">Đọc giải thích: BẬT</span>
+                <span id="autoExplainShort" class="md:hidden">Giải thích: BẬT</span>
+            </button>
+
             <!-- Voice Toggle + Live Speaking Soundwave -->
-            <button id="toggleVoiceBtn" onclick="toggleVoice()" title="Bật/Tắt giọng nói nhận xét tiếng Anh"
-                class="glass-pill text-white hover:bg-white/25 px-3.5 py-2 rounded-2xl flex items-center gap-2.5 text-sm font-bold transition cursor-pointer shadow-sm">
+            <button id="toggleVoiceBtn" onclick="toggleVoice()" title="Bật/Tắt giọng nói tiếng Anh"
+                class="glass-pill text-white hover:bg-white/25 px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs sm:text-sm font-bold transition cursor-pointer shadow-sm">
                 <div id="headerSoundWave" class="flex items-center gap-[2px] text-emerald-300">
                     <span class="sound-bar"></span>
                     <span class="sound-bar"></span>
                     <span class="sound-bar"></span>
                     <span class="sound-bar"></span>
                 </div>
-                <span id="voiceLabel">Giọng nói: BẬT</span>
+                <span id="voiceLabel">Giọng đọc: BẬT</span>
             </button>
 
             <!-- Live Game Stats (Hidden on Start Screen) -->
             <div id="headerStats" class="hidden items-center gap-2">
-                <div title="Chuỗi trả lời đúng liên tiếp" class="glass-pill text-white px-3.5 py-2 rounded-2xl flex items-center gap-1.5 text-sm font-extrabold">
+                <div title="Chuỗi trả lời đúng liên tiếp" class="glass-pill text-white px-3 py-2 rounded-2xl flex items-center gap-1 text-xs sm:text-sm font-extrabold">
                     <span>🔥</span>
                     <span id="streakDisplay">0</span>
                 </div>
-                <div title="Tổng điểm" class="bg-white text-indigo-800 px-4 py-2 rounded-2xl flex items-center gap-1.5 text-sm font-black shadow-md">
+                <div title="Tổng điểm" class="bg-white text-indigo-800 px-3.5 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-black shadow-md">
                     <span>🏆</span>
                     <span id="scoreDisplay">0</span>
                 </div>
@@ -147,43 +170,68 @@
     </header>
 
     <!-- Main Content Container -->
-    <main class="relative z-10 max-w-4xl w-full mx-auto my-auto">
+    <main class="relative z-10 max-w-5xl w-full mx-auto my-auto">
 
         <!-- ==================== 1. START SCREEN ==================== -->
         <section id="startScreen" class="glass-card rounded-3xl p-6 sm:p-9 animate-pop-in">
             <div class="text-center max-w-2xl mx-auto">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-100 text-indigo-800 font-extrabold text-xs sm:text-sm mb-3">
-                    <span>🎙️ Khen ngợi & Động viên trực tiếp bằng giọng nói tiếng Anh</span>
+                    <span>🎙️ AI Voice Feedback & English Grammar Explanations (A2)</span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-3 leading-tight">
                     Chinh Phục <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600">Mạo Từ Tiếng Anh</span>
                 </h2>
-                <p class="text-slate-600 text-base sm:text-lg mb-6">
-                    Thử sức với <strong>20 câu hỏi trắc nghiệm</strong> trình độ <strong>A2</strong> về cách dùng <strong>a, an, the</strong> và <strong>Ø (không dùng mạo từ)</strong>. Chọn đúng được khen ngợi cực vui, chọn nhầm có động viên & giải thích cặn kẽ!
+                <p class="text-slate-600 text-sm sm:text-base mb-6">
+                    Hoàn thành <strong>20 câu hỏi trắc nghiệm</strong> trình độ <strong>A2</strong> về cách dùng <strong>a, an, the</strong> và <strong>Ø (zero article)</strong>. Lắng nghe nhận xét khen ngợi / động viên và lời giải thích chi tiết bằng tiếng Anh sau mỗi câu!
+                </p>
+            </div>
+
+            <!-- Student Info Registration Card -->
+            <div class="max-w-2xl mx-auto mb-7 bg-gradient-to-r from-indigo-50 via-purple-50 to-sky-50 border-2 border-indigo-200/80 rounded-2xl p-5 shadow-xs">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-black text-indigo-950 text-base sm:text-lg flex items-center gap-2">
+                        <span>🎓 Thông tin học sinh (Lưu vào bảng điểm Giáo viên)</span>
+                    </h3>
+                    <span class="text-xs font-bold text-indigo-600 bg-white px-2.5 py-1 rounded-lg border border-indigo-100">Bắt buộc</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                    <div class="sm:col-span-2">
+                        <label for="studentNameInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Họ và tên học sinh *</label>
+                        <input id="studentNameInput" type="text" placeholder="Ví dụ: Nguyễn Minh Anh"
+                            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 focus:border-indigo-500 focus:outline-none font-bold text-slate-800 placeholder:text-slate-400 transition" />
+                    </div>
+                    <div>
+                        <label for="studentClassInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Lớp *</label>
+                        <input id="studentClassInput" type="text" placeholder="Ví dụ: 8A1"
+                            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 focus:border-indigo-500 focus:outline-none font-bold text-slate-800 placeholder:text-slate-400 transition" />
+                    </div>
+                </div>
+                <p id="studentFormError" class="hidden mt-2 text-xs font-extrabold text-rose-600">
+                    ⚠️ Vui lòng nhập đầy đủ Họ tên và Lớp của bạn trước khi bắt đầu làm bài nhé!
                 </p>
             </div>
 
             <!-- Collapsible Quick Grammar Cheat Sheet -->
-            <div class="mb-7 border-2 border-indigo-100 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-50 to-indigo-50/50">
+            <div class="mb-7 border-2 border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/70">
                 <button type="button" onclick="toggleCheatSheet()"
-                    class="w-full px-5 py-3.5 flex items-center justify-between text-left bg-indigo-100/70 hover:bg-indigo-100 transition cursor-pointer">
-                    <span class="font-extrabold text-indigo-950 text-base sm:text-lg flex items-center gap-2">
-                        <span>📘 Tóm tắt quy tắc Mạo từ A2 (Xem nhanh trước khi chơi)</span>
+                    class="w-full px-5 py-3 flex items-center justify-between text-left bg-slate-100 hover:bg-slate-200/70 transition cursor-pointer">
+                    <span class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2">
+                        <span>📘 Quick A2 Grammar Guide (Tóm tắt quy tắc nhanh)</span>
                     </span>
-                    <span id="cheatSheetChevron" class="text-indigo-700 font-black text-sm px-2.5 py-1 rounded-lg bg-white shadow-xs">Thu gọn ▲</span>
+                    <span id="cheatSheetChevron" class="text-indigo-700 font-black text-xs px-2.5 py-1 rounded-lg bg-white shadow-xs">Thu gọn ▲</span>
                 </button>
 
-                <div id="cheatSheetBody" class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-2 gap-3.5 text-sm">
+                <div id="cheatSheetBody" class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-3.5 text-sm">
                     <!-- Rule A / AN -->
-                    <div class="bg-white rounded-xl p-4 border border-indigo-100 shadow-xs">
+                    <div class="bg-white rounded-xl p-4 border border-sky-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
                             <span class="px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-black text-xs">A / AN</span>
-                            <h3 class="font-extrabold text-slate-900">Dựa theo ÂM PHÁT ÂM đầu tiên</h3>
+                            <h3 class="font-extrabold text-slate-900">By First Sound</h3>
                         </div>
-                        <ul class="text-slate-600 space-y-1 text-xs sm:text-sm leading-relaxed">
-                            <li>• <strong>an</strong> + âm nguyên âm (u, e, o, a, i): <span class="text-indigo-700 font-semibold">an umbrella, an hour</span> (h câm), <span class="text-indigo-700 font-semibold">an honest boy</span>.</li>
-                            <li>• <strong>a</strong> + âm phụ âm: <span class="text-indigo-700 font-semibold">a university</span> (/juː/), <span class="text-indigo-700 font-semibold">a uniform</span>, <span class="text-indigo-700 font-semibold">a European country</span>.</li>
-                            <li>• Dùng cho danh từ đếm được số ít <strong>nhắc đến lần đầu</strong> hoặc nghề nghiệp.</li>
+                        <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
+                            <li>• <strong>an</strong> + vowel sound: <span class="text-indigo-700 font-semibold">an umbrella, an hour</span> (silent h), <span class="text-indigo-700 font-semibold">an honest boy</span>.</li>
+                            <li>• <strong>a</strong> + consonant sound: <span class="text-indigo-700 font-semibold">a university</span> (/juː/), <span class="text-indigo-700 font-semibold">a uniform</span>, <span class="text-indigo-700 font-semibold">a European country</span>.</li>
                         </ul>
                     </div>
 
@@ -191,28 +239,26 @@
                     <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
                             <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black text-xs">THE</span>
-                            <h3 class="font-extrabold text-slate-900">Xác định, Duy nhất & So sánh nhất</h3>
+                            <h3 class="font-extrabold text-slate-900">Specific & Unique</h3>
                         </div>
-                        <ul class="text-slate-600 space-y-1 text-xs sm:text-sm leading-relaxed">
-                            <li>• Nhắc đến <strong>lần thứ 2</strong>: <em>I saw <strong>a</strong> dog. <strong>The</strong> dog was cute.</em></li>
-                            <li>• Vật thể <strong>duy nhất</strong>: <span class="text-purple-700 font-semibold">the sun, the moon, the Earth</span>.</li>
-                            <li>• <strong>So sánh nhất & số thứ tự</strong>: <span class="text-purple-700 font-semibold">the best, the first</span>.</li>
-                            <li>• <strong>Nhạc cụ & địa điểm công cộng</strong>: <span class="text-purple-700 font-semibold">play the piano, go to the cinema, the UK</span>.</li>
+                        <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
+                            <li>• Mentioned <strong>twice</strong>: <em>I bought <strong>a</strong> coat. <strong>The</strong> coat is blue.</em></li>
+                            <li>• <strong>Unique</strong> & Superlatives: <span class="text-purple-700 font-semibold">the sun, the best, the first</span>.</li>
+                            <li>• <strong>Instruments & Places</strong>: <span class="text-purple-700 font-semibold">play the piano, the cinema, the UK</span>.</li>
                         </ul>
                     </div>
 
                     <!-- Rule ZERO ARTICLE -->
-                    <div class="md:col-span-2 bg-white rounded-xl p-4 border border-amber-100 shadow-xs">
+                    <div class="bg-white rounded-xl p-4 border border-amber-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
-                            <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs">Ø (Không mạo từ)</span>
-                            <h3 class="font-extrabold text-slate-900">Khi nào KHÔNG dùng mạo từ?</h3>
+                            <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs">Ø (Zero Article)</span>
+                            <h3 class="font-extrabold text-slate-900">No Article Needed</h3>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-slate-600">
-                            <div>• <strong>Môn thể thao:</strong> <span class="text-amber-800 font-semibold">play football, play tennis</span> (khác với nhạc cụ!).</div>
-                            <div>• <strong>Bữa ăn, ngôn ngữ, môn học:</strong> <span class="text-amber-800 font-semibold">have breakfast, speak English, study Math</span>.</div>
-                            <div>• <strong>Danh từ số nhiều / không đếm được nói chung:</strong> <span class="text-amber-800 font-semibold">I love cats / milk</span>.</div>
-                            <div>• <strong>Tên quốc gia đơn, ngọn núi, hồ đơn lẻ:</strong> <span class="text-amber-800 font-semibold">Vietnam, Mount Everest, Lake Baikal</span>.</div>
-                        </div>
+                        <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
+                            <li>• <strong>Sports:</strong> <span class="text-amber-800 font-semibold">play football, play tennis</span>.</li>
+                            <li>• <strong>Meals & Languages:</strong> <span class="text-amber-800 font-semibold">have breakfast, speak English</span>.</li>
+                            <li>• <strong>General plurals & single mountains:</strong> <span class="text-amber-800 font-semibold">Dogs are friendly, Mount Everest</span>.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -221,7 +267,7 @@
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
                 <button onclick="startGame()"
                     class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-black text-lg shadow-xl shadow-indigo-500/30 transform hover:-translate-y-0.5 transition flex items-center justify-center gap-3 cursor-pointer">
-                    <span>🚀 Bắt Đầu Chơi Ngay (20 Câu)</span>
+                    <span>🚀 Bắt Đầu Làm Bài (20 Câu)</span>
                 </button>
                 <button onclick="testVoiceWelcome()"
                     class="w-full sm:w-auto px-5 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-2 cursor-pointer">
@@ -232,12 +278,13 @@
 
         <!-- ==================== 2. QUIZ SCREEN ==================== -->
         <section id="quizScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 animate-pop-in">
-            <!-- Progress Bar & Metadata -->
+            <!-- Active Student Ribbon + Progress -->
             <div class="mb-6">
-                <div class="flex items-center justify-between text-sm font-bold text-slate-600 mb-2">
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-bold text-slate-600 mb-2.5">
                     <div class="flex items-center gap-2 flex-wrap">
+                        <span id="activeStudentPill" class="px-3 py-1 rounded-xl bg-slate-900 text-white font-extrabold">👤 Học sinh: ---</span>
                         <span id="questionNumberBadge" class="px-3 py-1 rounded-xl bg-indigo-100 text-indigo-800 font-black">Câu 1 / 20</span>
-                        <span id="categoryBadge" class="px-3 py-1 rounded-xl bg-sky-100 text-sky-800 text-xs font-extrabold">Quy tắc: A vs An (Âm phát âm)</span>
+                        <span id="categoryBadge" class="hidden md:inline-block px-3 py-1 rounded-xl bg-sky-100 text-sky-800 text-xs font-extrabold">Rule: A vs An</span>
                     </div>
                     <span id="progressPercent" class="text-indigo-700 font-black">5%</span>
                 </div>
@@ -249,10 +296,10 @@
             <!-- Question Card -->
             <div class="bg-slate-50 border-2 border-slate-200/80 rounded-2xl p-5 sm:p-7 mb-6 relative">
                 <div class="flex items-center justify-between gap-3 mb-2">
-                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Chọn mạo từ phù hợp nhất (Ø = không dùng mạo từ):</span>
-                    <button id="speakQuestionBtn" onclick="speakCurrentSentence()" title="Nghe đọc câu tiếng Anh"
-                        class="shrink-0 px-3 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer">
-                        <span>🔊 Nghe câu</span>
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Choose the best article (Ø = no article):</span>
+                    <button id="speakQuestionBtn" onclick="speakCurrentSentence()" title="Listen to the English sentence"
+                        class="shrink-0 px-3.5 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer">
+                        <span>🔊 Listen</span>
                     </button>
                 </div>
                 <h2 id="questionText" class="text-xl sm:text-2xl md:text-[26px] font-extrabold text-slate-900 leading-snug">
@@ -268,7 +315,7 @@
                 <!-- Populated dynamically -->
             </div>
 
-            <!-- Instant Voice + Text Feedback Drawer -->
+            <!-- Instant English Voice + English Grammar Explanation Drawer -->
             <div id="feedbackBox" class="hidden rounded-2xl p-5 border-2 transition-all duration-300">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                     <div class="flex items-center gap-3">
@@ -276,7 +323,7 @@
                             🎉
                         </div>
                         <div>
-                            <h3 id="feedbackTitle" class="font-black text-lg leading-tight">Chính xác!</h3>
+                            <h3 id="feedbackTitle" class="font-black text-lg leading-tight">Awesome! Correct!</h3>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <div id="feedbackSoundWave" class="flex items-center gap-[2px]">
                                     <span class="sound-bar"></span>
@@ -289,16 +336,24 @@
                         </div>
                     </div>
 
-                    <button onclick="replayFullFeedback()"
-                        class="self-start sm:self-center px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm shadow-xs border border-slate-200 flex items-center gap-1.5 transition cursor-pointer shrink-0">
-                        <span>🔁 Nghe lại</span>
-                    </button>
+                    <div class="flex items-center gap-2 self-start sm:self-center shrink-0">
+                        <button onclick="replayFullFeedback()"
+                            class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm shadow-xs border border-slate-200 flex items-center gap-1.5 transition cursor-pointer">
+                            <span>🔁 Nghe lại nhận xét & giải thích</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Grammar Explanation -->
-                <div class="bg-white/85 rounded-xl p-3.5 text-sm text-slate-800 leading-relaxed border border-black/5 mb-4">
-                    <span class="font-black text-indigo-700">📖 Giải thích ngữ pháp: </span>
-                    <span id="explanationText">...</span>
+                <!-- English Grammar Explanation Box -->
+                <div class="bg-white/90 rounded-xl p-4 text-sm sm:text-[15px] text-slate-800 leading-relaxed border border-black/5 mb-4">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="font-black text-indigo-700 text-xs uppercase tracking-wider">📖 English Grammar Explanation (Level A2)</span>
+                        <button onclick="speakOnlyExplanation()" class="text-xs font-extrabold text-indigo-600 hover:text-indigo-800 underline cursor-pointer">
+                            🔊 Read explanation only
+                        </button>
+                    </div>
+                    <p id="explanationTextEn" class="font-semibold text-slate-900">...</p>
+                    <p id="ruleTipEn" class="mt-1.5 text-xs font-bold text-indigo-700 bg-indigo-50/80 px-2.5 py-1.5 rounded-lg inline-block">Rule: ...</p>
                 </div>
 
                 <!-- Next Question Button -->
@@ -312,12 +367,16 @@
             </div>
         </section>
 
-        <!-- ==================== 3. END SUMMARY SCREEN ==================== -->
+        <!-- ==================== 3. STUDENT RESULT SUMMARY SCREEN ==================== -->
         <section id="resultScreen" class="hidden glass-card rounded-3xl p-6 sm:p-9 animate-pop-in">
             <div class="text-center max-w-xl mx-auto mb-6">
-                <div id="starRatingRow" class="text-3xl sm:text-4xl mb-2 animate-float">⭐⭐⭐</div>
-                <h2 id="resultHeadline" class="text-3xl sm:text-4xl font-black text-slate-900 mb-2">Xuất Sắc!</h2>
-                <p id="resultSubtext" class="text-slate-600 text-base">Bạn đã hoàn thành 20 câu hỏi về Mạo từ trình độ A2.</p>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs mb-2">
+                    <span>✅ Đã tự động lưu kết quả vào Bảng điểm Giáo viên</span>
+                </div>
+                <div id="starRatingRow" class="text-3xl sm:text-4xl mb-1 animate-float">⭐⭐⭐</div>
+                <h2 id="resultHeadline" class="text-3xl sm:text-4xl font-black text-slate-900 mb-1.5">Xuất Sắc!</h2>
+                <p id="resultStudentMeta" class="text-indigo-700 font-extrabold text-sm sm:text-base mb-1">Học sinh: --- • Lớp: ---</p>
+                <p id="resultSubtext" class="text-slate-600 text-sm sm:text-base">Bạn đã hoàn thành 20 câu hỏi về Mạo từ trình độ A2.</p>
             </div>
 
             <!-- Key Metrics -->
@@ -328,7 +387,7 @@
                 </div>
                 <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center">
                     <span class="text-xs font-extrabold uppercase text-emerald-600 block mb-1">Chính Xác</span>
-                    <span id="finalAccuracy" class="text-2xl sm:text-3xl font-black text-emerald-700">0%</span>
+                    <span id="finalAccuracy" class="text-xl sm:text-3xl font-black text-emerald-700">0%</span>
                 </div>
                 <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-center">
                     <span class="text-xs font-extrabold uppercase text-amber-600 block mb-1">Chuỗi Tốt Nhất</span>
@@ -347,13 +406,13 @@
             <!-- Review Answers Filter + List -->
             <div class="mb-7">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <h3 class="font-extrabold text-base sm:text-lg text-slate-800">📝 Xem lại chi tiết bài làm</h3>
+                    <h3 class="font-extrabold text-base sm:text-lg text-slate-800">📝 Xem lại chi tiết bài làm & giải thích tiếng Anh</h3>
                     <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-bold">
                         <button id="filterAllBtn" onclick="renderReviewList('all')" class="px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs cursor-pointer">Tất cả (20)</button>
                         <button id="filterMissedBtn" onclick="renderReviewList('missed')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Câu làm sai</button>
                     </div>
                 </div>
-                <div id="reviewList" class="max-h-72 overflow-y-auto space-y-2.5 pr-1">
+                <div id="reviewList" class="max-h-80 overflow-y-auto space-y-2.5 pr-1">
                     <!-- Populated via JS -->
                 </div>
             </div>
@@ -361,13 +420,181 @@
             <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <button onclick="startGame()"
-                    class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-black text-base shadow-xl flex items-center justify-center gap-2 transition cursor-pointer">
-                    <span>🔄 Chơi Lại (Đảo Đáp Án)</span>
+                    class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-black text-base shadow-xl flex items-center justify-center gap-2 transition cursor-pointer">
+                    <span>🔄 Làm Lại Bài Mới</span>
+                </button>
+                <button onclick="openTeacherGate()"
+                    class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-base shadow-md transition cursor-pointer">
+                    <span>👩‍🏫 Xem Bảng Điểm Giáo Viên</span>
                 </button>
                 <button onclick="backToHome()"
                     class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-base transition cursor-pointer">
-                    📘 Xem Lại Tóm Tắt Ngữ Pháp
+                    <span>🏠 Trang Chủ</span>
                 </button>
+            </div>
+        </section>
+
+        <!-- ==================== 4. TEACHER PIN GATE MODAL ==================== -->
+        <section id="teacherPinModal" class="hidden glass-card rounded-3xl p-6 sm:p-10 max-w-md mx-auto animate-pop-in text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-3xl shadow-sm">
+                🔐
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mb-1.5">Khu Vực Dành Cho Giáo Viên</h2>
+            <p class="text-slate-600 text-sm mb-5">
+                Nhập mã PIN giáo viên để xem danh sách kết quả làm bài, thống kê câu hay sai và xuất báo cáo điểm.
+            </p>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl px-3.5 py-2.5 text-xs text-amber-900 font-bold mb-4">
+                💡 Mã PIN mặc định: <span class="font-mono font-black text-sm bg-white px-2 py-0.5 rounded border border-amber-300">1234</span>
+            </div>
+
+            <div class="mb-4">
+                <input id="teacherPinInput" type="password" maxlength="8" placeholder="Nhập mã PIN (1234)"
+                    onkeydown="if(event.key==='Enter') verifyTeacherPin()"
+                    class="w-full text-center tracking-[0.35em] text-xl font-black px-4 py-3.5 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:outline-none" />
+                <p id="pinErrorMsg" class="hidden text-xs font-extrabold text-rose-600 mt-2">❌ Mã PIN chưa đúng. Vui lòng thử lại (mặc định: 1234).</p>
+            </div>
+
+            <div class="flex flex-col gap-2.5">
+                <button onclick="verifyTeacherPin()"
+                    class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base shadow-lg transition cursor-pointer">
+                    Mở Bảng Điều Khiển Giáo Viên
+                </button>
+                <button onclick="quickUnlockTeacher()"
+                    class="w-full py-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-extrabold text-sm transition cursor-pointer">
+                    ⚡ Mở Nhanh (Dùng mã 1234)
+                </button>
+                <button onclick="closeTeacherGate()"
+                    class="w-full py-2.5 rounded-xl text-slate-500 hover:text-slate-800 font-bold text-sm transition cursor-pointer">
+                    ← Quay lại
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== 5. TEACHER DASHBOARD SCREEN ==================== -->
+        <section id="teacherDashboardScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 animate-pop-in">
+            <!-- Top Dashboard Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200 mb-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 font-extrabold text-xs mb-1.5">
+                        <span>👩‍🏫 Teacher Analytics & Gradebook</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Bảng Kết Quả Học Sinh (Mạo Từ A2)</h2>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5">Theo dõi điểm số, phân tích lỗi sai phổ biến của cả lớp và xuất báo cáo.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="exportTeacherCSV()"
+                        class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer">
+                        <span>📥 Xuất CSV / Excel</span>
+                    </button>
+                    <button onclick="copyTeacherReport()"
+                        class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer">
+                        <span>📋 Sao chép báo cáo</span>
+                    </button>
+                    <button onclick="backToHome()"
+                        class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs sm:text-sm transition cursor-pointer">
+                        <span>🏠 Thoát</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Class Overview Summary Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4">
+                    <span class="text-xs font-extrabold uppercase text-indigo-500 block">Tổng Lượt Nộp Bài</span>
+                    <span id="tdTotalSubmissions" class="text-2xl sm:text-3xl font-black text-indigo-800 mt-1 block">0</span>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+                    <span class="text-xs font-extrabold uppercase text-emerald-600 block">Tỷ Lệ Đúng TB</span>
+                    <span id="tdAvgAccuracy" class="text-2xl sm:text-3xl font-black text-emerald-800 mt-1 block">0%</span>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4">
+                    <span class="text-xs font-extrabold uppercase text-amber-600 block">Điểm Trung Bình</span>
+                    <span id="tdAvgScore" class="text-2xl sm:text-3xl font-black text-amber-800 mt-1 block">0</span>
+                </div>
+                <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4">
+                    <span class="text-xs font-extrabold uppercase text-rose-600 block">Câu Hay Sai Nhất</span>
+                    <span id="tdHardestQuestion" class="text-sm sm:text-base font-black text-rose-800 mt-1.5 block truncate">---</span>
+                </div>
+            </div>
+
+            <!-- Most Missed Questions Analytics -->
+            <div class="mb-6 bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-black text-base text-slate-900">⚠️ Top câu hỏi học sinh hay làm sai nhất cả lớp</h3>
+                    <span class="text-xs text-slate-500 font-semibold">Giúp giáo viên ôn tập trọng tâm</span>
+                </div>
+                <div id="tdMissedStatsList" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Filter Bar + Student Submissions Table -->
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <input id="tdSearchInput" type="text" oninput="renderTeacherTable()" placeholder="🔍 Tìm tên học sinh..."
+                        class="px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-semibold" />
+                    <select id="tdClassFilter" onchange="renderTeacherTable()"
+                        class="px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-bold text-slate-700">
+                        <option value="ALL">Tất cả các lớp</option>
+                    </select>
+                </div>
+
+                <!-- Two-step Safe Clear Data Button (No confirm() dialog used) -->
+                <div class="flex items-center gap-2">
+                    <button id="clearDataStep1Btn" onclick="requestClearTeacherData()"
+                        class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition cursor-pointer">
+                        🗑️ Xóa dữ liệu
+                    </button>
+                    <div id="clearDataConfirmGroup" class="hidden items-center gap-1.5">
+                        <button onclick="confirmClearTeacherData()"
+                            class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs transition cursor-pointer">
+                            Xác nhận xóa hết
+                        </button>
+                        <button onclick="cancelClearTeacherData()"
+                            class="px-2.5 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer">
+                            Hủy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submissions Table -->
+            <div class="overflow-x-auto rounded-2xl border border-slate-200 mb-6">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-600 text-xs font-black uppercase tracking-wider border-b border-slate-200">
+                            <th class="py-3.5 px-4">Học sinh</th>
+                            <th class="py-3.5 px-3">Lớp</th>
+                            <th class="py-3.5 px-3">Điểm</th>
+                            <th class="py-3.5 px-3">Đúng / Tỷ lệ</th>
+                            <th class="py-3.5 px-3">Chuỗi tối đa</th>
+                            <th class="py-3.5 px-3">Thời gian nộp</th>
+                            <th class="py-3.5 px-4 text-right">Chi tiết</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tdSubmissionsTbody" class="divide-y divide-slate-100 text-sm bg-white">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Student Detail Drill-Down Drawer -->
+            <div id="tdStudentDetailPanel" class="hidden bg-indigo-50/70 border-2 border-indigo-200 rounded-2xl p-5 animate-pop-in">
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-indigo-200/80 mb-4">
+                    <div>
+                        <span class="text-xs font-extrabold uppercase text-indigo-600">Chi tiết bài làm của học sinh</span>
+                        <h3 id="tdDetailStudentHeader" class="text-xl font-black text-slate-900">Nguyễn Minh Anh • Lớp 8A1</h3>
+                    </div>
+                    <button onclick="closeStudentDetailPanel()"
+                        class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200 cursor-pointer">
+                        ✕ Đóng chi tiết
+                    </button>
+                </div>
+                <div id="tdDetailQuestionsList" class="max-h-96 overflow-y-auto space-y-2.5 pr-1">
+                    <!-- Populated via JS -->
+                </div>
             </div>
         </section>
 
@@ -375,246 +602,396 @@
 
     <!-- Footer Shortcut Tips -->
     <footer class="relative z-10 text-center text-white/80 text-xs mt-5">
-        <p>Mẹo bàn phím: Bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">1-4</kbd> hoặc <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">A-D</kbd> để chọn đáp án nhanh, bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">Enter</kbd> để sang câu tiếp theo.</p>
+        <p>Mẹo bàn phím khi làm bài: Bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">1-4</kbd> hoặc <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">A-D</kbd> để chọn đáp án nhanh, bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">Enter</kbd> để sang câu tiếp theo.</p>
     </footer>
 
     <script>
         // ============================================================
         // 1. NGÂN HÀNG 20 CÂU HỎI MẠO TỪ (A, AN, THE, Ø) - TRÌNH ĐỘ A2
+        //    Kèm giải thích ngữ pháp chi tiết bằng tiếng Anh chuẩn A2
         // ============================================================
         const QUESTIONS = [
             {
                 id: 1,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "We waited at the bus stop for _______ hour in the rain.",
                 fullSentence: "We waited at the bus stop for an hour in the rain.",
                 meaningVi: "Chúng tôi đã đợi ở trạm xe buýt suốt một tiếng đồng hồ dưới trời mưa.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "an",
-                explanation: "Chữ 'h' trong từ 'hour' là âm câm, nên từ này bắt đầu bằng âm nguyên âm /aʊər/. Vì vậy ta dùng 'an hour' (một giờ)."
+                explanationEn: "The letter 'h' in 'hour' is silent, so the word starts with a vowel sound (/aʊər/). Therefore, we use 'an hour'.",
+                ruleEn: "Use 'an' before a silent 'h' (an hour, an honest person)."
             },
             {
                 id: 2,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "My older sister is studying at _______ university in Hanoi.",
                 fullSentence: "My older sister is studying at a university in Hanoi.",
                 meaningVi: "Chị gái của mình đang học tại một trường đại học ở Hà Nội.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "a",
-                explanation: "Mặc dù 'university' viết bắt đầu bằng chữ 'u', nhưng khi phát âm lại bắt đầu bằng âm phụ âm /juː/ (như chữ 'y'). Do đó ta phải dùng 'a university'."
+                explanationEn: "Although 'university' starts with the letter 'u', it begins with a consonant 'y' sound (/juː/). That is why we say 'a university'.",
+                ruleEn: "Use 'a' before a 'u' pronounced like 'you' (/juː/)."
             },
             {
                 id: 3,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "Take _______ umbrella with you because the sky is very cloudy.",
                 fullSentence: "Take an umbrella with you because the sky is very cloudy.",
                 meaningVi: "Hãy mang theo một chiếc ô nhé vì bầu trời đang rất nhiều mây.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "an",
-                explanation: "'Umbrella' bắt đầu bằng âm nguyên âm ngắn /ʌ/ (/ʌmˈbrelə/), nên ta dùng 'an umbrella'."
+                explanationEn: "The word 'umbrella' begins with a short vowel sound (/ʌ/), so we use 'an umbrella' for one non-specific umbrella.",
+                ruleEn: "Use 'an' before words starting with a vowel sound (/ʌ/, /e/, /ɪ/, /ɒ/, /æ/)."
             },
             {
                 id: 4,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "Students at my school have to wear _______ uniform every Monday.",
                 fullSentence: "Students at my school have to wear a uniform every Monday.",
                 meaningVi: "Học sinh ở trường mình phải mặc đồng phục vào mỗi thứ Hai.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "a",
-                explanation: "Tương tự 'university', từ 'uniform' phát âm bắt đầu bằng âm phụ âm /juː/ (/ˈjuːnɪfɔːm/), nên ta dùng 'a uniform'."
+                explanationEn: "Just like 'university', the word 'uniform' starts with a consonant sound (/juː/), so we use 'a uniform'.",
+                ruleEn: "Always choose 'a' or 'an' by the spoken sound, not the spelling."
             },
             {
                 id: 5,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "Everyone likes Nam because he is _______ honest boy.",
                 fullSentence: "Everyone likes Nam because he is an honest boy.",
                 meaningVi: "Mọi người đều quý Nam vì cậu ấy là một cậu bé trung thực.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "an",
-                explanation: "Từ 'honest' có chữ 'h' câm, bắt đầu bằng âm nguyên âm /ɒ/ (/ˈɒnɪst/), nên ta dùng 'an honest boy'."
+                explanationEn: "In 'honest', the 'h' is silent and the first sound is a vowel (/ɒ/). So we say 'an honest boy'.",
+                ruleEn: "Silent 'h' + vowel sound -> use 'an'."
             },
             {
                 id: 6,
-                category: "A vs An (Âm phát âm)",
+                category: "A vs An (First Sound)",
                 question: "France is _______ European country famous for food and fashion.",
                 fullSentence: "France is a European country famous for food and fashion.",
                 meaningVi: "Pháp là một quốc gia châu Âu nổi tiếng về ẩm thực và thời trang.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "a",
-                explanation: "'European' phát âm bắt đầu bằng âm phụ âm /jʊə/ (/ˌjʊərəˈpiːən/), không phải âm nguyên âm, nên ta dùng 'a European country'."
+                explanationEn: "The word 'European' starts with the consonant sound /jʊə/ (like 'you'), so we use 'a European country'.",
+                ruleEn: "Words starting with 'Eu-' pronounced /juː/ take 'a'."
             },
             {
                 id: 7,
-                category: "Nhắc lần 1 vs Lần 2",
+                category: "First vs Second Mention",
                 question: "I bought a new jacket yesterday. _______ jacket is warm and blue.",
                 fullSentence: "I bought a new jacket yesterday. The jacket is warm and blue.",
                 meaningVi: "Hôm qua mình mua một chiếc áo khoác mới. Chiếc áo khoác đó rất ấm và có màu xanh.",
-                options: ["A", "An", "The", "Ø (không mạo từ)"],
+                options: ["A", "An", "The", "Ø (no article)"],
                 correctAnswer: "The",
-                explanation: "Ở câu đầu, chiếc áo khoác được nhắc đến lần đầu ('a new jacket'). Sang câu thứ hai, người nghe đã biết đó là chiếc áo nào nên ta dùng 'The'."
+                explanationEn: "In the first sentence, the jacket is introduced for the first time ('a new jacket'). In the second sentence, both speakers know which jacket it is, so we use 'The'.",
+                ruleEn: "First mention -> 'a/an'. Second mention -> 'the'."
             },
             {
                 id: 8,
-                category: "Nhắc lần 1 vs Lần 2",
+                category: "First vs Second Mention",
                 question: "There is _______ small cat under the table. It looks very hungry.",
                 fullSentence: "There is a small cat under the table. It looks very hungry.",
                 meaningVi: "Có một con mèo nhỏ ở dưới gầm bàn. Nó trông có vẻ rất đói.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "a",
-                explanation: "Đây là lần đầu tiên con mèo được giới thiệu với người nghe ('There is a...'), và 'small' bắt đầu bằng âm phụ âm /s/ nên dùng 'a'."
+                explanationEn: "We are mentioning the cat for the very first time ('There is a...'), and 'small' starts with a consonant sound /s/, so we use 'a'.",
+                ruleEn: "Use 'a/an' with 'There is...' for singular countable nouns."
             },
             {
                 id: 9,
-                category: "Vật duy nhất & So sánh nhất",
+                category: "Unique & Superlatives",
                 question: "_______ sun rises in the east and sets in the west.",
                 fullSentence: "The sun rises in the east and sets in the west.",
                 meaningVi: "Mặt trời mọc ở hướng đông và lặn ở hướng tây.",
-                options: ["A", "An", "The", "Ø (không mạo từ)"],
+                options: ["A", "An", "The", "Ø (no article)"],
                 correctAnswer: "The",
-                explanation: "Mặt trời ('sun'), Mặt trăng ('moon'), Trái đất ('Earth') là những sự vật duy nhất trong tự nhiên nên luôn đi với 'The'."
+                explanationEn: "There is only one sun in our sky. We always use 'the' for unique things in nature like the sun, the moon, and the Earth.",
+                ruleEn: "Use 'the' for unique things (the sun, the moon, the sky)."
             },
             {
                 id: 10,
-                category: "Vật duy nhất & So sánh nhất",
-                question: "In my opinion, Đà Nẵng is _______ best city to visit in summer.",
+                category: "Unique & Superlatives",
+                question: "In my opinion, Da Nang is _______ best city to visit in summer.",
                 fullSentence: "In my opinion, Da Nang is the best city to visit in summer.",
                 meaningVi: "Theo ý kiến của mình, Đà Nẵng là thành phố tuyệt vời nhất để ghé thăm vào mùa hè.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Trước tính từ so sánh nhất ('best', 'tallest', 'most beautiful'...) luôn phải có mạo từ 'the'."
+                explanationEn: "We always use 'the' before superlative adjectives such as 'the best', 'the tallest', or 'the most beautiful'.",
+                ruleEn: "Always put 'the' before superlatives (the + -est / most)."
             },
             {
                 id: 11,
-                category: "Vật duy nhất & So sánh nhất",
+                category: "Unique & Superlatives",
                 question: "Neil Armstrong was _______ first person to walk on the moon.",
                 fullSentence: "Neil Armstrong was the first person to walk on the moon.",
                 meaningVi: "Neil Armstrong là người đầu tiên đặt chân lên mặt trăng.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Trước số thứ tự ('first', 'second', 'third', 'last'...) ta luôn dùng mạo từ 'the'."
+                explanationEn: "We use 'the' before ordinal numbers like 'the first', 'the second', 'the third', and 'the last'.",
+                ruleEn: "Use 'the' before ordinal numbers (the first, the second)."
             },
             {
                 id: 12,
-                category: "Nhạc cụ vs Thể thao",
+                category: "Instruments vs Sports",
                 question: "My cousin can play _______ piano very well.",
                 fullSentence: "My cousin can play the piano very well.",
                 meaningVi: "Anh họ của mình có thể chơi đàn piano rất giỏi.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Khi nói về việc chơi một loại nhạc cụ ('play the piano', 'play the guitar'), ta luôn dùng mạo từ 'the'."
+                explanationEn: "When we talk about playing a musical instrument, we use 'the' after 'play', such as 'play the piano' or 'play the guitar'.",
+                ruleEn: "play + the + musical instrument (play the piano)."
             },
             {
                 id: 13,
-                category: "Nhạc cụ vs Thể thao",
+                category: "Instruments vs Sports",
                 question: "After school, the boys often play _______ football in the park.",
                 fullSentence: "After school, the boys often play football in the park.",
                 meaningVi: "Sau giờ học, các bạn nam thường chơi bóng đá ở công viên.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
-                correctAnswer: "Ø (không mạo từ)",
-                explanation: "Khác với nhạc cụ, trước tên các môn thể thao ('football', 'tennis', 'badminton') ta KHÔNG dùng mạo từ (Ø)."
+                options: ["a", "an", "the", "Ø (no article)"],
+                correctAnswer: "Ø (no article)",
+                explanationEn: "Unlike musical instruments, we do NOT use any article before sports or games like 'football', 'tennis', or 'chess'.",
+                ruleEn: "play + Ø + sport (play football, play badminton)."
             },
             {
                 id: 14,
-                category: "Bữa ăn, Ngôn ngữ & Danh từ chung",
+                category: "Meals, Languages & Plurals",
                 question: "We usually have _______ breakfast at 7:00 AM before going to school.",
                 fullSentence: "We usually have breakfast at 7:00 AM before going to school.",
                 meaningVi: "Chúng tôi thường ăn sáng lúc 7 giờ sáng trước khi đi học.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
-                correctAnswer: "Ø (không mạo từ)",
-                explanation: "Trước tên các bữa ăn nói chung ('have breakfast', 'have lunch', 'have dinner') ta KHÔNG dùng mạo từ."
+                options: ["a", "an", "the", "Ø (no article)"],
+                correctAnswer: "Ø (no article)",
+                explanationEn: "We do not use an article before regular meals like 'breakfast', 'lunch', or 'dinner' when speaking in general.",
+                ruleEn: "No article before meals (have breakfast, eat dinner)."
             },
             {
                 id: 15,
-                category: "Bữa ăn, Ngôn ngữ & Danh từ chung",
+                category: "Meals, Languages & Plurals",
                 question: "_______ dogs are friendly animals and great pets for families.",
                 fullSentence: "Dogs are friendly animals and great pets for families.",
                 meaningVi: "Loài chó là những động vật thân thiện và là thú cưng tuyệt vời cho gia đình.",
-                options: ["A", "An", "The", "Ø (không mạo từ)"],
-                correctAnswer: "Ø (không mạo từ)",
-                explanation: "Khi dùng danh từ đếm được số nhiều ('dogs') để nói về một loài/nhóm sự vật nói chung, ta KHÔNG dùng mạo từ."
+                options: ["A", "An", "The", "Ø (no article)"],
+                correctAnswer: "Ø (no article)",
+                explanationEn: "When we use plural nouns ('dogs') to talk about all dogs in general, we do not use any article.",
+                ruleEn: "Plural nouns used in general take Ø (no article)."
             },
             {
                 id: 16,
-                category: "Bữa ăn, Ngôn ngữ & Danh từ chung",
+                category: "Meals, Languages & Plurals",
                 question: "My classmates can speak _______ English and a little Japanese.",
                 fullSentence: "My classmates can speak English and a little Japanese.",
                 meaningVi: "Các bạn cùng lớp của mình có thể nói tiếng Anh và một chút tiếng Nhật.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
-                correctAnswer: "Ø (không mạo từ)",
-                explanation: "Trước tên các ngôn ngữ ('English', 'Vietnamese', 'Japanese') hoặc môn học ('Math', 'History') ta KHÔNG dùng mạo từ."
+                options: ["a", "an", "the", "Ø (no article)"],
+                correctAnswer: "Ø (no article)",
+                explanationEn: "We never use 'a', 'an', or 'the' before the names of languages like 'English', 'Vietnamese', or 'Japanese'.",
+                ruleEn: "No article before languages or school subjects."
             },
             {
                 id: 17,
-                category: "Địa danh & Địa điểm công cộng",
+                category: "Places & Geography",
                 question: "Let's go to _______ cinema tonight! There is a great comedy on.",
                 fullSentence: "Let's go to the cinema tonight! There is a great comedy on.",
                 meaningVi: "Tối nay chúng ta đi xem phim nhé! Đang có một bộ phim hài hay lắm.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Cụm từ cố định chỉ địa điểm giải trí/công cộng quen thuộc: 'go to the cinema', 'go to the supermarket', 'go to the library'."
+                explanationEn: "We use 'the' with common local places we visit regularly, such as 'go to the cinema', 'go to the library', or 'go to the supermarket'.",
+                ruleEn: "Fixed expressions: go to the cinema / supermarket / bank."
             },
             {
                 id: 18,
-                category: "Địa danh & Địa điểm công cộng",
+                category: "Places & Geography",
                 question: "Last summer, my uncle traveled to _______ UK for two weeks.",
                 fullSentence: "Last summer, my uncle traveled to the UK for two weeks.",
                 meaningVi: "Mùa hè năm ngoái, chú của mình đã du lịch đến Vương quốc Anh trong hai tuần.",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Tên các quốc gia dạng liên hiệp/hợp chủng quốc hoặc số nhiều luôn dùng 'the': 'the UK', 'the USA', 'the Philippines'."
+                explanationEn: "Countries with words like 'Kingdom', 'States', or plural names always take 'the', such as 'the UK', 'the USA', and 'the Philippines'.",
+                ruleEn: "Use 'the' with united/plural countries (the UK, the USA)."
             },
             {
                 id: 19,
-                category: "Địa danh & Địa điểm công cộng",
+                category: "Places & Geography",
                 question: "_______ Mount Everest is the highest mountain in the world.",
                 fullSentence: "Mount Everest is the highest mountain in the world.",
                 meaningVi: "Đỉnh Everest là ngọn núi cao nhất trên thế giới.",
-                options: ["A", "An", "The", "Ø (không mạo từ)"],
-                correctAnswer: "Ø (không mạo từ)",
-                explanation: "Trước tên một ngọn núi đơn lẻ ('Mount Everest', 'Mount Fuji') ta KHÔNG dùng mạo từ (chỉ dùng 'the' với dãy núi như 'the Himalayas')."
+                options: ["A", "An", "The", "Ø (no article)"],
+                correctAnswer: "Ø (no article)",
+                explanationEn: "We do NOT use an article before the name of a single mountain like 'Mount Everest' or 'Mount Fuji'.",
+                ruleEn: "Single mountains take Ø (no article). Mountain ranges take 'the'."
             },
             {
                 id: 20,
-                category: "Địa danh & Địa điểm công cộng",
+                category: "Places & Geography",
                 question: "Could you please pass me _______ salt on the dining table?",
                 fullSentence: "Could you please pass me the salt on the dining table?",
                 meaningVi: "Bạn có thể đưa giúp mình lọ muối ở trên bàn ăn được không?",
-                options: ["a", "an", "the", "Ø (không mạo từ)"],
+                options: ["a", "an", "the", "Ø (no article)"],
                 correctAnswer: "the",
-                explanation: "Dù 'salt' là danh từ không đếm được, nhưng ở đây đã xác định rõ là lọ muối ở trên bàn ăn ('on the dining table') mà cả hai đều thấy, nên dùng 'the'."
+                explanationEn: "Even though 'salt' is an uncountable noun, here it is specific because both people can see the salt on the dining table.",
+                ruleEn: "Use 'the' when both the speaker and listener see the specific item."
             }
         ];
 
-        // Câu nhận xét giọng nói tiếng Anh tự nhiên
+        // Câu nhận xét khen ngợi & động viên bằng tiếng Anh tự nhiên
         const PRAISE_PHRASES = [
-            { en: "Awesome job! You nailed it!", vi: "Tuyệt vời! Bạn làm chuẩn xác rồi!" },
+            { en: "Awesome job! You nailed it!", vi: "Tuyệt vời! Bạn trả lời chuẩn xác rồi!" },
             { en: "Fantastic! That is completely correct!", vi: "Xuất sắc! Hoàn toàn chính xác!" },
             { en: "Spot on! Keep up the great work!", vi: "Chính xác tuyệt đối! Phát huy nhé!" },
-            { en: "Brilliant! You're a grammar star!", vi: "Thông minh lắm! Bạn đúng là ngôi sao ngữ pháp!" },
-            { en: "Way to go! That was super fast and accurate!", vi: "Quá đỉnh! Nhanh và chuẩn xác!" }
+            { en: "Brilliant! You are a grammar star!", vi: "Thông minh lắm! Bạn đúng là ngôi sao ngữ pháp!" },
+            { en: "Way to go! Super accurate answer!", vi: "Quá đỉnh! Câu trả lời rất chuẩn xác!" }
         ];
 
         const ENCOURAGE_PHRASES = [
-            { en: "Nice try! Don't give up, you're learning!", vi: "Cố gắng tốt lắm! Đừng bỏ cuộc nhé, bạn đang tiến bộ mỗi ngày!" },
-            { en: "Almost there! Let's look at the rule together.", vi: "Suýt đúng rồi! Cùng xem lại quy tắc bên dưới nha." },
-            { en: "Good effort! Keep going, you've got this!", vi: "Nỗ lực rất tốt! Tiếp tục nào, bạn làm được mà!" },
-            { en: "Not quite, but mistakes help us grow!", vi: "Chưa chính xác một chút, nhưng sai giúp chúng ta nhớ lâu hơn!" }
+            { en: "Nice try! Don't give up, let's check the rule!", vi: "Cố gắng tốt lắm! Đừng bỏ cuộc, cùng xem giải thích nhé!" },
+            { en: "Almost there! Listen carefully to the explanation.", vi: "Suýt đúng rồi! Hãy nghe kỹ lời giải thích tiếng Anh nha." },
+            { en: "Good effort! Mistakes help us learn faster.", vi: "Nỗ lực rất tốt! Sai một chút giúp chúng ta nhớ lâu hơn." },
+            { en: "Keep going! You will get the next one right!", vi: "Tiếp tục nào! Câu sau chắc chắn bạn sẽ làm đúng!" }
         ];
 
         // ============================================================
-        // 2. BIẾN TRẠNG THÁI & HỆ THỐNG GIỌNG NÓI / ÂM THANH
+        // 2. LƯU TRỮ DỮ LIỆU HỌC SINH (LOCALSTORAGE + DỮ LIỆU MẪU)
         // ============================================================
+        const STORAGE_KEY = "articles_a2_teacher_submissions_v1";
+        const TEACHER_PIN = "1234";
+
+        function getDefaultSeedSubmissions() {
+            return [
+                {
+                    id: "seed_1",
+                    studentName: "Trần Bảo Ngọc",
+                    studentClass: "8A1",
+                    score: 214,
+                    correctCount: 19,
+                    totalQuestions: 20,
+                    accuracy: 95,
+                    maxStreak: 12,
+                    submittedAt: "20/11/2026 19:45",
+                    details: QUESTIONS.map((q, idx) => ({
+                        id: q.id,
+                        category: q.category,
+                        question: q.question,
+                        fullSentence: q.fullSentence,
+                        userAnswer: idx === 1 ? "an" : q.correctAnswer,
+                        correctAnswer: q.correctAnswer,
+                        explanationEn: q.explanationEn,
+                        isCorrect: idx !== 1
+                    }))
+                },
+                {
+                    id: "seed_2",
+                    studentName: "Lê Hoàng Nam",
+                    studentClass: "8A1",
+                    score: 168,
+                    correctCount: 16,
+                    totalQuestions: 20,
+                    accuracy: 80,
+                    maxStreak: 6,
+                    submittedAt: "21/11/2026 08:20",
+                    details: QUESTIONS.map((q, idx) => {
+                        const wrongIds = [1, 3, 12, 18];
+                        const isWrong = wrongIds.includes(idx);
+                        return {
+                            id: q.id,
+                            category: q.category,
+                            question: q.question,
+                            fullSentence: q.fullSentence,
+                            userAnswer: isWrong ? (q.correctAnswer === "a" ? "an" : "the") : q.correctAnswer,
+                            correctAnswer: q.correctAnswer,
+                            explanationEn: q.explanationEn,
+                            isCorrect: !isWrong
+                        };
+                    })
+                },
+                {
+                    id: "seed_3",
+                    studentName: "Phạm Khánh Linh",
+                    studentClass: "8A2",
+                    score: 132,
+                    correctCount: 13,
+                    totalQuestions: 20,
+                    accuracy: 65,
+                    maxStreak: 4,
+                    submittedAt: "21/11/2026 14:10",
+                    details: QUESTIONS.map((q, idx) => {
+                        const wrongIds = [0, 1, 3, 5, 11, 12, 17];
+                        const isWrong = wrongIds.includes(idx);
+                        return {
+                            id: q.id,
+                            category: q.category,
+                            question: q.question,
+                            fullSentence: q.fullSentence,
+                            userAnswer: isWrong ? (q.correctAnswer === "Ø (no article)" ? "the" : "a") : q.correctAnswer,
+                            correctAnswer: q.correctAnswer,
+                            explanationEn: q.explanationEn,
+                            isCorrect: !isWrong
+                        };
+                    })
+                }
+            ];
+        }
+
+        function loadSubmissions() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) {
+                    const seeded = getDefaultSeedSubmissions();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+                    return seeded;
+                }
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                console.warn("LocalStorage read error:", e);
+                return getDefaultSeedSubmissions();
+            }
+        }
+
+        function saveSubmission(record) {
+            try {
+                const list = loadSubmissions();
+                list.unshift(record);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+                updateSubmissionBadge();
+            } catch (e) {
+                console.warn("LocalStorage write error:", e);
+            }
+        }
+
+        function updateSubmissionBadge() {
+            const count = loadSubmissions().length;
+            const badge = document.getElementById("submissionCountBadge");
+            if (badge) badge.textContent = count;
+        }
+
+        // ============================================================
+        // 3. BIẾN TRẠNG THÁI & HỆ THỐNG GIỌNG NÓI / ÂM THANH
+        // ============================================================
+        let currentStudent = { name: "", className: "" };
         let currentIndex = 0;
         let score = 0;
         let streak = 0;
         let maxStreak = 0;
         let answered = false;
         let voiceEnabled = true;
+        let autoReadExplanation = true;
         let userHistory = [];
         let lastSpokenFeedback = "";
         let audioCtx = null;
         let selectedVoice = null;
         let cheatSheetOpen = true;
+        let currentOptionsList = [];
+
+        function showToast(msg, icon = "✅") {
+            const banner = document.getElementById("toastBanner");
+            document.getElementById("toastMsg").textContent = msg;
+            document.getElementById("toastIcon").textContent = icon;
+            banner.classList.remove("hidden");
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                banner.classList.add("hidden");
+            }, 3000);
+        }
 
         // Khởi tạo giọng nói tiếng Anh tự nhiên từ trình duyệt
         function initVoices() {
@@ -635,7 +1012,7 @@
             window.speechSynthesis.onvoiceschanged = initVoices;
         }
 
-        // Tạo âm thanh phản hồi tinh tế bằng Web Audio API (không cần file MP3 ngoài)
+        // Tạo âm thanh phản hồi bằng Web Audio API
         function playChime(type) {
             if (!voiceEnabled) return;
             try {
@@ -705,15 +1082,16 @@
         }
 
         // Đọc văn bản tiếng Anh qua Web Speech API
-        function speakEnglish(text, rate = 0.96) {
+        function speakEnglish(text, rate = 0.95) {
             if (!voiceEnabled || !('speechSynthesis' in window)) return;
             try {
                 window.speechSynthesis.cancel();
-                const utter = new SpeechSynthesisUtterance(text);
+                const cleanText = text.replace(/Ø/g, "zero article");
+                const utter = new SpeechSynthesisUtterance(cleanText);
                 if (selectedVoice) utter.voice = selectedVoice;
                 utter.lang = 'en-US';
                 utter.rate = rate;
-                utter.pitch = 1.05;
+                utter.pitch = 1.04;
 
                 utter.onstart = () => setSpeakingVisual(true);
                 utter.onend = () => setSpeakingVisual(false);
@@ -731,22 +1109,37 @@
             const label = document.getElementById('voiceLabel');
             const headerWave = document.getElementById('headerSoundWave');
             if (voiceEnabled) {
-                label.textContent = 'Giọng nói: BẬT';
+                label.textContent = 'Giọng đọc: BẬT';
                 headerWave.classList.remove('text-rose-300', 'opacity-50');
                 headerWave.classList.add('text-emerald-300');
-                speakEnglish("Voice feedback is enabled!");
+                speakEnglish("English voice feedback is on!");
             } else {
                 if ('speechSynthesis' in window) window.speechSynthesis.cancel();
                 setSpeakingVisual(false);
-                label.textContent = 'Giọng nói: TẮT';
+                label.textContent = 'Giọng đọc: TẮT';
                 headerWave.classList.remove('text-emerald-300');
                 headerWave.classList.add('text-rose-300', 'opacity-50');
             }
         }
 
+        function toggleAutoReadExplanation() {
+            autoReadExplanation = !autoReadExplanation;
+            const label = document.getElementById('autoExplainLabel');
+            const shortLabel = document.getElementById('autoExplainShort');
+            if (autoReadExplanation) {
+                label.textContent = 'Đọc giải thích: BẬT';
+                shortLabel.textContent = 'Giải thích: BẬT';
+                showToast("Đã bật tự động đọc giải thích bằng tiếng Anh", "📖");
+            } else {
+                label.textContent = 'Đọc giải thích: TẮT';
+                shortLabel.textContent = 'Giải thích: TẮT';
+                showToast("Đã tắt tự động đọc giải thích (vẫn đọc lời khen/động viên)", "🔇");
+            }
+        }
+
         function testVoiceWelcome() {
             if (!voiceEnabled) toggleVoice();
-            speakEnglish("Hello! Welcome to the English Articles quiz. Let's master a, an, and the together!");
+            speakEnglish("Awesome job! You nailed it! We use 'an' before 'hour' because the letter 'h' is silent.");
         }
 
         function toggleCheatSheet() {
@@ -763,31 +1156,39 @@
         }
 
         // ============================================================
-        // 3. ĐIỀU KHIỂN LUỒNG GAME & XÁO TRỘN ĐÁP ÁN
+        // 4. ĐIỀU KHIỂN LUỒNG GAME HỌC SINH
         // ============================================================
-        function shuffleArray(arr) {
-            const copy = [...arr];
-            for (let i = copy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [copy[i], copy[j]] = [copy[j], copy[i]];
-            }
-            return copy;
+        function hideAllScreens() {
+            ['startScreen', 'quizScreen', 'resultScreen', 'teacherPinModal', 'teacherDashboardScreen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
         }
 
-        let currentOptionsShuffled = [];
-
         function startGame() {
+            const nameVal = document.getElementById('studentNameInput').value.trim();
+            const classVal = document.getElementById('studentClassInput').value.trim();
+            const errEl = document.getElementById('studentFormError');
+
+            if (!nameVal || !classVal) {
+                errEl.classList.remove('hidden');
+                if (!nameVal) document.getElementById('studentNameInput').focus();
+                else document.getElementById('studentClassInput').focus();
+                return;
+            }
+            errEl.classList.add('hidden');
+
+            currentStudent = { name: nameVal, className: classVal.toUpperCase() };
             currentIndex = 0;
             score = 0;
             streak = 0;
             maxStreak = 0;
             userHistory = [];
 
-            document.getElementById('startScreen').classList.add('hidden');
-            document.getElementById('resultScreen').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('quizScreen').classList.remove('hidden');
             document.getElementById('headerStats').classList.remove('hidden');
             document.getElementById('headerStats').classList.add('flex');
+            document.getElementById('activeStudentPill').textContent = `👤 ${currentStudent.name} (${currentStudent.className})`;
 
             updateHeaderStats();
             renderQuestion();
@@ -796,8 +1197,7 @@
         function backToHome() {
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             setSpeakingVisual(false);
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('resultScreen').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('headerStats').classList.add('hidden');
             document.getElementById('headerStats').classList.remove('flex');
             document.getElementById('startScreen').classList.remove('hidden');
@@ -813,14 +1213,12 @@
             const q = QUESTIONS[currentIndex];
             const total = QUESTIONS.length;
 
-            // Update Progress Bar & Badges
             document.getElementById('questionNumberBadge').textContent = `Câu ${currentIndex + 1} / ${total}`;
-            document.getElementById('categoryBadge').textContent = `Quy tắc: ${q.category}`;
+            document.getElementById('categoryBadge').textContent = `Rule: ${q.category}`;
             const pct = Math.round(((currentIndex + 1) / total) * 100);
             document.getElementById('progressPercent').textContent = `${pct}%`;
             document.getElementById('progressBar').style.width = `${pct}%`;
 
-            // Format blank in question
             const formattedQuestion = q.question.replace(
                 /_______/g,
                 '<span class="inline-block min-w-[95px] border-b-4 border-indigo-400 text-indigo-600 px-2 text-center">___</span>'
@@ -828,17 +1226,15 @@
             document.getElementById('questionText').innerHTML = formattedQuestion;
             document.getElementById('questionHintVi').textContent = `💡 Nghĩa tiếng Việt: ${q.meaningVi}`;
 
-            // Hide feedback drawer
             document.getElementById('feedbackBox').classList.add('hidden');
 
-            // Giữ thứ tự chuẩn a / an / the / Ø để dễ nhìn và trực quan cho người học mạo từ
-            currentOptionsShuffled = [...q.options];
+            currentOptionsList = [...q.options];
 
             const container = document.getElementById('optionsContainer');
             container.innerHTML = '';
             const letters = ['A', 'B', 'C', 'D'];
 
-            currentOptionsShuffled.forEach((optText, idx) => {
+            currentOptionsList.forEach((optText, idx) => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.id = `optBtn_${idx}`;
@@ -855,13 +1251,18 @@
             });
 
             document.getElementById('nextBtnLabel').textContent =
-                currentIndex === total - 1 ? 'Xem Kết Quả Tổng Kết' : 'Câu Tiếp Theo';
+                currentIndex === total - 1 ? 'Nộp Bài & Xem Kết Quả' : 'Câu Tiếp Theo';
         }
 
         function speakCurrentSentence() {
             const q = QUESTIONS[currentIndex];
             const sentence = answered ? q.fullSentence : q.question.replace(/_______/g, 'blank');
             speakEnglish(sentence, 0.92);
+        }
+
+        function speakOnlyExplanation() {
+            const q = QUESTIONS[currentIndex];
+            speakEnglish(q.explanationEn, 0.94);
         }
 
         function replayFullFeedback() {
@@ -877,7 +1278,7 @@
             answered = true;
 
             const q = QUESTIONS[currentIndex];
-            const chosenValue = currentOptionsShuffled[selectedIdx];
+            const chosenValue = currentOptionsList[selectedIdx];
             const isCorrect = chosenValue === q.correctAnswer;
 
             // Update Score & Streak
@@ -897,17 +1298,19 @@
             userHistory.push({
                 id: q.id,
                 category: q.category,
+                question: q.question,
                 fullSentence: q.fullSentence,
                 userAnswer: chosenValue,
                 correctAnswer: q.correctAnswer,
+                explanationEn: q.explanationEn,
                 isCorrect
             });
 
-            // Show completed sentence in question display
+            // Show completed sentence
             document.getElementById('questionText').textContent = q.fullSentence;
 
             // Style option buttons
-            currentOptionsShuffled.forEach((optVal, idx) => {
+            currentOptionsList.forEach((optVal, idx) => {
                 const btn = document.getElementById(`optBtn_${idx}`);
                 const badge = document.getElementById(`optBadge_${idx}`);
                 btn.disabled = true;
@@ -928,12 +1331,13 @@
                 }
             });
 
-            // Build Feedback Banner & Voice Comment
+            // Build Feedback Banner & English Voice Comment + English Explanation
             const feedbackBox = document.getElementById('feedbackBox');
             const badgeEmoji = document.getElementById('feedbackBadgeEmoji');
             const feedbackTitle = document.getElementById('feedbackTitle');
             const voiceCommentText = document.getElementById('voiceCommentText');
-            const explanationText = document.getElementById('explanationText');
+            const explanationTextEn = document.getElementById('explanationTextEn');
+            const ruleTipEn = document.getElementById('ruleTipEn');
 
             feedbackBox.classList.remove('hidden', 'bg-emerald-50/95', 'border-emerald-300', 'bg-amber-50/95', 'border-amber-300');
 
@@ -949,7 +1353,9 @@
                 voiceCommentText.className = 'text-xs sm:text-sm font-extrabold italic text-emerald-700';
                 voiceCommentText.textContent = `"${praise.en}"`;
 
-                lastSpokenFeedback = `${praise.en} ${q.fullSentence}`;
+                lastSpokenFeedback = autoReadExplanation
+                    ? `${praise.en} ${q.fullSentence}. ${q.explanationEn}`
+                    : `${praise.en} ${q.fullSentence}.`;
             } else {
                 const encourage = ENCOURAGE_PHRASES[Math.floor(Math.random() * ENCOURAGE_PHRASES.length)];
                 feedbackBox.classList.add('bg-amber-50/95', 'border-amber-300');
@@ -960,13 +1366,16 @@
                 voiceCommentText.className = 'text-xs sm:text-sm font-extrabold italic text-amber-800';
                 voiceCommentText.textContent = `"${encourage.en}"`;
 
-                lastSpokenFeedback = `${encourage.en} The correct sentence is: ${q.fullSentence}`;
+                lastSpokenFeedback = autoReadExplanation
+                    ? `${encourage.en} The correct sentence is: ${q.fullSentence}. ${q.explanationEn}`
+                    : `${encourage.en} The correct sentence is: ${q.fullSentence}.`;
             }
 
-            explanationText.textContent = q.explanation;
+            explanationTextEn.textContent = q.explanationEn;
+            ruleTipEn.textContent = `Key Rule: ${q.ruleEn}`;
 
-            // Speak praise/encouragement + completed English sentence
-            speakEnglish(lastSpokenFeedback, 0.96);
+            // Speak praise/encouragement + completed sentence + English explanation
+            speakEnglish(lastSpokenFeedback, 0.95);
 
             setTimeout(() => {
                 feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -986,16 +1395,37 @@
         }
 
         // ============================================================
-        // 4. MÀN HÌNH TỔNG KẾT & PHÂN TÍCH KẾT QUẢ
+        // 5. MÀN HÌNH TỔNG KẾT & LƯU KẾT QUẢ VÀO BẢNG GIÁO VIÊN
         // ============================================================
+        function formatTimestamp(dateObj) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${pad(dateObj.getDate())}/${pad(dateObj.getMonth() + 1)}/${dateObj.getFullYear()} ${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
         function showResults() {
-            document.getElementById('quizScreen').classList.add('hidden');
+            hideAllScreens();
             document.getElementById('resultScreen').classList.remove('hidden');
 
             const total = QUESTIONS.length;
             const correctCount = userHistory.filter(h => h.isCorrect).length;
             const accuracy = Math.round((correctCount / total) * 100);
 
+            // Save student submission to localStorage for Teacher Dashboard
+            const submissionRecord = {
+                id: "sub_" + Date.now(),
+                studentName: currentStudent.name,
+                studentClass: currentStudent.className,
+                score: score,
+                correctCount: correctCount,
+                totalQuestions: total,
+                accuracy: accuracy,
+                maxStreak: maxStreak,
+                submittedAt: formatTimestamp(new Date()),
+                details: [...userHistory]
+            };
+            saveSubmission(submissionRecord);
+
+            document.getElementById('resultStudentMeta').textContent = `Học sinh: ${currentStudent.name} • Lớp: ${currentStudent.className}`;
             document.getElementById('finalScore').textContent = score;
             document.getElementById('finalAccuracy').textContent = `${accuracy}% (${correctCount}/${total})`;
             document.getElementById('finalMaxStreak').textContent = maxStreak;
@@ -1008,20 +1438,20 @@
             if (accuracy >= 85) {
                 stars = "⭐⭐⭐";
                 headline = "Siêu Đẳng Cấp! 🏆";
-                subtext = `Bạn trả lời đúng ${correctCount}/${total} câu (${accuracy}%)! Bạn đã nắm vững gần như toàn bộ quy tắc Mạo từ A2.`;
-                voiceSummary = `Congratulations! You scored ${correctCount} out of ${total}. You are a true master of English articles!`;
+                subtext = `Chúc mừng ${currentStudent.name}! Bạn trả lời đúng ${correctCount}/${total} câu (${accuracy}%) và làm chủ ngữ pháp Mạo từ A2.`;
+                voiceSummary = `Congratulations ${currentStudent.name}! You scored ${correctCount} out of ${total}. You are a true master of English articles!`;
                 fireConfetti();
             } else if (accuracy >= 60) {
                 stars = "⭐⭐";
                 headline = "Làm Tốt Lắm! 🌟";
-                subtext = `Bạn đạt ${correctCount}/${total} câu đúng (${accuracy}%). Hãy xem lại một vài câu bị nhầm bên dưới để đạt 100% nhé!`;
-                voiceSummary = `Great job! You got ${correctCount} out of ${total} correct. Review the missed questions and try again!`;
+                subtext = `Bạn đạt ${correctCount}/${total} câu đúng (${accuracy}%). Xem lại các giải thích tiếng Anh bên dưới để đạt 100% nhé!`;
+                voiceSummary = `Great job ${currentStudent.name}! You got ${correctCount} out of ${total} correct. Review the English explanations and try again!`;
                 fireConfetti();
             } else {
                 stars = "⭐";
                 headline = "Cố Gắng Rất Tốt! 💪";
-                subtext = `Bạn đúng ${correctCount}/${total} câu (${accuracy}%). Đừng nản lòng nhé, hãy đọc lại bảng tóm tắt quy tắc và thử sức lại ngay!`;
-                voiceSummary = `Nice effort! You got ${correctCount} out of ${total}. Review the grammar rules and give it another try!`;
+                subtext = `Bạn đúng ${correctCount}/${total} câu (${accuracy}%). Hãy đọc kỹ giải thích tiếng Anh từng câu và thử lại để bứt phá điểm số nhé!`;
+                voiceSummary = `Nice effort ${currentStudent.name}! You got ${correctCount} out of ${total}. Review the English grammar rules and give it another try!`;
             }
 
             document.getElementById('starRatingRow').textContent = stars;
@@ -1100,7 +1530,7 @@
                     item.isCorrect ? 'bg-emerald-50/75 border-emerald-200' : 'bg-rose-50/75 border-rose-200'
                 }`;
 
-                const escapedSentence = item.fullSentence.replace(/'/g, "\\'");
+                const escapedSpoken = `${item.fullSentence}. ${item.explanationEn}`.replace(/'/g, "\\'");
 
                 row.innerHTML = `
                     <div class="flex items-start gap-2.5">
@@ -1115,11 +1545,12 @@
                                     Đáp án đúng: <span class="font-extrabold text-emerald-700">${item.correctAnswer}</span>
                                 </p>
                             ` : `
-                                <p class="text-xs text-emerald-700 font-semibold mt-0.5">Chính xác: ${item.correctAnswer}</p>
+                                <p class="text-xs text-emerald-700 font-semibold mt-0.5">Correct: ${item.correctAnswer}</p>
                             `}
+                            <p class="text-xs text-slate-600 mt-1 italic">${item.explanationEn}</p>
                         </div>
                     </div>
-                    <button onclick="speakEnglish('${escapedSentence}', 0.92)" title="Nghe đọc câu này"
+                    <button onclick="speakEnglish('${escapedSpoken}', 0.94)" title="Listen to sentence & English explanation"
                         class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-indigo-50 text-indigo-700 border border-slate-200 text-xs font-bold shrink-0 cursor-pointer transition">
                         🔊
                     </button>
@@ -1137,7 +1568,353 @@
             });
         }
 
-        // Hỗ trợ phím tắt (1-4, A-D, Enter)
+        // ============================================================
+        // 6. BẢNG ĐIỀU KHIỂN GIÁO VIÊN (TEACHER DASHBOARD)
+        // ============================================================
+        let teacherUnlocked = false;
+
+        function openTeacherGate() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            setSpeakingVisual(false);
+            document.getElementById('headerStats').classList.add('hidden');
+            document.getElementById('headerStats').classList.remove('flex');
+
+            if (teacherUnlocked) {
+                openTeacherDashboard();
+                return;
+            }
+            hideAllScreens();
+            document.getElementById('pinErrorMsg').classList.add('hidden');
+            document.getElementById('teacherPinInput').value = '';
+            document.getElementById('teacherPinModal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('teacherPinInput').focus(), 100);
+        }
+
+        function closeTeacherGate() {
+            backToHome();
+        }
+
+        function verifyTeacherPin() {
+            const val = document.getElementById('teacherPinInput').value.trim();
+            if (val === TEACHER_PIN) {
+                teacherUnlocked = true;
+                openTeacherDashboard();
+            } else {
+                document.getElementById('pinErrorMsg').classList.remove('hidden');
+            }
+        }
+
+        function quickUnlockTeacher() {
+            teacherUnlocked = true;
+            openTeacherDashboard();
+        }
+
+        function openTeacherDashboard() {
+            hideAllScreens();
+            document.getElementById('teacherDashboardScreen').classList.remove('hidden');
+            document.getElementById('tdStudentDetailPanel').classList.add('hidden');
+            cancelClearTeacherData();
+            populateClassFilterOptions();
+            renderTeacherAnalyticsAndTable();
+        }
+
+        function populateClassFilterOptions() {
+            const submissions = loadSubmissions();
+            const select = document.getElementById('tdClassFilter');
+            const currentVal = select.value;
+            const classes = [...new Set(submissions.map(s => s.studentClass).filter(Boolean))].sort();
+
+            select.innerHTML = '<option value="ALL">Tất cả các lớp</option>';
+            classes.forEach(cls => {
+                const opt = document.createElement('option');
+                opt.value = cls;
+                opt.textContent = `Lớp ${cls}`;
+                select.appendChild(opt);
+            });
+
+            if (classes.includes(currentVal)) {
+                select.value = currentVal;
+            }
+        }
+
+        function renderTeacherAnalyticsAndTable() {
+            const submissions = loadSubmissions();
+            const totalSubs = submissions.length;
+
+            document.getElementById('tdTotalSubmissions').textContent = totalSubs;
+
+            if (totalSubs === 0) {
+                document.getElementById('tdAvgAccuracy').textContent = "0%";
+                document.getElementById('tdAvgScore').textContent = "0";
+                document.getElementById('tdHardestQuestion').textContent = "Chưa có dữ liệu";
+                document.getElementById('tdMissedStatsList').innerHTML =
+                    '<p class="text-xs text-slate-500 col-span-3">Chưa có bài nộp nào của học sinh.</p>';
+                renderTeacherTable();
+                return;
+            }
+
+            const avgAcc = Math.round(submissions.reduce((sum, s) => sum + s.accuracy, 0) / totalSubs);
+            const avgScore = Math.round(submissions.reduce((sum, s) => sum + s.score, 0) / totalSubs);
+
+            document.getElementById('tdAvgAccuracy').textContent = `${avgAcc}%`;
+            document.getElementById('tdAvgScore').textContent = avgScore;
+
+            // Tính toán các câu học sinh sai nhiều nhất cả lớp
+            const missMap = {};
+            QUESTIONS.forEach(q => {
+                missMap[q.id] = { id: q.id, question: q.question, fullSentence: q.fullSentence, missCount: 0, attempts: 0 };
+            });
+
+            submissions.forEach(sub => {
+                if (Array.isArray(sub.details)) {
+                    sub.details.forEach(d => {
+                        if (missMap[d.id]) {
+                            missMap[d.id].attempts++;
+                            if (!d.isCorrect) missMap[d.id].missCount++;
+                        }
+                    });
+                }
+            });
+
+            const sortedMissed = Object.values(missMap)
+                .filter(item => item.missCount > 0)
+                .sort((a, b) => b.missCount - a.missCount);
+
+            const hardestEl = document.getElementById('tdHardestQuestion');
+            const missedContainer = document.getElementById('tdMissedStatsList');
+            missedContainer.innerHTML = '';
+
+            if (sortedMissed.length === 0) {
+                hardestEl.textContent = "Không có câu sai!";
+                missedContainer.innerHTML = '<p class="text-xs text-emerald-700 font-bold col-span-3">🎉 Tuyệt vời! Cả lớp chưa làm sai câu nào.</p>';
+            } else {
+                const top1 = sortedMissed[0];
+                hardestEl.textContent = `Câu ${top1.id} (${top1.missCount}/${totalSubs} HS sai)`;
+
+                sortedMissed.slice(0, 3).forEach(item => {
+                    const missRate = Math.round((item.missCount / totalSubs) * 100);
+                    const card = document.createElement('div');
+                    card.className = 'bg-white border border-rose-200 rounded-xl p-3 shadow-xs';
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 font-black text-xs">Câu ${item.id}</span>
+                            <span class="text-xs font-extrabold text-rose-600">${item.missCount}/${totalSubs} HS sai (${missRate}%)</span>
+                        </div>
+                        <p class="text-xs font-bold text-slate-800 line-clamp-2">${item.fullSentence}</p>
+                    `;
+                    missedContainer.appendChild(card);
+                });
+            }
+
+            renderTeacherTable();
+        }
+
+        function renderTeacherTable() {
+            const submissions = loadSubmissions();
+            const searchQuery = document.getElementById('tdSearchInput').value.trim().toLowerCase();
+            const classFilter = document.getElementById('tdClassFilter').value;
+
+            const filtered = submissions.filter(sub => {
+                const matchName = sub.studentName.toLowerCase().includes(searchQuery);
+                const matchClass = classFilter === 'ALL' || sub.studentClass === classFilter;
+                return matchName && matchClass;
+            });
+
+            const tbody = document.getElementById('tdSubmissionsTbody');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-500 font-semibold text-sm">
+                            Không tìm thấy dữ liệu bài làm phù hợp.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach(sub => {
+                const badgeColor = sub.accuracy >= 80
+                    ? 'bg-emerald-100 text-emerald-800'
+                    : sub.accuracy >= 50
+                        ? 'bg-amber-100 text-amber-800'
+                        : 'bg-rose-100 text-rose-800';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-indigo-50/50 transition';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-extrabold text-slate-900">${sub.studentName}</td>
+                    <td class="py-3.5 px-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-extrabold text-xs">${sub.studentClass}</span>
+                    </td>
+                    <td class="py-3.5 px-3 font-black text-indigo-700">${sub.score}</td>
+                    <td class="py-3.5 px-3">
+                        <span class="px-2.5 py-1 rounded-lg font-extrabold text-xs ${badgeColor}">
+                            ${sub.correctCount}/${sub.totalQuestions} (${sub.accuracy}%)
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-3 font-bold text-amber-700">🔥 ${sub.maxStreak}</td>
+                    <td class="py-3.5 px-3 text-xs text-slate-500 font-semibold">${sub.submittedAt}</td>
+                    <td class="py-3.5 px-4 text-right">
+                        <button onclick="viewStudentSubmissionDetail('${sub.id}')"
+                            class="px-3 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-600 text-indigo-800 hover:text-white font-extrabold text-xs transition cursor-pointer">
+                            Xem bài làm
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function viewStudentSubmissionDetail(subId) {
+            const submissions = loadSubmissions();
+            const sub = submissions.find(s => s.id === subId);
+            if (!sub) return;
+
+            const panel = document.getElementById('tdStudentDetailPanel');
+            document.getElementById('tdDetailStudentHeader').textContent =
+                `${sub.studentName} • Lớp ${sub.studentClass} — Điểm: ${sub.score} (${sub.correctCount}/${sub.totalQuestions} câu đúng - ${sub.accuracy}%)`;
+
+            const listEl = document.getElementById('tdDetailQuestionsList');
+            listEl.innerHTML = '';
+
+            if (!Array.isArray(sub.details) || sub.details.length === 0) {
+                listEl.innerHTML = '<p class="text-sm text-slate-600">Không có dữ liệu chi tiết từng câu.</p>';
+            } else {
+                sub.details.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = `p-3.5 rounded-xl border bg-white flex items-start justify-between gap-3 ${
+                        item.isCorrect ? 'border-emerald-200' : 'border-rose-300 bg-rose-50/40'
+                    }`;
+
+                    const escapedSpoken = `${item.fullSentence}. ${item.explanationEn || ''}`.replace(/'/g, "\\'");
+
+                    row.innerHTML = `
+                        <div class="flex items-start gap-2.5">
+                            <span class="mt-0.5 w-6 h-6 rounded-full text-xs font-black flex items-center justify-center shrink-0 ${
+                                item.isCorrect ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                            }">${item.id}</span>
+                            <div>
+                                <p class="font-bold text-sm text-slate-900">${item.fullSentence}</p>
+                                ${item.isCorrect ? `
+                                    <p class="text-xs font-bold text-emerald-700 mt-0.5">✓ Học sinh chọn đúng: ${item.userAnswer}</p>
+                                ` : `
+                                    <p class="text-xs font-bold text-rose-700 mt-0.5">
+                                        ✕ Học sinh chọn: <span class="line-through">${item.userAnswer}</span> → 
+                                        <span class="text-emerald-700 font-extrabold">Đáp án đúng: ${item.correctAnswer}</span>
+                                    </p>
+                                `}
+                                <p class="text-xs text-slate-600 mt-1 italic">${item.explanationEn || ''}</p>
+                            </div>
+                        </div>
+                        <button onclick="speakEnglish('${escapedSpoken}', 0.94)" title="Nghe đọc câu & giải thích tiếng Anh"
+                            class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-100 text-indigo-700 text-xs font-bold shrink-0 cursor-pointer">
+                            🔊
+                        </button>
+                    `;
+                    listEl.appendChild(row);
+                });
+            }
+
+            panel.classList.remove('hidden');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeStudentDetailPanel() {
+            document.getElementById('tdStudentDetailPanel').classList.add('hidden');
+        }
+
+        // Xuất file CSV (hỗ trợ UTF-8 BOM để mở Excel tiếng Việt không bị lỗi font)
+        function exportTeacherCSV() {
+            const submissions = loadSubmissions();
+            if (!submissions.length) {
+                showToast("Chưa có dữ liệu để xuất CSV!", "⚠️");
+                return;
+            }
+
+            const headers = ["STT", "Ho va Ten", "Lop", "Diem So", "So Cau Dung", "Tong So Cau", "Ty Le (%)", "Chuoi Toi Da", "Thoi Gian Nop"];
+            const rows = submissions.map((s, idx) => [
+                idx + 1,
+                `"${s.studentName.replace(/"/g, '""')}"`,
+                `"${s.studentClass.replace(/"/g, '""')}"`,
+                s.score,
+                s.correctCount,
+                s.totalQuestions,
+                `${s.accuracy}%`,
+                s.maxStreak,
+                `"${s.submittedAt}"`
+            ]);
+
+            const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `Ket_Qua_Mao_Tu_A2_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast("Đã tải xuống file báo cáo CSV!", "📥");
+        }
+
+        // Sao chép báo cáo nhanh bằng document.execCommand('copy')
+        function copyTeacherReport() {
+            const submissions = loadSubmissions();
+            if (!submissions.length) {
+                showToast("Chưa có dữ liệu để sao chép!", "⚠️");
+                return;
+            }
+
+            const lines = [
+                "BÁO CÁO KẾT QUẢ BÀI TẬP MẠO TỪ (ARTICLES A2)",
+                "--------------------------------------------------",
+                ...submissions.map((s, i) =>
+                    `${i + 1}. ${s.studentName} (${s.studentClass}) - Điểm: ${s.score} - Đúng: ${s.correctCount}/${s.totalQuestions} (${s.accuracy}%) - Nộp lúc: ${s.submittedAt}`
+                )
+            ];
+
+            const textarea = document.createElement("textarea");
+            textarea.value = lines.join("\n");
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand("copy");
+                showToast("Đã sao chép bảng điểm vào bộ nhớ tạm!", "📋");
+            } catch (err) {
+                showToast("Không thể sao chép tự động.", "⚠️");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Xóa dữ liệu an toàn 2 bước (không dùng confirm())
+        function requestClearTeacherData() {
+            document.getElementById('clearDataStep1Btn').classList.add('hidden');
+            document.getElementById('clearDataConfirmGroup').classList.remove('hidden');
+            document.getElementById('clearDataConfirmGroup').classList.add('flex');
+        }
+
+        function cancelClearTeacherData() {
+            document.getElementById('clearDataStep1Btn').classList.remove('hidden');
+            document.getElementById('clearDataConfirmGroup').classList.add('hidden');
+            document.getElementById('clearDataConfirmGroup').classList.remove('flex');
+        }
+
+        function confirmClearTeacherData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+            updateSubmissionBadge();
+            cancelClearTeacherData();
+            closeStudentDetailPanel();
+            populateClassFilterOptions();
+            renderTeacherAnalyticsAndTable();
+            showToast("Đã xóa toàn bộ dữ liệu bài làm!", "🗑️");
+        }
+
+        // Hỗ trợ phím tắt (1-4, A-D, Enter) khi đang làm bài
         document.addEventListener('keydown', (e) => {
             const quizVisible = !document.getElementById('quizScreen').classList.contains('hidden');
             if (!quizVisible) return;
@@ -1152,6 +1929,12 @@
                 e.preventDefault();
                 nextQuestion();
             }
+        });
+
+        // Khởi tạo dữ liệu ban đầu khi tải trang
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSubmissions();
+            updateSubmissionBadge();
         });
     </script>
 </body>
