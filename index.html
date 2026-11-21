@@ -1,20 +1,17 @@
-<!DOCTYPE html>
+       
+     <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Quiz A2: Mạo Từ (Articles: a, an, the, Ø) & Teacher Dashboard</title>
-    <!-- Tailwind CSS -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Quiz A2: Mạo Từ (a, an, the, Ø) & Teacher Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Nunito & Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 45%, #0369a1 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #312e81 42%, #0369a1 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -23,29 +20,27 @@
             font-family: 'Nunito', sans-serif;
         }
 
-        /* Glassmorphism cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, 0.78);
-            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.32);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 24px 60px rgba(2, 6, 23, 0.36);
         }
 
         .glass-pill {
-            background: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.14);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.32);
+            border: 1px solid rgba(255, 255, 255, 0.28);
         }
 
-        /* Tactile 3D Option Buttons */
         .option-btn {
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             border-bottom-width: 4px;
         }
 
         .option-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.28);
         }
 
@@ -54,81 +49,72 @@
             border-bottom-width: 2px;
         }
 
-        /* Animations */
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.94) translateY(14px); }
+            0% { opacity: 0; transform: scale(0.95) translateY(12px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
+
         .animate-pop-in {
-            animation: popIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: popIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-float {
-            animation: floatSlow 3.6s ease-in-out infinite;
-        }
-
-        /* Animated Soundwave Bars when AI Voice is speaking */
         @keyframes waveBounce {
-            0%, 100% { transform: scaleY(0.35); }
+            0%, 100% { transform: scaleY(0.3); }
             50% { transform: scaleY(1); }
         }
-        .sound-bar {
+
+        .wave-bar {
             width: 3.5px;
             height: 16px;
             border-radius: 999px;
             background-color: currentColor;
-            transform-origin: center;
-            transition: transform 0.2s ease;
+            transition: opacity 0.2s ease;
         }
-        .is-speaking .sound-bar:nth-child(1) { animation: waveBounce 0.6s ease-in-out infinite 0.0s; }
-        .is-speaking .sound-bar:nth-child(2) { animation: waveBounce 0.6s ease-in-out infinite 0.15s; }
-        .is-speaking .sound-bar:nth-child(3) { animation: waveBounce 0.6s ease-in-out infinite 0.3s; }
-        .is-speaking .sound-bar:nth-child(4) { animation: waveBounce 0.6s ease-in-out infinite 0.1s; }
 
-        /* Custom Scrollbar */
+        .is-speaking .wave-bar:nth-child(1) { animation: waveBounce 0.65s ease-in-out infinite 0s; }
+        .is-speaking .wave-bar:nth-child(2) { animation: waveBounce 0.65s ease-in-out infinite 0.15s; }
+        .is-speaking .wave-bar:nth-child(3) { animation: waveBounce 0.65s ease-in-out infinite 0.3s; }
+        .is-speaking .wave-bar:nth-child(4) { animation: waveBounce 0.65s ease-in-out infinite 0.12s; }
+
         ::-webkit-scrollbar { width: 7px; height: 7px; }
         ::-webkit-scrollbar-track { background: rgba(148, 163, 184, 0.15); border-radius: 999px; }
-        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.45); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb { background: rgba(79, 70, 229, 0.45); border-radius: 999px; }
     </style>
 </head>
 <body class="text-slate-800 flex flex-col justify-between p-3 sm:p-6 selection:bg-indigo-200 selection:text-indigo-950">
 
-    <!-- Decorative Ambient Orbs -->
+    <!-- Ambient Decorative Background -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute -top-24 -left-24 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/3 -right-24 w-96 h-96 bg-fuchsia-400/20 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-28 left-1/4 w-96 h-96 bg-amber-300/15 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/3 -right-24 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-28 left-1/4 w-96 h-96 bg-sky-300/15 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Custom Toast Notification (No alert() used) -->
-    <div id="toastBanner" class="fixed top-4 right-4 z-50 hidden transform transition-all duration-300 max-w-sm">
-        <div id="toastContent" class="px-4 py-3 rounded-2xl shadow-2xl border font-bold text-sm flex items-center gap-2.5 bg-slate-900 text-white border-slate-700">
+    <!-- Toast Notification Banner (Never uses alert()) -->
+    <div id="toastBanner" class="fixed top-4 right-4 z-50 hidden max-w-sm transition-all duration-300">
+        <div id="toastBox" class="px-4 py-3 rounded-2xl shadow-2xl border font-bold text-sm flex items-center gap-2.5 bg-slate-900 text-white border-slate-700">
             <span id="toastIcon">✅</span>
-            <span id="toastMsg">Notification</span>
+            <span id="toastMessage">Thông báo</span>
         </div>
     </div>
 
-    <!-- Top Header Bar -->
+    <!-- Top Navigation Header -->
     <header class="relative z-10 max-w-5xl w-full mx-auto flex flex-wrap items-center justify-between gap-3 mb-4">
         <div onclick="backToHome()" class="flex items-center gap-3 text-white cursor-pointer group">
-            <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg group-hover:scale-105 transition">
+            <div class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/25 shadow-lg group-hover:scale-105 transition">
                 <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                 </svg>
             </div>
             <div>
-                <span class="text-[11px] font-extrabold uppercase tracking-widest text-sky-200 block">CEFR Level A2 • Smart Classroom</span>
-                <h1 class="text-lg sm:text-xl font-black leading-tight tracking-tight">Mạo Từ: A / An / The / Ø</h1>
+                <span class="text-[11px] font-extrabold uppercase tracking-widest text-sky-200 block">CEFR A2 • Articles (a, an, the, Ø)</span>
+                <h1 class="text-lg sm:text-xl font-black leading-tight tracking-tight">Mạo Từ Tiếng Anh Trình Độ A2</h1>
             </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+        <div class="flex flex-wrap items-center gap-2">
             <!-- Teacher Dashboard Button -->
-            <button id="teacherNavBtn" onclick="openTeacherGate()"
+            <button id="teacherNavBtn" type="button" onclick="openTeacherGate()"
                 class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs sm:text-sm font-black transition cursor-pointer shadow-md">
                 <span>👩‍🏫</span>
                 <span>Giáo Viên</span>
@@ -136,32 +122,32 @@
             </button>
 
             <!-- Auto-Read Explanation Toggle -->
-            <button id="toggleAutoExplainBtn" onclick="toggleAutoReadExplanation()" title="Tự động đọc giải thích ngữ pháp bằng tiếng Anh sau mỗi câu"
-                class="glass-pill text-white hover:bg-white/25 px-3 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-bold transition cursor-pointer shadow-sm">
+            <button id="toggleAutoExplainBtn" type="button" onclick="toggleAutoReadExplanation()" title="Tự động đọc giải thích tiếng Anh sau mỗi câu"
+                class="glass-pill text-white hover:bg-white/25 px-3 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-bold transition cursor-pointer">
                 <span>📖</span>
                 <span id="autoExplainLabel" class="hidden md:inline">Đọc giải thích: BẬT</span>
                 <span id="autoExplainShort" class="md:hidden">Giải thích: BẬT</span>
             </button>
 
-            <!-- Voice Toggle + Live Speaking Soundwave -->
-            <button id="toggleVoiceBtn" onclick="toggleVoice()" title="Bật/Tắt giọng nói tiếng Anh"
-                class="glass-pill text-white hover:bg-white/25 px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs sm:text-sm font-bold transition cursor-pointer shadow-sm">
-                <div id="headerSoundWave" class="flex items-center gap-[2px] text-emerald-300">
-                    <span class="sound-bar"></span>
-                    <span class="sound-bar"></span>
-                    <span class="sound-bar"></span>
-                    <span class="sound-bar"></span>
+            <!-- Voice Mute / Unmute Button -->
+            <button id="toggleVoiceBtn" type="button" onclick="toggleVoice()" title="Bật/Tắt giọng nói tiếng Anh"
+                class="glass-pill text-white hover:bg-white/25 px-3.5 py-2 rounded-2xl flex items-center gap-2 text-xs sm:text-sm font-bold transition cursor-pointer">
+                <div id="headerWave" class="flex items-center gap-[2px] text-emerald-300">
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
+                    <span class="wave-bar"></span>
                 </div>
                 <span id="voiceLabel">Giọng đọc: BẬT</span>
             </button>
 
-            <!-- Live Game Stats (Hidden on Start Screen) -->
+            <!-- Live Quiz Score & Streak Pills -->
             <div id="headerStats" class="hidden items-center gap-2">
                 <div title="Chuỗi trả lời đúng liên tiếp" class="glass-pill text-white px-3 py-2 rounded-2xl flex items-center gap-1 text-xs sm:text-sm font-extrabold">
                     <span>🔥</span>
                     <span id="streakDisplay">0</span>
                 </div>
-                <div title="Tổng điểm" class="bg-white text-indigo-800 px-3.5 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-black shadow-md">
+                <div title="Điểm hiện tại" class="bg-white text-indigo-800 px-3.5 py-2 rounded-2xl flex items-center gap-1.5 text-xs sm:text-sm font-black shadow-md">
                     <span>🏆</span>
                     <span id="scoreDisplay">0</span>
                 </div>
@@ -169,35 +155,35 @@
         </div>
     </header>
 
-    <!-- Main Content Container -->
+    <!-- Main Application Container -->
     <main class="relative z-10 max-w-5xl w-full mx-auto my-auto">
 
-        <!-- ==================== 1. START SCREEN ==================== -->
+        <!-- ==================== 1. START & STUDENT REGISTRATION SCREEN ==================== -->
         <section id="startScreen" class="glass-card rounded-3xl p-6 sm:p-9 animate-pop-in">
             <div class="text-center max-w-2xl mx-auto">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-100 text-indigo-800 font-extrabold text-xs sm:text-sm mb-3">
-                    <span>🎙️ AI Voice Feedback & English Grammar Explanations (A2)</span>
+                    <span>🎙️ 20 Questions • English Voice Praise/Encouragement & Explanations</span>
                 </div>
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-3 leading-tight">
-                    Chinh Phục <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600">Mạo Từ Tiếng Anh</span>
+                    Chinh Phục <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600">Mạo Từ A, An, The, Ø</span>
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base mb-6">
-                    Hoàn thành <strong>20 câu hỏi trắc nghiệm</strong> trình độ <strong>A2</strong> về cách dùng <strong>a, an, the</strong> và <strong>Ø (zero article)</strong>. Lắng nghe nhận xét khen ngợi / động viên và lời giải thích chi tiết bằng tiếng Anh sau mỗi câu!
+                    Luyện tập <strong>20 câu hỏi trắc nghiệm</strong> trình độ <strong>Tiếng Anh A2</strong>. Nhận phản hồi giọng nói khen ngợi khi đúng, động viên khi sai, đọc câu chuẩn và giải thích chi tiết bằng cả <strong>Tiếng Anh & Tiếng Việt</strong>.
                 </p>
             </div>
 
-            <!-- Student Info Registration Card -->
-            <div class="max-w-2xl mx-auto mb-7 bg-gradient-to-r from-indigo-50 via-purple-50 to-sky-50 border-2 border-indigo-200/80 rounded-2xl p-5 shadow-xs">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-black text-indigo-950 text-base sm:text-lg flex items-center gap-2">
-                        <span>🎓 Thông tin học sinh (Lưu vào bảng điểm Giáo viên)</span>
+            <!-- Student Info Form -->
+            <div class="max-w-2xl mx-auto mb-7 bg-gradient-to-r from-indigo-50 via-sky-50 to-purple-50 border-2 border-indigo-200/80 rounded-2xl p-5">
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <h3 class="font-black text-indigo-950 text-base sm:text-lg">
+                        🎓 Thông Tin Học Sinh Làm Bài
                     </h3>
-                    <span class="text-xs font-bold text-indigo-600 bg-white px-2.5 py-1 rounded-lg border border-indigo-100">Bắt buộc</span>
+                    <span class="text-xs font-bold text-indigo-700 bg-white px-2.5 py-1 rounded-lg border border-indigo-100">Gửi kết quả cho Giáo viên</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                     <div class="sm:col-span-2">
-                        <label for="studentNameInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Họ và tên học sinh *</label>
+                        <label for="studentNameInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1">Họ và tên *</label>
                         <input id="studentNameInput" type="text" placeholder="Ví dụ: Nguyễn Minh Anh"
                             class="w-full px-4 py-3 rounded-xl bg-white border-2 border-slate-200 focus:border-indigo-500 focus:outline-none font-bold text-slate-800 placeholder:text-slate-400 transition" />
                     </div>
@@ -208,83 +194,80 @@
                     </div>
                 </div>
                 <p id="studentFormError" class="hidden mt-2 text-xs font-extrabold text-rose-600">
-                    ⚠️ Vui lòng nhập đầy đủ Họ tên và Lớp của bạn trước khi bắt đầu làm bài nhé!
+                    ⚠️ Vui lòng nhập đầy đủ Họ và tên và Lớp trước khi bắt đầu làm bài nhé!
                 </p>
             </div>
 
-            <!-- Collapsible Quick Grammar Cheat Sheet -->
-            <div class="mb-7 border-2 border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/70">
+            <!-- A2 Article Grammar Summary -->
+            <div class="mb-7 border-2 border-slate-200/80 rounded-2xl overflow-hidden bg-slate-50/75">
                 <button type="button" onclick="toggleCheatSheet()"
                     class="w-full px-5 py-3 flex items-center justify-between text-left bg-slate-100 hover:bg-slate-200/70 transition cursor-pointer">
-                    <span class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2">
-                        <span>📘 Quick A2 Grammar Guide (Tóm tắt quy tắc nhanh)</span>
+                    <span class="font-extrabold text-slate-800 text-sm sm:text-base">
+                        📘 Tóm tắt quy tắc Mạo từ A2 (a / an / the / Ø - zero article)
                     </span>
-                    <span id="cheatSheetChevron" class="text-indigo-700 font-black text-xs px-2.5 py-1 rounded-lg bg-white shadow-xs">Thu gọn ▲</span>
+                    <span id="cheatSheetToggleLabel" class="text-indigo-700 font-black text-xs px-2.5 py-1 rounded-lg bg-white shadow-xs">Thu gọn ▲</span>
                 </button>
 
                 <div id="cheatSheetBody" class="p-4 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-3.5 text-sm">
-                    <!-- Rule A / AN -->
                     <div class="bg-white rounded-xl p-4 border border-sky-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
                             <span class="px-2.5 py-0.5 rounded-lg bg-sky-100 text-sky-800 font-black text-xs">A / AN</span>
-                            <h3 class="font-extrabold text-slate-900">By First Sound</h3>
+                            <h3 class="font-extrabold text-slate-900">Âm đầu (Vowel vs Consonant Sound)</h3>
                         </div>
                         <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
-                            <li>• <strong>an</strong> + vowel sound: <span class="text-indigo-700 font-semibold">an umbrella, an hour</span> (silent h), <span class="text-indigo-700 font-semibold">an honest boy</span>.</li>
-                            <li>• <strong>a</strong> + consonant sound: <span class="text-indigo-700 font-semibold">a university</span> (/juː/), <span class="text-indigo-700 font-semibold">a uniform</span>, <span class="text-indigo-700 font-semibold">a European country</span>.</li>
+                            <li>• <strong>an</strong> + nguyên âm (âm): <span class="text-indigo-700 font-semibold">an hour</span> (h câm), <span class="text-indigo-700 font-semibold">an honest boy</span>, <span class="text-indigo-700 font-semibold">an umbrella</span>.</li>
+                            <li>• <strong>a</strong> + phụ âm (âm): <span class="text-indigo-700 font-semibold">a university</span> (/juː/), <span class="text-indigo-700 font-semibold">a European city</span>.</li>
                         </ul>
                     </div>
 
-                    <!-- Rule THE -->
                     <div class="bg-white rounded-xl p-4 border border-purple-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
                             <span class="px-2.5 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black text-xs">THE</span>
-                            <h3 class="font-extrabold text-slate-900">Specific & Unique</h3>
+                            <h3 class="font-extrabold text-slate-900">Xác định, Duy nhất & Nhạc cụ</h3>
                         </div>
                         <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
-                            <li>• Mentioned <strong>twice</strong>: <em>I bought <strong>a</strong> coat. <strong>The</strong> coat is blue.</em></li>
-                            <li>• <strong>Unique</strong> & Superlatives: <span class="text-purple-700 font-semibold">the sun, the best, the first</span>.</li>
-                            <li>• <strong>Instruments & Places</strong>: <span class="text-purple-700 font-semibold">play the piano, the cinema, the UK</span>.</li>
+                            <li>• Nhắc lại lần 2: <em>I have <strong>a</strong> dog. <strong>The</strong> dog is cute.</em></li>
+                            <li>• Duy nhất / So sánh nhất / Số thứ tự: <span class="text-purple-700 font-semibold">the sun, the best, the first</span>.</li>
+                            <li>• Nhạc cụ & nơi công cộng: <span class="text-purple-700 font-semibold">play the guitar, go to the cinema</span>.</li>
                         </ul>
                     </div>
 
-                    <!-- Rule ZERO ARTICLE -->
                     <div class="bg-white rounded-xl p-4 border border-amber-100 shadow-xs">
                         <div class="flex items-center gap-2 mb-1.5">
                             <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 font-black text-xs">Ø (Zero Article)</span>
-                            <h3 class="font-extrabold text-slate-900">No Article Needed</h3>
+                            <h3 class="font-extrabold text-slate-900">Không dùng mạo từ</h3>
                         </div>
                         <ul class="text-slate-600 space-y-1 text-xs leading-relaxed">
-                            <li>• <strong>Sports:</strong> <span class="text-amber-800 font-semibold">play football, play tennis</span>.</li>
-                            <li>• <strong>Meals & Languages:</strong> <span class="text-amber-800 font-semibold">have breakfast, speak English</span>.</li>
-                            <li>• <strong>General plurals & single mountains:</strong> <span class="text-amber-800 font-semibold">Dogs are friendly, Mount Everest</span>.</li>
+                            <li>• Thể thao & bữa ăn: <span class="text-amber-800 font-semibold">play football, have breakfast</span>.</li>
+                            <li>• Ngôn ngữ & môn học: <span class="text-amber-800 font-semibold">speak English, study math</span>.</li>
+                            <li>• Số nhiều / không đếm được nói chung & sinh hoạt thường ngày: <span class="text-amber-800 font-semibold">Cats love milk, go to school/bed/home</span>.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Start & Sample Voice Buttons -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-                <button onclick="startGame()"
+                <button type="button" onclick="startGame()"
                     class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-black text-lg shadow-xl shadow-indigo-500/30 transform hover:-translate-y-0.5 transition flex items-center justify-center gap-3 cursor-pointer">
                     <span>🚀 Bắt Đầu Làm Bài (20 Câu)</span>
                 </button>
-                <button onclick="testVoiceWelcome()"
+                <button type="button" onclick="testVoiceSample()"
                     class="w-full sm:w-auto px-5 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition flex items-center justify-center gap-2 cursor-pointer">
-                    <span>🔊 Nghe thử giọng nhận xét</span>
+                    <span>🔊 Nghe thử giọng nói tiếng Anh</span>
                 </button>
             </div>
         </section>
 
         <!-- ==================== 2. QUIZ SCREEN ==================== -->
         <section id="quizScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 animate-pop-in">
-            <!-- Active Student Ribbon + Progress -->
+            <!-- Student & Progress Header -->
             <div class="mb-6">
                 <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-bold text-slate-600 mb-2.5">
                     <div class="flex items-center gap-2 flex-wrap">
                         <span id="activeStudentPill" class="px-3 py-1 rounded-xl bg-slate-900 text-white font-extrabold">👤 Học sinh: ---</span>
                         <span id="questionNumberBadge" class="px-3 py-1 rounded-xl bg-indigo-100 text-indigo-800 font-black">Câu 1 / 20</span>
-                        <span id="categoryBadge" class="hidden md:inline-block px-3 py-1 rounded-xl bg-sky-100 text-sky-800 text-xs font-extrabold">Rule: A vs An</span>
+                        <span id="categoryBadge" class="hidden md:inline-block px-3 py-1 rounded-xl bg-sky-100 text-sky-800 text-xs font-extrabold">Topic</span>
                     </div>
                     <span id="progressPercent" class="text-indigo-700 font-black">5%</span>
                 </div>
@@ -293,29 +276,29 @@
                 </div>
             </div>
 
-            <!-- Question Card -->
-            <div class="bg-slate-50 border-2 border-slate-200/80 rounded-2xl p-5 sm:p-7 mb-6 relative">
+            <!-- Question Box -->
+            <div class="bg-slate-50 border-2 border-slate-200/80 rounded-2xl p-5 sm:p-7 mb-6">
                 <div class="flex items-center justify-between gap-3 mb-2">
-                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Choose the best article (Ø = no article):</span>
-                    <button id="speakQuestionBtn" onclick="speakCurrentSentence()" title="Listen to the English sentence"
+                    <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Choose the correct article (Ø = no article):</span>
+                    <button id="speakQuestionBtn" type="button" onclick="speakCurrentSentence()" title="Listen to the sentence"
                         class="shrink-0 px-3.5 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold text-xs flex items-center gap-1.5 transition cursor-pointer">
                         <span>🔊 Listen</span>
                     </button>
                 </div>
                 <h2 id="questionText" class="text-xl sm:text-2xl md:text-[26px] font-extrabold text-slate-900 leading-snug">
-                    Loading...
+                    ...
                 </h2>
-                <p id="questionHintVi" class="mt-2.5 text-sm text-slate-500 italic">
+                <p id="questionMeaningVi" class="mt-2.5 text-sm text-slate-500 italic">
                     💡 Nghĩa tiếng Việt: ...
                 </p>
             </div>
 
-            <!-- 4 Answer Buttons -->
+            <!-- 4 Answer Options -->
             <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 mb-6">
                 <!-- Populated dynamically -->
             </div>
 
-            <!-- Instant English Voice + English Grammar Explanation Drawer -->
+            <!-- Feedback & Explanation Drawer -->
             <div id="feedbackBox" class="hidden rounded-2xl p-5 border-2 transition-all duration-300">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                     <div class="flex items-center gap-3">
@@ -323,42 +306,43 @@
                             🎉
                         </div>
                         <div>
-                            <h3 id="feedbackTitle" class="font-black text-lg leading-tight">Awesome! Correct!</h3>
+                            <h3 id="feedbackTitleVi" class="font-black text-lg leading-tight">Chính xác!</h3>
                             <div class="flex items-center gap-2 mt-0.5">
-                                <div id="feedbackSoundWave" class="flex items-center gap-[2px]">
-                                    <span class="sound-bar"></span>
-                                    <span class="sound-bar"></span>
-                                    <span class="sound-bar"></span>
-                                    <span class="sound-bar"></span>
+                                <div id="feedbackWave" class="flex items-center gap-[2px]">
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
+                                    <span class="wave-bar"></span>
                                 </div>
-                                <p id="voiceCommentText" class="text-xs sm:text-sm font-extrabold italic">"Awesome job! You nailed it!"</p>
+                                <p id="voicePhraseEn" class="text-xs sm:text-sm font-extrabold italic">"Awesome job!"</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 self-start sm:self-center shrink-0">
-                        <button onclick="replayFullFeedback()"
-                            class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm shadow-xs border border-slate-200 flex items-center gap-1.5 transition cursor-pointer">
-                            <span>🔁 Nghe lại nhận xét & giải thích</span>
-                        </button>
-                    </div>
+                    <button type="button" onclick="replayFullFeedback()"
+                        class="self-start sm:self-center shrink-0 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm shadow-xs border border-slate-200 flex items-center gap-1.5 transition cursor-pointer">
+                        <span>🔁 Nghe lại nhận xét & giải thích</span>
+                    </button>
                 </div>
 
-                <!-- English Grammar Explanation Box -->
-                <div class="bg-white/90 rounded-xl p-4 text-sm sm:text-[15px] text-slate-800 leading-relaxed border border-black/5 mb-4">
-                    <div class="flex items-center justify-between gap-2 mb-1">
-                        <span class="font-black text-indigo-700 text-xs uppercase tracking-wider">📖 English Grammar Explanation (Level A2)</span>
-                        <button onclick="speakOnlyExplanation()" class="text-xs font-extrabold text-indigo-600 hover:text-indigo-800 underline cursor-pointer">
-                            🔊 Read explanation only
+                <!-- English & Vietnamese Explanation Card -->
+                <div class="bg-white/95 rounded-xl p-4 text-sm sm:text-[15px] text-slate-800 leading-relaxed border border-black/5 mb-4 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-black text-indigo-700 text-xs uppercase tracking-wider">🇬🇧 English Explanation (Level A2)</span>
+                        <button type="button" onclick="speakOnlyExplanationEn()" class="text-xs font-extrabold text-indigo-600 hover:text-indigo-800 underline cursor-pointer">
+                            🔊 Read English explanation
                         </button>
                     </div>
-                    <p id="explanationTextEn" class="font-semibold text-slate-900">...</p>
-                    <p id="ruleTipEn" class="mt-1.5 text-xs font-bold text-indigo-700 bg-indigo-50/80 px-2.5 py-1.5 rounded-lg inline-block">Rule: ...</p>
+                    <p id="explanationTextEn" class="font-bold text-slate-900">...</p>
+                    <p id="ruleBadgeEn" class="text-xs font-extrabold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg inline-block">Rule: ...</p>
+                    <p id="explanationTextVi" class="text-xs sm:text-sm text-slate-600 pt-1 border-t border-slate-100">
+                        <strong class="text-slate-700">🇻🇳 Giải thích tiếng Việt:</strong> <span>...</span>
+                    </p>
                 </div>
 
                 <!-- Next Question Button -->
                 <div class="flex justify-end">
-                    <button id="nextBtn" onclick="nextQuestion()"
+                    <button id="nextBtn" type="button" onclick="nextQuestion()"
                         class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-base shadow-lg flex items-center justify-center gap-2 transition cursor-pointer">
                         <span id="nextBtnLabel">Câu Tiếp Theo</span>
                         <span>→</span>
@@ -367,26 +351,26 @@
             </div>
         </section>
 
-        <!-- ==================== 3. STUDENT RESULT SUMMARY SCREEN ==================== -->
+        <!-- ==================== 3. STUDENT RESULT SCREEN ==================== -->
         <section id="resultScreen" class="hidden glass-card rounded-3xl p-6 sm:p-9 animate-pop-in">
             <div class="text-center max-w-xl mx-auto mb-6">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs mb-2">
-                    <span>✅ Đã tự động lưu kết quả vào Bảng điểm Giáo viên</span>
+                    <span>✅ Đã lưu kết quả vào Bảng Điểm Giáo Viên</span>
                 </div>
-                <div id="starRatingRow" class="text-3xl sm:text-4xl mb-1 animate-float">⭐⭐⭐</div>
+                <div id="resultStars" class="text-3xl sm:text-4xl mb-1">⭐⭐⭐</div>
                 <h2 id="resultHeadline" class="text-3xl sm:text-4xl font-black text-slate-900 mb-1.5">Xuất Sắc!</h2>
-                <p id="resultStudentMeta" class="text-indigo-700 font-extrabold text-sm sm:text-base mb-1">Học sinh: --- • Lớp: ---</p>
-                <p id="resultSubtext" class="text-slate-600 text-sm sm:text-base">Bạn đã hoàn thành 20 câu hỏi về Mạo từ trình độ A2.</p>
+                <p id="resultStudentSummary" class="text-indigo-700 font-extrabold text-sm sm:text-base mb-1">Học sinh: --- • Lớp: ---</p>
+                <p id="resultSubtext" class="text-slate-600 text-sm sm:text-base">...</p>
             </div>
 
-            <!-- Key Metrics -->
+            <!-- Score Summary Grid -->
             <div class="grid grid-cols-3 gap-3 sm:gap-4 max-w-2xl mx-auto mb-7">
                 <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-center">
                     <span class="text-xs font-extrabold uppercase text-indigo-500 block mb-1">Tổng Điểm</span>
                     <span id="finalScore" class="text-2xl sm:text-3xl font-black text-indigo-700">0</span>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center">
-                    <span class="text-xs font-extrabold uppercase text-emerald-600 block mb-1">Chính Xác</span>
+                    <span class="text-xs font-extrabold uppercase text-emerald-600 block mb-1">Độ Chính Xác</span>
                     <span id="finalAccuracy" class="text-xl sm:text-3xl font-black text-emerald-700">0%</span>
                 </div>
                 <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-center">
@@ -395,114 +379,119 @@
                 </div>
             </div>
 
-            <!-- Category Mastery Breakdown -->
+            <!-- Mastery By Category -->
             <div class="mb-7 bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
-                <h3 class="font-extrabold text-base sm:text-lg text-slate-800 mb-3">📊 Mức độ nắm vững theo từng nhóm quy tắc</h3>
-                <div id="categoryBreakdown" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <!-- Populated via JS -->
-                </div>
+                <h3 class="font-extrabold text-base sm:text-lg text-slate-800 mb-3">📊 Mức độ nắm vững theo nhóm quy tắc</h3>
+                <div id="categoryBreakdown" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
             </div>
 
-            <!-- Review Answers Filter + List -->
+            <!-- Detailed Answer Review -->
             <div class="mb-7">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                    <h3 class="font-extrabold text-base sm:text-lg text-slate-800">📝 Xem lại chi tiết bài làm & giải thích tiếng Anh</h3>
+                    <h3 class="font-extrabold text-base sm:text-lg text-slate-800">📝 Chi tiết 20 câu hỏi & giải thích</h3>
                     <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-bold">
-                        <button id="filterAllBtn" onclick="renderReviewList('all')" class="px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs cursor-pointer">Tất cả (20)</button>
-                        <button id="filterMissedBtn" onclick="renderReviewList('missed')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Câu làm sai</button>
+                        <button id="reviewFilterAllBtn" type="button" onclick="renderStudentReview('all')" class="px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs cursor-pointer">Tất cả (20)</button>
+                        <button id="reviewFilterMissedBtn" type="button" onclick="renderStudentReview('missed')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer">Câu làm sai</button>
                     </div>
                 </div>
-                <div id="reviewList" class="max-h-80 overflow-y-auto space-y-2.5 pr-1">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="studentReviewList" class="max-h-80 overflow-y-auto space-y-2.5 pr-1"></div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Result Screen Actions -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button onclick="startGame()"
+                <button type="button" onclick="startGame()"
                     class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-700 hover:to-sky-700 text-white font-black text-base shadow-xl flex items-center justify-center gap-2 transition cursor-pointer">
                     <span>🔄 Làm Lại Bài Mới</span>
                 </button>
-                <button onclick="openTeacherGate()"
+                <button type="button" onclick="openTeacherGate()"
                     class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-base shadow-md transition cursor-pointer">
-                    <span>👩‍🏫 Xem Bảng Điểm Giáo Viên</span>
+                    <span>👩‍🏫 Mở Bảng Điểm Giáo Viên</span>
                 </button>
-                <button onclick="backToHome()"
+                <button type="button" onclick="backToHome()"
                     class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-base transition cursor-pointer">
                     <span>🏠 Trang Chủ</span>
                 </button>
             </div>
         </section>
 
-        <!-- ==================== 4. TEACHER PIN GATE MODAL ==================== -->
-        <section id="teacherPinModal" class="hidden glass-card rounded-3xl p-6 sm:p-10 max-w-md mx-auto animate-pop-in text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-3xl shadow-sm">
+        <!-- ==================== 4. TEACHER PASSWORD GATE (HIDDEN PASSWORD) ==================== -->
+        <section id="teacherPasswordGate" class="hidden glass-card rounded-3xl p-6 sm:p-10 max-w-md mx-auto animate-pop-in text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-3xl shadow-sm">
                 🔐
             </div>
-            <h2 class="text-2xl font-black text-slate-900 mb-1.5">Khu Vực Dành Cho Giáo Viên</h2>
+            <h2 class="text-2xl font-black text-slate-900 mb-1.5">Xác Thực Giáo Viên</h2>
             <p class="text-slate-600 text-sm mb-5">
-                Nhập mã PIN giáo viên để xem danh sách kết quả làm bài, thống kê câu hay sai và xuất báo cáo điểm.
+                Nhập mật khẩu giáo viên để xem danh sách bài nộp của học sinh, thống kê câu hay sai và xuất báo cáo.
             </p>
 
-            <div class="bg-amber-50 border border-amber-200 rounded-xl px-3.5 py-2.5 text-xs text-amber-900 font-bold mb-4">
-                💡 Mã PIN mặc định: <span class="font-mono font-black text-sm bg-white px-2 py-0.5 rounded border border-amber-300">1234</span>
-            </div>
-
-            <div class="mb-4">
-                <input id="teacherPinInput" type="password" maxlength="8" placeholder="Nhập mã PIN (1234)"
-                    onkeydown="if(event.key==='Enter') verifyTeacherPin()"
-                    class="w-full text-center tracking-[0.35em] text-xl font-black px-4 py-3.5 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:outline-none" />
-                <p id="pinErrorMsg" class="hidden text-xs font-extrabold text-rose-600 mt-2">❌ Mã PIN chưa đúng. Vui lòng thử lại (mặc định: 1234).</p>
+            <div class="mb-4 text-left">
+                <label for="teacherPasswordInput" class="block text-xs font-extrabold uppercase tracking-wider text-slate-600 mb-1.5">Mật khẩu giáo viên</label>
+                <div class="relative flex items-center">
+                    <input id="teacherPasswordInput" type="password" autocomplete="off" placeholder="Nhập mật khẩu"
+                        onkeydown="if(event.key==='Enter') verifyTeacherPassword()"
+                        class="w-full text-base font-extrabold tracking-widest pl-4 pr-12 py-3.5 rounded-xl bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 focus:outline-none" />
+                    <button id="togglePasswordEyeBtn" type="button" onclick="togglePasswordVisibility()" title="Hiện hoặc ẩn mật khẩu"
+                        class="absolute right-2.5 px-2.5 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-200/70 text-sm font-bold cursor-pointer transition">
+                        👁️
+                    </button>
+                </div>
+                <p id="passwordErrorMsg" class="hidden text-xs font-extrabold text-rose-600 mt-2">
+                    ❌ Mật khẩu không chính xác. Vui lòng thử lại.
+                </p>
             </div>
 
             <div class="flex flex-col gap-2.5">
-                <button onclick="verifyTeacherPin()"
+                <button type="button" onclick="verifyTeacherPassword()"
                     class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base shadow-lg transition cursor-pointer">
-                    Mở Bảng Điều Khiển Giáo Viên
+                    Đăng Nhập Giáo Viên
                 </button>
-                <button onclick="quickUnlockTeacher()"
-                    class="w-full py-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-extrabold text-sm transition cursor-pointer">
-                    ⚡ Mở Nhanh (Dùng mã 1234)
-                </button>
-                <button onclick="closeTeacherGate()"
+                <button type="button" onclick="backToHome()"
                     class="w-full py-2.5 rounded-xl text-slate-500 hover:text-slate-800 font-bold text-sm transition cursor-pointer">
-                    ← Quay lại
+                    ← Quay lại màn hình chính
                 </button>
             </div>
         </section>
 
-        <!-- ==================== 5. TEACHER DASHBOARD SCREEN ==================== -->
+        <!-- ==================== 5. TEACHER DASHBOARD ==================== -->
         <section id="teacherDashboardScreen" class="hidden glass-card rounded-3xl p-5 sm:p-8 animate-pop-in">
-            <!-- Top Dashboard Header -->
+            <!-- Header & Actions -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200 mb-6">
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 font-extrabold text-xs mb-1.5">
-                        <span>👩‍🏫 Teacher Analytics & Gradebook</span>
+                        <span>👩‍🏫 Teacher Dashboard • Articles (A2)</span>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Bảng Kết Quả Học Sinh (Mạo Từ A2)</h2>
-                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5">Theo dõi điểm số, phân tích lỗi sai phổ biến của cả lớp và xuất báo cáo.</p>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Bảng Theo Dõi Kết Quả Học Sinh</h2>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-0.5">Cập nhật theo thời gian thực mỗi khi học sinh nộp bài. Xóa dữ liệu sẽ loại bỏ vĩnh viễn.</p>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="exportTeacherCSV()"
-                        class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer">
-                        <span>📥 Xuất CSV / Excel</span>
+                    <button type="button" onclick="refreshTeacherDashboard(true)"
+                        class="px-3.5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+                        🔄 Làm mới
                     </button>
-                    <button onclick="copyTeacherReport()"
-                        class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-sm flex items-center gap-1.5 transition cursor-pointer">
-                        <span>📋 Sao chép báo cáo</span>
+                    <button type="button" onclick="exportTeacherCSV()"
+                        class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+                        📥 Xuất CSV
                     </button>
-                    <button onclick="backToHome()"
+                    <button type="button" onclick="copyTeacherSummaryReport()"
+                        class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm shadow-sm transition cursor-pointer">
+                        📋 Sao chép báo cáo
+                    </button>
+                    <button type="button" onclick="lockTeacherDashboard()"
+                        class="px-3.5 py-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-extrabold text-xs sm:text-sm transition cursor-pointer">
+                        🔒 Khóa lại
+                    </button>
+                    <button type="button" onclick="backToHome()"
                         class="px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs sm:text-sm transition cursor-pointer">
-                        <span>🏠 Thoát</span>
+                        🏠 Trang chủ
                     </button>
                 </div>
             </div>
 
-            <!-- Class Overview Summary Cards -->
+            <!-- Class Overview Stats -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
                 <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4">
-                    <span class="text-xs font-extrabold uppercase text-indigo-500 block">Tổng Lượt Nộp Bài</span>
+                    <span class="text-xs font-extrabold uppercase text-indigo-500 block">Tổng Lượt Nộp</span>
                     <span id="tdTotalSubmissions" class="text-2xl sm:text-3xl font-black text-indigo-800 mt-1 block">0</span>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
@@ -515,22 +504,20 @@
                 </div>
                 <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4">
                     <span class="text-xs font-extrabold uppercase text-rose-600 block">Câu Hay Sai Nhất</span>
-                    <span id="tdHardestQuestion" class="text-sm sm:text-base font-black text-rose-800 mt-1.5 block truncate">---</span>
+                    <span id="tdHardestQuestion" class="text-sm sm:text-base font-black text-rose-800 mt-1.5 block truncate">Chưa có dữ liệu</span>
                 </div>
             </div>
 
-            <!-- Most Missed Questions Analytics -->
+            <!-- Top Missed Questions Analytics -->
             <div class="mb-6 bg-slate-50 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-black text-base text-slate-900">⚠️ Top câu hỏi học sinh hay làm sai nhất cả lớp</h3>
-                    <span class="text-xs text-slate-500 font-semibold">Giúp giáo viên ôn tập trọng tâm</span>
+                    <h3 class="font-black text-base text-slate-900">⚠️ Các câu hỏi học sinh làm sai nhiều nhất</h3>
+                    <span class="text-xs text-slate-500 font-semibold">Thống kê toàn bộ bài nộp hiện có</span>
                 </div>
-                <div id="tdMissedStatsList" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="tdMissedQuestionsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
             </div>
 
-            <!-- Filter Bar + Student Submissions Table -->
+            <!-- Search, Class Filter & Permanent Delete Controls -->
             <div class="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="flex flex-wrap items-center gap-2">
                     <input id="tdSearchInput" type="text" oninput="renderTeacherTable()" placeholder="🔍 Tìm tên học sinh..."
@@ -541,18 +528,18 @@
                     </select>
                 </div>
 
-                <!-- Two-step Safe Clear Data Button (No confirm() dialog used) -->
+                <!-- Two-step Clear All Button (No confirm()) -->
                 <div class="flex items-center gap-2">
-                    <button id="clearDataStep1Btn" onclick="requestClearTeacherData()"
-                        class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition cursor-pointer">
-                        🗑️ Xóa dữ liệu
+                    <button id="clearAllStep1Btn" type="button" onclick="promptClearAllSubmissions()"
+                        class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition cursor-pointer">
+                        🗑️ Xóa tất cả dữ liệu
                     </button>
-                    <div id="clearDataConfirmGroup" class="hidden items-center gap-1.5">
-                        <button onclick="confirmClearTeacherData()"
+                    <div id="clearAllConfirmBox" class="hidden items-center gap-1.5">
+                        <button type="button" onclick="confirmClearAllSubmissions()"
                             class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs transition cursor-pointer">
-                            Xác nhận xóa hết
+                            Xác nhận xóa vĩnh viễn
                         </button>
-                        <button onclick="cancelClearTeacherData()"
+                        <button type="button" onclick="cancelClearAllSubmissions()"
                             class="px-2.5 py-2 rounded-xl bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer">
                             Hủy
                         </button>
@@ -560,7 +547,7 @@
                 </div>
             </div>
 
-            <!-- Submissions Table -->
+            <!-- Student Submissions Table -->
             <div class="overflow-x-auto rounded-2xl border border-slate-200 mb-6">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -568,681 +555,861 @@
                             <th class="py-3.5 px-4">Học sinh</th>
                             <th class="py-3.5 px-3">Lớp</th>
                             <th class="py-3.5 px-3">Điểm</th>
-                            <th class="py-3.5 px-3">Đúng / Tỷ lệ</th>
+                            <th class="py-3.5 px-3">Số câu đúng</th>
                             <th class="py-3.5 px-3">Chuỗi tối đa</th>
                             <th class="py-3.5 px-3">Thời gian nộp</th>
-                            <th class="py-3.5 px-4 text-right">Chi tiết</th>
+                            <th class="py-3.5 px-4 text-right">Thao tác</th>
                         </tr>
                     </thead>
-                    <tbody id="tdSubmissionsTbody" class="divide-y divide-slate-100 text-sm bg-white">
-                        <!-- Populated via JS -->
-                    </tbody>
+                    <tbody id="tdSubmissionsBody" class="divide-y divide-slate-100 text-sm bg-white"></tbody>
                 </table>
             </div>
 
-            <!-- Student Detail Drill-Down Drawer -->
-            <div id="tdStudentDetailPanel" class="hidden bg-indigo-50/70 border-2 border-indigo-200 rounded-2xl p-5 animate-pop-in">
+            <!-- Detailed Per-Student Submission Drawer -->
+            <div id="tdDetailDrawer" class="hidden bg-indigo-50/70 border-2 border-indigo-200 rounded-2xl p-5 animate-pop-in">
                 <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-indigo-200/80 mb-4">
                     <div>
-                        <span class="text-xs font-extrabold uppercase text-indigo-600">Chi tiết bài làm của học sinh</span>
-                        <h3 id="tdDetailStudentHeader" class="text-xl font-black text-slate-900">Nguyễn Minh Anh • Lớp 8A1</h3>
+                        <span class="text-xs font-extrabold uppercase text-indigo-600">Chi tiết từng câu của học sinh</span>
+                        <h3 id="tdDetailTitle" class="text-xl font-black text-slate-900">---</h3>
                     </div>
-                    <button onclick="closeStudentDetailPanel()"
+                    <button type="button" onclick="closeStudentDetailDrawer()"
                         class="px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs border border-slate-200 cursor-pointer">
                         ✕ Đóng chi tiết
                     </button>
                 </div>
-                <div id="tdDetailQuestionsList" class="max-h-96 overflow-y-auto space-y-2.5 pr-1">
-                    <!-- Populated via JS -->
-                </div>
+                <div id="tdDetailItemsList" class="max-h-96 overflow-y-auto space-y-2.5 pr-1"></div>
             </div>
         </section>
 
     </main>
 
-    <!-- Footer Shortcut Tips -->
+    <!-- Footer Keyboard Shortcuts Hint -->
     <footer class="relative z-10 text-center text-white/80 text-xs mt-5">
-        <p>Mẹo bàn phím khi làm bài: Bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">1-4</kbd> hoặc <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">A-D</kbd> để chọn đáp án nhanh, bấm <kbd class="px-1.5 py-0.5 bg-white/20 rounded font-mono">Enter</kbd> để sang câu tiếp theo.</p>
+        <p>Phím tắt khi làm bài: <kbd class="px-1.5 py-0.5 bg-white/15 rounded font-mono">1-4</kbd> hoặc <kbd class="px-1.5 py-0.5 bg-white/15 rounded font-mono">A-D</kbd> chọn đáp án • <kbd class="px-1.5 py-0.5 bg-white/15 rounded font-mono">Enter</kbd> câu tiếp theo.</p>
     </footer>
 
     <script>
-        // ============================================================
-        // 1. NGÂN HÀNG 20 CÂU HỎI MẠO TỪ (A, AN, THE, Ø) - TRÌNH ĐỘ A2
-        //    Kèm giải thích ngữ pháp chi tiết bằng tiếng Anh chuẩn A2
-        // ============================================================
+        // =========================================================================
+        // 1. 20 CÂU HỎI MẠO TỪ TRÌNH ĐỘ A2 (a, an, the, Ø - ZERO ARTICLE)
+        // =========================================================================
         const QUESTIONS = [
             {
                 id: 1,
-                category: "A vs An (First Sound)",
-                question: "We waited at the bus stop for _______ hour in the rain.",
-                fullSentence: "We waited at the bus stop for an hour in the rain.",
-                meaningVi: "Chúng tôi đã đợi ở trạm xe buýt suốt một tiếng đồng hồ dưới trời mưa.",
-                options: ["a", "an", "the", "Ø (no article)"],
+                category: "a vs an (Vowel & Consonant Sound)",
+                question: "She bought _______ umbrella because it started to rain.",
+                fullSentence: "She bought an umbrella because it started to rain.",
+                meaningVi: "Cô ấy đã mua một chiếc ô vì trời bắt đầu mưa.",
+                options: ["a", "an", "the", "Ø"],
                 correctAnswer: "an",
-                explanationEn: "The letter 'h' in 'hour' is silent, so the word starts with a vowel sound (/aʊər/). Therefore, we use 'an hour'.",
-                ruleEn: "Use 'an' before a silent 'h' (an hour, an honest person)."
+                explanationEn: "We use 'an' before 'umbrella' because it is a singular countable noun starting with a vowel sound (/ʌ/).",
+                explanationVi: "Dùng 'an' trước 'umbrella' vì đây là danh từ đếm được số ít bắt đầu bằng nguyên âm /ʌ/.",
+                ruleEn: "an + singular countable noun starting with a vowel sound"
             },
             {
                 id: 2,
-                category: "A vs An (First Sound)",
-                question: "My older sister is studying at _______ university in Hanoi.",
-                fullSentence: "My older sister is studying at a university in Hanoi.",
-                meaningVi: "Chị gái của mình đang học tại một trường đại học ở Hà Nội.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "a",
-                explanationEn: "Although 'university' starts with the letter 'u', it begins with a consonant 'y' sound (/juː/). That is why we say 'a university'.",
-                ruleEn: "Use 'a' before a 'u' pronounced like 'you' (/juː/)."
+                category: "a vs an (Silent 'h')",
+                question: "We waited at the bus stop for _______ hour this morning.",
+                fullSentence: "We waited at the bus stop for an hour this morning.",
+                meaningVi: "Sáng nay chúng tôi đã đợi ở trạm xe buýt suốt một tiếng đồng hồ.",
+                options: ["a", "an", "the", "Ø"],
+                correctAnswer: "an",
+                explanationEn: "The letter 'h' in 'hour' is silent (/ˈaʊər/), so it begins with a vowel sound. Therefore, we say 'an hour'.",
+                explanationVi: "Chữ 'h' trong 'hour' là âm câm (/ˈaʊər/), phát âm mở đầu bằng nguyên âm nên dùng 'an hour'.",
+                ruleEn: "an hour (silent 'h' -> vowel sound)"
             },
             {
                 id: 3,
-                category: "A vs An (First Sound)",
-                question: "Take _______ umbrella with you because the sky is very cloudy.",
-                fullSentence: "Take an umbrella with you because the sky is very cloudy.",
-                meaningVi: "Hãy mang theo một chiếc ô nhé vì bầu trời đang rất nhiều mây.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "an",
-                explanationEn: "The word 'umbrella' begins with a short vowel sound (/ʌ/), so we use 'an umbrella' for one non-specific umbrella.",
-                ruleEn: "Use 'an' before words starting with a vowel sound (/ʌ/, /e/, /ɪ/, /ɒ/, /æ/)."
+                category: "a vs an (/juː/ Sound)",
+                question: "My cousin is studying at _______ university in London.",
+                fullSentence: "My cousin is studying at a university in London.",
+                meaningVi: "Anh/chị họ của mình đang học tại một trường đại học ở London.",
+                options: ["a", "an", "the", "Ø"],
+                correctAnswer: "a",
+                explanationEn: "Although 'university' starts with the letter 'u', it sounds like /juː/ (a consonant sound), so we use 'a'.",
+                explanationVi: "Dù 'university' viết bằng chữ 'u' nhưng phát âm là /juː/ (âm phụ âm) nên dùng 'a'.",
+                ruleEn: "a university (/juː/ consonant sound)"
             },
             {
                 id: 4,
-                category: "A vs An (First Sound)",
-                question: "Students at my school have to wear _______ uniform every Monday.",
-                fullSentence: "Students at my school have to wear a uniform every Monday.",
-                meaningVi: "Học sinh ở trường mình phải mặc đồng phục vào mỗi thứ Hai.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "a",
-                explanationEn: "Just like 'university', the word 'uniform' starts with a consonant sound (/juː/), so we use 'a uniform'.",
-                ruleEn: "Always choose 'a' or 'an' by the spoken sound, not the spelling."
+                category: "First vs Second Mention",
+                question: "I saw a cute puppy in the park. _______ puppy was chasing a ball.",
+                fullSentence: "I saw a cute puppy in the park. The puppy was chasing a ball.",
+                meaningVi: "Mình thấy một chú cún con dễ thương trong công viên. Chú cún đó đang rượt theo một quả bóng.",
+                options: ["A", "An", "The", "Ø"],
+                correctAnswer: "The",
+                explanationEn: "We use 'a puppy' at first mention, and 'The puppy' the second time because both speaker and listener know which puppy is meant.",
+                explanationVi: "Lần đầu nhắc tới dùng 'a puppy', lần thứ hai nhắc lại chính chú cún đó nên dùng 'The puppy'.",
+                ruleEn: "the + noun mentioned for the second time (specific)"
             },
             {
                 id: 5,
-                category: "A vs An (First Sound)",
-                question: "Everyone likes Nam because he is _______ honest boy.",
-                fullSentence: "Everyone likes Nam because he is an honest boy.",
-                meaningVi: "Mọi người đều quý Nam vì cậu ấy là một cậu bé trung thực.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "an",
-                explanationEn: "In 'honest', the 'h' is silent and the first sound is a vowel (/ɒ/). So we say 'an honest boy'.",
-                ruleEn: "Silent 'h' + vowel sound -> use 'an'."
+                category: "Ø Zero Article: Sports",
+                question: "After school, the boys usually play _______ in the yard.",
+                fullSentence: "After school, the boys usually play football in the yard.",
+                meaningVi: "Sau giờ học, các bạn nam thường chơi bóng đá ở sân.",
+                options: ["a football", "an football", "the football", "Ø (football)"],
+                correctAnswer: "Ø (football)",
+                explanationEn: "We do not use an article before names of sports like 'football', 'tennis', or 'basketball' after 'play'.",
+                explanationVi: "Không dùng mạo từ trước tên môn thể thao (football, tennis, basketball...) sau động từ 'play'.",
+                ruleEn: "Ø + names of sports (play football)"
             },
             {
                 id: 6,
-                category: "A vs An (First Sound)",
-                question: "France is _______ European country famous for food and fashion.",
-                fullSentence: "France is a European country famous for food and fashion.",
-                meaningVi: "Pháp là một quốc gia châu Âu nổi tiếng về ẩm thực và thời trang.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "a",
-                explanationEn: "The word 'European' starts with the consonant sound /jʊə/ (like 'you'), so we use 'a European country'.",
-                ruleEn: "Words starting with 'Eu-' pronounced /juː/ take 'a'."
+                category: "the + Musical Instruments",
+                question: "Lily practices playing _______ every evening for thirty minutes.",
+                fullSentence: "Lily practices playing the piano every evening for thirty minutes.",
+                meaningVi: "Lily luyện tập chơi đàn piano mỗi tối khoảng ba mươi phút.",
+                options: ["piano", "a piano", "an piano", "the piano"],
+                correctAnswer: "the piano",
+                explanationEn: "We use 'the' before musical instruments when talking about playing them: 'play the piano', 'play the guitar'.",
+                explanationVi: "Dùng 'the' trước tên nhạc cụ khi nói về việc chơi nhạc cụ: play the piano, play the violin.",
+                ruleEn: "play + the + musical instrument"
             },
             {
                 id: 7,
-                category: "First vs Second Mention",
-                question: "I bought a new jacket yesterday. _______ jacket is warm and blue.",
-                fullSentence: "I bought a new jacket yesterday. The jacket is warm and blue.",
-                meaningVi: "Hôm qua mình mua một chiếc áo khoác mới. Chiếc áo khoác đó rất ấm và có màu xanh.",
-                options: ["A", "An", "The", "Ø (no article)"],
+                category: "the + Unique Objects",
+                question: "_______ sun rises in the east and sets in the west.",
+                fullSentence: "The sun rises in the east and sets in the west.",
+                meaningVi: "Mặt trời mọc ở hướng Đông và lặn ở hướng Tây.",
+                options: ["A", "An", "The", "Ø"],
                 correctAnswer: "The",
-                explanationEn: "In the first sentence, the jacket is introduced for the first time ('a new jacket'). In the second sentence, both speakers know which jacket it is, so we use 'The'.",
-                ruleEn: "First mention -> 'a/an'. Second mention -> 'the'."
+                explanationEn: "We use 'the' before unique things in our world or sky, such as 'the sun', 'the moon', and 'the earth'.",
+                explanationVi: "Dùng 'the' trước những sự vật duy nhất như mặt trời (the sun), mặt trăng (the moon), trái đất (the earth).",
+                ruleEn: "the + unique things (the sun)"
             },
             {
                 id: 8,
-                category: "First vs Second Mention",
-                question: "There is _______ small cat under the table. It looks very hungry.",
-                fullSentence: "There is a small cat under the table. It looks very hungry.",
-                meaningVi: "Có một con mèo nhỏ ở dưới gầm bàn. Nó trông có vẻ rất đói.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "a",
-                explanationEn: "We are mentioning the cat for the very first time ('There is a...'), and 'small' starts with a consonant sound /s/, so we use 'a'.",
-                ruleEn: "Use 'a/an' with 'There is...' for singular countable nouns."
+                category: "Ø Zero Article: Meals",
+                question: "What time do you usually have _______ on school days?",
+                fullSentence: "What time do you usually have breakfast on school days?",
+                meaningVi: "Vào những ngày đi học, bạn thường ăn sáng lúc mấy giờ?",
+                options: ["a breakfast", "an breakfast", "the breakfast", "Ø (breakfast)"],
+                correctAnswer: "Ø (breakfast)",
+                explanationEn: "No article is needed before meal names ('breakfast', 'lunch', 'dinner') in general daily routines.",
+                explanationVi: "Không dùng mạo từ trước tên các bữa ăn (breakfast, lunch, dinner) trong sinh hoạt thông thường.",
+                ruleEn: "Ø + meals (have breakfast / lunch / dinner)"
             },
             {
                 id: 9,
-                category: "Unique & Superlatives",
-                question: "_______ sun rises in the east and sets in the west.",
-                fullSentence: "The sun rises in the east and sets in the west.",
-                meaningVi: "Mặt trời mọc ở hướng đông và lặn ở hướng tây.",
-                options: ["A", "An", "The", "Ø (no article)"],
-                correctAnswer: "The",
-                explanationEn: "There is only one sun in our sky. We always use 'the' for unique things in nature like the sun, the moon, and the Earth.",
-                ruleEn: "Use 'the' for unique things (the sun, the moon, the sky)."
+                category: "the + Superlatives",
+                question: "This is _______ interesting book I have read this year.",
+                fullSentence: "This is the most interesting book I have read this year.",
+                meaningVi: "Đây là cuốn sách thú vị nhất mà mình đã đọc trong năm nay.",
+                options: ["a most", "an most", "the most", "most"],
+                correctAnswer: "the most",
+                explanationEn: "Superlative adjectives use 'the' before them: 'the most interesting', 'the best', 'the tallest'.",
+                explanationVi: "Tính từ so sánh nhất luôn đi kèm mạo từ 'the': the most interesting, the best...",
+                ruleEn: "the + superlative adjective (the most + long adj)"
             },
             {
                 id: 10,
-                category: "Unique & Superlatives",
-                question: "In my opinion, Da Nang is _______ best city to visit in summer.",
-                fullSentence: "In my opinion, Da Nang is the best city to visit in summer.",
-                meaningVi: "Theo ý kiến của mình, Đà Nẵng là thành phố tuyệt vời nhất để ghé thăm vào mùa hè.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "We always use 'the' before superlative adjectives such as 'the best', 'the tallest', or 'the most beautiful'.",
-                ruleEn: "Always put 'the' before superlatives (the + -est / most)."
+                category: "Ø Zero Article: Languages",
+                question: "Can your grandfather speak _______?",
+                fullSentence: "Can your grandfather speak English?",
+                meaningVi: "Ông của bạn có thể nói tiếng Anh không?",
+                options: ["the English", "an English", "a English", "Ø (English)"],
+                correctAnswer: "Ø (English)",
+                explanationEn: "We do not use 'the' before names of languages ('English', 'Vietnamese', 'French') when not followed by 'language'.",
+                explanationVi: "Không dùng mạo từ trước tên ngôn ngữ (English, Vietnamese, Japanese...) khi đứng một mình.",
+                ruleEn: "Ø + names of languages (speak English)"
             },
             {
                 id: 11,
-                category: "Unique & Superlatives",
-                question: "Neil Armstrong was _______ first person to walk on the moon.",
-                fullSentence: "Neil Armstrong was the first person to walk on the moon.",
-                meaningVi: "Neil Armstrong là người đầu tiên đặt chân lên mặt trăng.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "We use 'the' before ordinal numbers like 'the first', 'the second', 'the third', and 'the last'.",
-                ruleEn: "Use 'the' before ordinal numbers (the first, the second)."
+                category: "a vs an (Silent 'h' Adjective)",
+                question: "Tom is _______ honest boy; he always tells the truth.",
+                fullSentence: "Tom is an honest boy; he always tells the truth.",
+                meaningVi: "Tom là một cậu bé trung thực; cậu ấy luôn nói thật.",
+                options: ["a", "an", "the", "Ø"],
+                correctAnswer: "an",
+                explanationEn: "'Honest' begins with a silent 'h' (/ˈɒn.ɪst/), so the first sound is a vowel. Use 'an honest boy'.",
+                explanationVi: "'Honest' có chữ 'h' câm (/ˈɒn.ɪst/), âm đầu là nguyên âm nên dùng 'an honest boy'.",
+                ruleEn: "an + vowel sound (an honest boy)"
             },
             {
                 id: 12,
-                category: "Instruments vs Sports",
-                question: "My cousin can play _______ piano very well.",
-                fullSentence: "My cousin can play the piano very well.",
-                meaningVi: "Anh họ của mình có thể chơi đàn piano rất giỏi.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "When we talk about playing a musical instrument, we use 'the' after 'play', such as 'play the piano' or 'play the guitar'.",
-                ruleEn: "play + the + musical instrument (play the piano)."
+                category: "Ø Zero Article: Plural Generalization",
+                question: "_______ are very intelligent and helpful animals.",
+                fullSentence: "Dolphins are very intelligent and helpful animals.",
+                meaningVi: "Cá heo là những loài động vật rất thông minh và có ích.",
+                options: ["Dolphins", "A dolphins", "An dolphins", "The dolphins"],
+                correctAnswer: "Dolphins",
+                explanationEn: "When talking about plural nouns in general (all dolphins), we use zero article (no 'the').",
+                explanationVi: "Khi nói chung về danh từ số nhiều (cá heo nói chung), ta không dùng mạo từ 'the'.",
+                ruleEn: "Ø + plural nouns in general statements"
             },
             {
                 id: 13,
-                category: "Instruments vs Sports",
-                question: "After school, the boys often play _______ football in the park.",
-                fullSentence: "After school, the boys often play football in the park.",
-                meaningVi: "Sau giờ học, các bạn nam thường chơi bóng đá ở công viên.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "Ø (no article)",
-                explanationEn: "Unlike musical instruments, we do NOT use any article before sports or games like 'football', 'tennis', or 'chess'.",
-                ruleEn: "play + Ø + sport (play football, play badminton)."
+                category: "the + Specific Place",
+                question: "Let's meet at _______ near the station at 5 p.m.",
+                fullSentence: "Let's meet at the post office near the station at 5 p.m.",
+                meaningVi: "Chúng ta hãy gặp nhau ở bưu điện gần nhà ga lúc 5 giờ chiều nhé.",
+                options: ["post office", "a post office", "an post office", "the post office"],
+                correctAnswer: "the post office",
+                explanationEn: "We use 'the post office' because it refers to a specific place near the station that both speakers know.",
+                explanationVi: "Dùng 'the post office' vì chỉ một địa điểm cụ thể gần nhà ga mà cả hai người đều biết.",
+                ruleEn: "the + specific place known in context"
             },
             {
                 id: 14,
-                category: "Meals, Languages & Plurals",
-                question: "We usually have _______ breakfast at 7:00 AM before going to school.",
-                fullSentence: "We usually have breakfast at 7:00 AM before going to school.",
-                meaningVi: "Chúng tôi thường ăn sáng lúc 7 giờ sáng trước khi đi học.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "Ø (no article)",
-                explanationEn: "We do not use an article before regular meals like 'breakfast', 'lunch', or 'dinner' when speaking in general.",
-                ruleEn: "No article before meals (have breakfast, eat dinner)."
+                category: "a + Job / Profession",
+                question: "My mother works as _______ nurse at the city hospital.",
+                fullSentence: "My mother works as a nurse at the city hospital.",
+                meaningVi: "Mẹ mình làm nghề y tá tại bệnh viện thành phố.",
+                options: ["a", "an", "the", "Ø"],
+                correctAnswer: "a",
+                explanationEn: "We use 'a' or 'an' before singular jobs/professions: 'a nurse', 'a teacher', 'an engineer'.",
+                explanationVi: "Dùng 'a' hoặc 'an' trước danh từ nghề nghiệp số ít: a nurse, a doctor, an architect.",
+                ruleEn: "a / an + singular countable job (a nurse)"
             },
             {
                 id: 15,
-                category: "Meals, Languages & Plurals",
-                question: "_______ dogs are friendly animals and great pets for families.",
-                fullSentence: "Dogs are friendly animals and great pets for families.",
-                meaningVi: "Loài chó là những động vật thân thiện và là thú cưng tuyệt vời cho gia đình.",
-                options: ["A", "An", "The", "Ø (no article)"],
-                correctAnswer: "Ø (no article)",
-                explanationEn: "When we use plural nouns ('dogs') to talk about all dogs in general, we do not use any article.",
-                ruleEn: "Plural nouns used in general take Ø (no article)."
+                category: "Ø Zero Article: School / Bed / Home",
+                question: "I'm tired tonight, so I'm going to _______ early.",
+                fullSentence: "I'm tired tonight, so I'm going to bed early.",
+                meaningVi: "Tối nay mình mệt nên mình sẽ đi ngủ sớm.",
+                options: ["a bed", "an bed", "the bed", "Ø (bed)"],
+                correctAnswer: "Ø (bed)",
+                explanationEn: "We say 'go to bed', 'go to school', or 'go home' without an article for the normal everyday activity.",
+                explanationVi: "Cụm cố định 'go to bed' (đi ngủ), 'go to school' (đi học) không dùng mạo từ khi chỉ hoạt động thường ngày.",
+                ruleEn: "go to bed / school / work (normal routine)"
             },
             {
                 id: 16,
-                category: "Meals, Languages & Plurals",
-                question: "My classmates can speak _______ English and a little Japanese.",
-                fullSentence: "My classmates can speak English and a little Japanese.",
-                meaningVi: "Các bạn cùng lớp của mình có thể nói tiếng Anh và một chút tiếng Nhật.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "Ø (no article)",
-                explanationEn: "We never use 'a', 'an', or 'the' before the names of languages like 'English', 'Vietnamese', or 'Japanese'.",
-                ruleEn: "No article before languages or school subjects."
+                category: "the + Ordinal Numbers",
+                question: "January is _______ month of the calendar year.",
+                fullSentence: "January is the first month of the calendar year.",
+                meaningVi: "Tháng Một là tháng đầu tiên trong năm dương lịch.",
+                options: ["a first", "an first", "the first", "first"],
+                correctAnswer: "the first",
+                explanationEn: "Ordinal numbers like 'the first', 'the second', and 'the last' normally take 'the'.",
+                explanationVi: "Số thứ tự như 'the first', 'the second', 'the last' thường đi kèm với 'the'.",
+                ruleEn: "the + ordinal number (the first, the last)"
             },
             {
                 id: 17,
-                category: "Places & Geography",
-                question: "Let's go to _______ cinema tonight! There is a great comedy on.",
-                fullSentence: "Let's go to the cinema tonight! There is a great comedy on.",
-                meaningVi: "Tối nay chúng ta đi xem phim nhé! Đang có một bộ phim hài hay lắm.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "We use 'the' with common local places we visit regularly, such as 'go to the cinema', 'go to the library', or 'go to the supermarket'.",
-                ruleEn: "Fixed expressions: go to the cinema / supermarket / bank."
+                category: "a vs an (/j/ Sound in 'European')",
+                question: "Spain is _______ European country famous for its beaches.",
+                fullSentence: "Spain is a European country famous for its beaches.",
+                meaningVi: "Tây Ban Nha là một quốc gia châu Âu nổi tiếng với những bãi biển đẹp.",
+                options: ["a", "an", "the", "Ø"],
+                correctAnswer: "a",
+                explanationEn: "'European' starts with the consonant sound /j/ ('y' sound), so we use 'a European country'.",
+                explanationVi: "'European' phát âm bắt đầu bằng phụ âm /j/ (giống 'y') nên dùng 'a European country'.",
+                ruleEn: "a European... (/j/ consonant sound)"
             },
             {
                 id: 18,
-                category: "Places & Geography",
-                question: "Last summer, my uncle traveled to _______ UK for two weeks.",
-                fullSentence: "Last summer, my uncle traveled to the UK for two weeks.",
-                meaningVi: "Mùa hè năm ngoái, chú của mình đã du lịch đến Vương quốc Anh trong hai tuần.",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "Countries with words like 'Kingdom', 'States', or plural names always take 'the', such as 'the UK', 'the USA', and 'the Philippines'.",
-                ruleEn: "Use 'the' with united/plural countries (the UK, the USA)."
+                category: "Ø Zero Article: General Uncountables",
+                question: "_______ is necessary for all living things to survive.",
+                fullSentence: "Water is necessary for all living things to survive.",
+                meaningVi: "Nước rất cần thiết cho mọi sinh vật để tồn tại.",
+                options: ["A water", "An water", "The water", "Water"],
+                correctAnswer: "Water",
+                explanationEn: "'Water' is an uncountable noun used in a general sense here, so no article is needed.",
+                explanationVi: "'Water' là danh từ không đếm được mang nghĩa chung chung nên không dùng mạo từ.",
+                ruleEn: "Ø + uncountable nouns in general meaning"
             },
             {
                 id: 19,
-                category: "Places & Geography",
-                question: "_______ Mount Everest is the highest mountain in the world.",
-                fullSentence: "Mount Everest is the highest mountain in the world.",
-                meaningVi: "Đỉnh Everest là ngọn núi cao nhất trên thế giới.",
-                options: ["A", "An", "The", "Ø (no article)"],
-                correctAnswer: "Ø (no article)",
-                explanationEn: "We do NOT use an article before the name of a single mountain like 'Mount Everest' or 'Mount Fuji'.",
-                ruleEn: "Single mountains take Ø (no article). Mountain ranges take 'the'."
+                category: "the + Specific Uncountable Noun",
+                question: "Don't drink _______ in that bottle; it's not clean.",
+                fullSentence: "Don't drink the water in that bottle; it's not clean.",
+                meaningVi: "Đừng uống nước ở trong chai đó; nó không sạch đâu.",
+                options: ["water", "a water", "an water", "the water"],
+                correctAnswer: "the water",
+                explanationEn: "Here 'the water' is specific—only the water inside that particular bottle.",
+                explanationVi: "Ở đây 'the water' chỉ lượng nước cụ thể ở trong chai đó nên dùng 'the'.",
+                ruleEn: "the + specific uncountable noun"
             },
             {
                 id: 20,
-                category: "Places & Geography",
-                question: "Could you please pass me _______ salt on the dining table?",
-                fullSentence: "Could you please pass me the salt on the dining table?",
-                meaningVi: "Bạn có thể đưa giúp mình lọ muối ở trên bàn ăn được không?",
-                options: ["a", "an", "the", "Ø (no article)"],
-                correctAnswer: "the",
-                explanationEn: "Even though 'salt' is an uncountable noun, here it is specific because both people can see the salt on the dining table.",
-                ruleEn: "Use 'the' when both the speaker and listener see the specific item."
+                category: "the + Plural Country / Group Name",
+                question: "We visited _______ on our family trip last summer.",
+                fullSentence: "We visited the United States on our family trip last summer.",
+                meaningVi: "Chúng mình đã đi thăm Hoa Kỳ trong chuyến du lịch gia đình mùa hè năm ngoái.",
+                options: ["United States", "a United States", "an United States", "the United States"],
+                correctAnswer: "the United States",
+                explanationEn: "Country names with plural words or 'States/Kingdom/Republic' take 'the': 'the United States', 'the UK'.",
+                explanationVi: "Tên quốc gia có từ số nhiều hoặc 'States / Kingdom / Republic' dùng 'the': the United States, the UK.",
+                ruleEn: "the + country names with plural / 'States'"
             }
         ];
 
-        // Câu nhận xét khen ngợi & động viên bằng tiếng Anh tự nhiên
-        const PRAISE_PHRASES = [
-            { en: "Awesome job! You nailed it!", vi: "Tuyệt vời! Bạn trả lời chuẩn xác rồi!" },
-            { en: "Fantastic! That is completely correct!", vi: "Xuất sắc! Hoàn toàn chính xác!" },
-            { en: "Spot on! Keep up the great work!", vi: "Chính xác tuyệt đối! Phát huy nhé!" },
-            { en: "Brilliant! You are a grammar star!", vi: "Thông minh lắm! Bạn đúng là ngôi sao ngữ pháp!" },
-            { en: "Way to go! Super accurate answer!", vi: "Quá đỉnh! Câu trả lời rất chuẩn xác!" }
+        const PRAISE_LIST = [
+            { en: "Awesome job! You nailed it!", vi: "Tuyệt vời! Bạn trả lời rất chuẩn xác!" },
+            { en: "Fantastic! Keep up the great work!", vi: "Xuất sắc! Tiếp tục phát huy nhé!" },
+            { en: "Spot on! Your English grammar is shining!", vi: "Chính xác! Kiến thức ngữ pháp của bạn rất tốt!" },
+            { en: "Brilliant! You chose the exact right article!", vi: "Rất giỏi! Bạn đã chọn đúng mạo từ!" },
+            { en: "Way to go! You're mastering A2 articles!", vi: "Làm tốt lắm! Bạn đang làm chủ mạo từ A2!" }
         ];
 
-        const ENCOURAGE_PHRASES = [
-            { en: "Nice try! Don't give up, let's check the rule!", vi: "Cố gắng tốt lắm! Đừng bỏ cuộc, cùng xem giải thích nhé!" },
-            { en: "Almost there! Listen carefully to the explanation.", vi: "Suýt đúng rồi! Hãy nghe kỹ lời giải thích tiếng Anh nha." },
-            { en: "Good effort! Mistakes help us learn faster.", vi: "Nỗ lực rất tốt! Sai một chút giúp chúng ta nhớ lâu hơn." },
-            { en: "Keep going! You will get the next one right!", vi: "Tiếp tục nào! Câu sau chắc chắn bạn sẽ làm đúng!" }
+        const ENCOURAGE_LIST = [
+            { en: "Nice try! Don't give up, let's check the rule together.", vi: "Cố gắng tốt lắm! Đừng nản, cùng xem quy tắc nhé." },
+            { en: "Almost there! Every mistake helps you learn better.", vi: "Suýt đúng rồi! Mỗi lần thử là một lần tiến bộ." },
+            { en: "Good effort! Listen to the explanation and try the next one.", vi: "Cố gắng nhé! Nghe lời giải thích và sang câu tiếp theo nào." },
+            { en: "Keep going! You're doing great on your A2 practice.", vi: "Cố lên nào! Bạn đang luyện tập A2 rất chăm chỉ." }
         ];
 
-        // ============================================================
-        // 2. LƯU TRỮ DỮ LIỆU HỌC SINH (LOCALSTORAGE + DỮ LIỆU MẪU)
-        // ============================================================
-        const STORAGE_KEY = "articles_a2_teacher_submissions_v1";
-        const TEACHER_PIN = "1234";
+        // =========================================================================
+        // 2. UNIFIED STORAGE & SYNC LAYER (localStorage + sessionStorage + window.name)
+        // =========================================================================
+        const STORAGE_KEYS = {
+            SUBMISSIONS: "a2_articles_submissions_v2",
+            DELETED_IDS: "a2_articles_deleted_ids_v2",
+            CLEARED_AT: "a2_articles_cleared_at_v2",
+            TEACHER_PASS: "a2_articles_teacher_pass_v2"
+        };
+        const DEFAULT_TEACHER_PASSWORD = String([1, 2, 3, 4, 5, 6].join(""));
+        const WINDOW_NAME_PREFIX = "A2_ARTICLES_STORE_V2:";
 
-        function getDefaultSeedSubmissions() {
-            return [
-                {
-                    id: "seed_1",
-                    studentName: "Trần Bảo Ngọc",
-                    studentClass: "8A1",
-                    score: 214,
-                    correctCount: 19,
-                    totalQuestions: 20,
-                    accuracy: 95,
-                    maxStreak: 12,
-                    submittedAt: "20/11/2026 19:45",
-                    details: QUESTIONS.map((q, idx) => ({
-                        id: q.id,
-                        category: q.category,
-                        question: q.question,
-                        fullSentence: q.fullSentence,
-                        userAnswer: idx === 1 ? "an" : q.correctAnswer,
-                        correctAnswer: q.correctAnswer,
-                        explanationEn: q.explanationEn,
-                        isCorrect: idx !== 1
-                    }))
-                },
-                {
-                    id: "seed_2",
-                    studentName: "Lê Hoàng Nam",
-                    studentClass: "8A1",
-                    score: 168,
-                    correctCount: 16,
-                    totalQuestions: 20,
-                    accuracy: 80,
-                    maxStreak: 6,
-                    submittedAt: "21/11/2026 08:20",
-                    details: QUESTIONS.map((q, idx) => {
-                        const wrongIds = [1, 3, 12, 18];
-                        const isWrong = wrongIds.includes(idx);
-                        return {
-                            id: q.id,
-                            category: q.category,
-                            question: q.question,
-                            fullSentence: q.fullSentence,
-                            userAnswer: isWrong ? (q.correctAnswer === "a" ? "an" : "the") : q.correctAnswer,
-                            correctAnswer: q.correctAnswer,
-                            explanationEn: q.explanationEn,
-                            isCorrect: !isWrong
-                        };
-                    })
-                },
-                {
-                    id: "seed_3",
-                    studentName: "Phạm Khánh Linh",
-                    studentClass: "8A2",
-                    score: 132,
-                    correctCount: 13,
-                    totalQuestions: 20,
-                    accuracy: 65,
-                    maxStreak: 4,
-                    submittedAt: "21/11/2026 14:10",
-                    details: QUESTIONS.map((q, idx) => {
-                        const wrongIds = [0, 1, 3, 5, 11, 12, 17];
-                        const isWrong = wrongIds.includes(idx);
-                        return {
-                            id: q.id,
-                            category: q.category,
-                            question: q.question,
-                            fullSentence: q.fullSentence,
-                            userAnswer: isWrong ? (q.correctAnswer === "Ø (no article)" ? "the" : "a") : q.correctAnswer,
-                            correctAnswer: q.correctAnswer,
-                            explanationEn: q.explanationEn,
-                            isCorrect: !isWrong
-                        };
-                    })
+        let memoryStore = {
+            submissions: [],
+            deletedIds: [],
+            clearedAt: 0
+        };
+
+        const storeListeners = new Set();
+
+        function subscribeStore(listener) {
+            storeListeners.add(listener);
+            return () => storeListeners.delete(listener);
+        }
+
+        function emitStoreChange(reason = "update") {
+            updateHeaderSubmissionCount();
+            storeListeners.forEach(fn => {
+                try {
+                    fn(reason);
+                } catch (err) {
+                    console.warn("Store listener error:", err);
                 }
-            ];
+            });
         }
 
-        function loadSubmissions() {
+        function formatDateTime(dateObj) {
+            const p = n => String(n).padStart(2, "0");
+            return `${p(dateObj.getDate())}/${p(dateObj.getMonth() + 1)}/${dateObj.getFullYear()} ${p(dateObj.getHours())}:${p(dateObj.getMinutes())}:${p(dateObj.getSeconds())}`;
+        }
+
+        function normalizeSubmissionItem(raw) {
+            if (!raw || typeof raw !== "object") return null;
+            const answers = Array.isArray(raw.answers)
+                ? raw.answers
+                : (Array.isArray(raw.details) ? raw.details : []);
+            const totalQuestions = Number(raw.totalQuestions) || QUESTIONS.length;
+            const correctCount = typeof raw.correctCount === "number"
+                ? raw.correctCount
+                : answers.filter(a => Boolean(a.isCorrect)).length;
+            const accuracy = typeof raw.accuracy === "number"
+                ? raw.accuracy
+                : (totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0);
+
+            return {
+                id: String(raw.id || `sub_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`),
+                studentName: String(raw.studentName || "Học sinh").trim(),
+                className: String(raw.className || raw.studentClass || "---").trim().toUpperCase(),
+                score: Number(raw.score) || 0,
+                correctCount,
+                totalQuestions,
+                accuracy,
+                maxStreak: Number(raw.maxStreak) || 0,
+                timestamp: String(raw.timestamp || formatDateTime(new Date())),
+                submittedAtMs: Number(raw.submittedAtMs || raw.createdAtMs) || Date.now(),
+                answers
+            };
+        }
+
+        function safeParseJson(str, fallback) {
+            if (!str || typeof str !== "string") return fallback;
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (!raw) {
-                    const seeded = getDefaultSeedSubmissions();
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
-                    return seeded;
+                return JSON.parse(str);
+            } catch (_) {
+                return fallback;
+            }
+        }
+
+        function readStorageBucket(storageObj) {
+            if (!storageObj) return null;
+            try {
+                const rawSubs = storageObj.getItem(STORAGE_KEYS.SUBMISSIONS);
+                const rawDel = storageObj.getItem(STORAGE_KEYS.DELETED_IDS);
+                const rawCleared = storageObj.getItem(STORAGE_KEYS.CLEARED_AT);
+                return {
+                    submissions: rawSubs !== null ? safeParseJson(rawSubs, []) : null,
+                    deletedIds: rawDel !== null ? safeParseJson(rawDel, []) : [],
+                    clearedAt: rawCleared !== null ? (Number(rawCleared) || 0) : 0
+                };
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function writeStorageBucket(storageObj, payload) {
+            if (!storageObj) return;
+            try {
+                storageObj.setItem(STORAGE_KEYS.SUBMISSIONS, JSON.stringify(payload.submissions));
+                storageObj.setItem(STORAGE_KEYS.DELETED_IDS, JSON.stringify(payload.deletedIds));
+                storageObj.setItem(STORAGE_KEYS.CLEARED_AT, String(payload.clearedAt || 0));
+            } catch (_) {
+                // Ignore quota or restricted storage errors
+            }
+        }
+
+        function readWindowNameStore() {
+            try {
+                if (typeof window.name === "string" && window.name.startsWith(WINDOW_NAME_PREFIX)) {
+                    const parsed = safeParseJson(window.name.slice(WINDOW_NAME_PREFIX.length), null);
+                    if (parsed && typeof parsed === "object") {
+                        return {
+                            submissions: Array.isArray(parsed.submissions) ? parsed.submissions : [],
+                            deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : [],
+                            clearedAt: Number(parsed.clearedAt) || 0
+                        };
+                    }
                 }
-                const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (e) {
-                console.warn("LocalStorage read error:", e);
-                return getDefaultSeedSubmissions();
+            } catch (_) {
+                // Ignore window.name read errors
             }
+            return null;
         }
 
-        function saveSubmission(record) {
+        function writeWindowNameStore(payload) {
             try {
-                const list = loadSubmissions();
-                list.unshift(record);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-                updateSubmissionBadge();
-            } catch (e) {
-                console.warn("LocalStorage write error:", e);
+                window.name = WINDOW_NAME_PREFIX + JSON.stringify({
+                    submissions: payload.submissions,
+                    deletedIds: payload.deletedIds,
+                    clearedAt: payload.clearedAt || 0
+                });
+            } catch (_) {
+                // Ignore window.name write errors
             }
         }
 
-        function updateSubmissionBadge() {
-            const count = loadSubmissions().length;
+        // Reconcile across localStorage, sessionStorage, window.name, and memoryStore
+        // respecting deletedIds tombstones and clearedAt timestamp so deleted items never reappear.
+        function syncAllStores(notify = false) {
+            const lsBucket = readStorageBucket(typeof localStorage !== "undefined" ? localStorage : null);
+            const ssBucket = readStorageBucket(typeof sessionStorage !== "undefined" ? sessionStorage : null);
+            const wnBucket = readWindowNameStore();
+
+            const buckets = [lsBucket, ssBucket, wnBucket].filter(Boolean);
+
+            const deletedSet = new Set(memoryStore.deletedIds.map(String));
+            let latestClearedAt = Number(memoryStore.clearedAt) || 0;
+
+            buckets.forEach(b => {
+                if (Array.isArray(b.deletedIds)) {
+                    b.deletedIds.forEach(id => deletedSet.add(String(id)));
+                }
+                if (Number(b.clearedAt) > latestClearedAt) {
+                    latestClearedAt = Number(b.clearedAt);
+                }
+            });
+
+            const mergedById = new Map();
+            const candidateLists = [];
+
+            if (Array.isArray(memoryStore.submissions)) candidateLists.push(memoryStore.submissions);
+            buckets.forEach(b => {
+                if (Array.isArray(b.submissions)) candidateLists.push(b.submissions);
+            });
+
+            candidateLists.forEach(list => {
+                list.forEach(item => {
+                    const norm = normalizeSubmissionItem(item);
+                    if (!norm || !norm.id) return;
+                    if (deletedSet.has(norm.id)) return;
+                    if (latestClearedAt > 0 && Number(norm.submittedAtMs) <= latestClearedAt) return;
+
+                    const prev = mergedById.get(norm.id);
+                    if (!prev || Number(norm.submittedAtMs) >= Number(prev.submittedAtMs)) {
+                        mergedById.set(norm.id, norm);
+                    }
+                });
+            });
+
+            memoryStore.submissions = Array.from(mergedById.values())
+                .sort((a, b) => Number(b.submittedAtMs) - Number(a.submittedAtMs));
+            memoryStore.deletedIds = Array.from(deletedSet);
+            memoryStore.clearedAt = latestClearedAt;
+
+            persistAllStores();
+            if (notify) emitStoreChange("sync");
+            return memoryStore.submissions;
+        }
+
+        function persistAllStores() {
+            const snapshot = {
+                submissions: memoryStore.submissions,
+                deletedIds: memoryStore.deletedIds,
+                clearedAt: memoryStore.clearedAt || 0
+            };
+
+            writeStorageBucket(typeof localStorage !== "undefined" ? localStorage : null, snapshot);
+            writeStorageBucket(typeof sessionStorage !== "undefined" ? sessionStorage : null, snapshot);
+            writeWindowNameStore(snapshot);
+        }
+
+        function getSubmissionsList() {
+            return syncAllStores(false);
+        }
+
+        function addStudentSubmission(rawRecord) {
+            syncAllStores(false);
+            const item = normalizeSubmissionItem(rawRecord);
+            if (!item) return null;
+
+            // Ensure new submission is not blocked by older tombstone or clear timestamp
+            memoryStore.deletedIds = memoryStore.deletedIds.filter(id => id !== item.id);
+            const floorTime = Math.max(Date.now(), (Number(memoryStore.clearedAt) || 0) + 10);
+            item.submittedAtMs = Math.max(Number(item.submittedAtMs) || floorTime, floorTime);
+
+            memoryStore.submissions = [
+                item,
+                ...memoryStore.submissions.filter(existing => existing.id !== item.id)
+            ].sort((a, b) => Number(b.submittedAtMs) - Number(a.submittedAtMs));
+
+            persistAllStores();
+            emitStoreChange("add");
+            return item;
+        }
+
+        function deleteSubmissionById(targetId) {
+            syncAllStores(false);
+            const idStr = String(targetId);
+            if (!memoryStore.deletedIds.includes(idStr)) {
+                memoryStore.deletedIds.push(idStr);
+            }
+            memoryStore.submissions = memoryStore.submissions.filter(sub => String(sub.id) !== idStr);
+            persistAllStores();
+
+            const drawer = document.getElementById("tdDetailDrawer");
+            if (drawer && drawer.dataset.submissionId === idStr) {
+                closeStudentDetailDrawer();
+            }
+
+            emitStoreChange("delete_one");
+            showToast("Đã xóa dữ liệu thành công", "✅");
+        }
+
+        function clearAllSubmissionsPermanently() {
+            syncAllStores(false);
+            const existingIds = memoryStore.submissions.map(sub => String(sub.id));
+            memoryStore.deletedIds = Array.from(new Set([...memoryStore.deletedIds, ...existingIds]));
+            memoryStore.clearedAt = Math.max(Date.now(), (Number(memoryStore.clearedAt) || 0) + 10);
+            memoryStore.submissions = [];
+
+            persistAllStores();
+            closeStudentDetailDrawer();
+            emitStoreChange("clear_all");
+            showToast("Đã xóa dữ liệu thành công", "✅");
+        }
+
+        function updateHeaderSubmissionCount() {
             const badge = document.getElementById("submissionCountBadge");
-            if (badge) badge.textContent = count;
+            if (badge) {
+                badge.textContent = String(memoryStore.submissions.length);
+            }
         }
 
-        // ============================================================
-        // 3. BIẾN TRẠNG THÁI & HỆ THỐNG GIỌNG NÓI / ÂM THANH
-        // ============================================================
-        let currentStudent = { name: "", className: "" };
-        let currentIndex = 0;
-        let score = 0;
-        let streak = 0;
-        let maxStreak = 0;
-        let answered = false;
+        function getTeacherPassword() {
+            try {
+                const customPass = localStorage.getItem(STORAGE_KEYS.TEACHER_PASS);
+                if (customPass && customPass.trim().length > 0) {
+                    return customPass.trim();
+                }
+            } catch (_) {}
+            return DEFAULT_TEACHER_PASSWORD;
+        }
+
+        // =========================================================================
+        // 3. VOICE SYNTHESIS & SOUND EFFECTS
+        // =========================================================================
         let voiceEnabled = true;
         let autoReadExplanation = true;
-        let userHistory = [];
-        let lastSpokenFeedback = "";
+        let preferredVoice = null;
         let audioCtx = null;
-        let selectedVoice = null;
-        let cheatSheetOpen = true;
-        let currentOptionsList = [];
+        let lastSpokenText = "";
 
-        function showToast(msg, icon = "✅") {
-            const banner = document.getElementById("toastBanner");
-            document.getElementById("toastMsg").textContent = msg;
-            document.getElementById("toastIcon").textContent = icon;
-            banner.classList.remove("hidden");
-            clearTimeout(window._toastTimer);
-            window._toastTimer = setTimeout(() => {
-                banner.classList.add("hidden");
-            }, 3000);
-        }
-
-        // Khởi tạo giọng nói tiếng Anh tự nhiên từ trình duyệt
-        function initVoices() {
-            if (!('speechSynthesis' in window)) return;
+        function loadEnglishVoice() {
+            if (!("speechSynthesis" in window)) return;
             const voices = window.speechSynthesis.getVoices();
-            if (!voices.length) return;
+            if (!voices || !voices.length) return;
 
-            selectedVoice =
-                voices.find(v => v.lang === 'en-US' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Samantha') || v.name.includes('Aria'))) ||
-                voices.find(v => v.lang === 'en-GB' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Daniel'))) ||
-                voices.find(v => v.lang.startsWith('en-US')) ||
-                voices.find(v => v.lang.startsWith('en-GB')) ||
-                voices.find(v => v.lang.startsWith('en'));
+            preferredVoice =
+                voices.find(v => v.lang === "en-US" && /Google|Natural|Samantha|Aria/i.test(v.name)) ||
+                voices.find(v => v.lang === "en-GB" && /Google|Natural|Daniel/i.test(v.name)) ||
+                voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-us")) ||
+                voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en-gb")) ||
+                voices.find(v => v.lang && v.lang.toLowerCase().startsWith("en")) ||
+                null;
         }
 
-        if ('speechSynthesis' in window) {
-            initVoices();
-            window.speechSynthesis.onvoiceschanged = initVoices;
+        if ("speechSynthesis" in window) {
+            loadEnglishVoice();
+            window.speechSynthesis.onvoiceschanged = loadEnglishVoice;
         }
 
-        // Tạo âm thanh phản hồi bằng Web Audio API
-        function playChime(type) {
+        function setWaveActive(active) {
+            [document.getElementById("headerWave"), document.getElementById("feedbackWave")].forEach(el => {
+                if (!el) return;
+                if (active) el.classList.add("is-speaking");
+                else el.classList.remove("is-speaking");
+            });
+        }
+
+        function playToneFeedback(kind) {
             if (!voiceEnabled) return;
             try {
                 if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const Ctx = window.AudioContext || window.webkitAudioContext;
+                    audioCtx = new Ctx();
                 }
-                if (audioCtx.state === 'suspended') {
+                if (audioCtx.state === "suspended") {
                     audioCtx.resume();
                 }
 
                 const now = audioCtx.currentTime;
-                if (type === 'correct') {
-                    [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                if (kind === "correct") {
+                    [523.25, 659.25, 783.99].forEach((freq, i) => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-                        gain.gain.setValueAtTime(0.16, now + idx * 0.08);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.34);
+                        osc.type = "triangle";
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.15, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.34);
                         osc.connect(gain);
                         gain.connect(audioCtx.destination);
-                        osc.start(now + idx * 0.08);
-                        osc.stop(now + idx * 0.08 + 0.35);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.35);
                     });
-                } else if (type === 'wrong') {
-                    [290, 235].forEach((freq, idx) => {
+                } else if (kind === "wrong") {
+                    [310, 245].forEach((freq, i) => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(freq, now + idx * 0.14);
-                        gain.gain.setValueAtTime(0.15, now + idx * 0.14);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.3);
+                        osc.type = "sine";
+                        osc.frequency.setValueAtTime(freq, now + i * 0.14);
+                        gain.gain.setValueAtTime(0.14, now + i * 0.14);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.14 + 0.3);
                         osc.connect(gain);
                         gain.connect(audioCtx.destination);
-                        osc.start(now + idx * 0.14);
-                        osc.stop(now + idx * 0.14 + 0.32);
+                        osc.start(now + i * 0.14);
+                        osc.stop(now + i * 0.14 + 0.32);
                     });
-                } else if (type === 'fanfare') {
-                    [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+                } else if (kind === "complete") {
+                    [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
                         const osc = audioCtx.createOscillator();
                         const gain = audioCtx.createGain();
-                        osc.type = 'triangle';
-                        osc.frequency.setValueAtTime(freq, now + idx * 0.11);
-                        gain.gain.setValueAtTime(0.18, now + idx * 0.11);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.5);
+                        osc.type = "triangle";
+                        osc.frequency.setValueAtTime(freq, now + i * 0.11);
+                        gain.gain.setValueAtTime(0.18, now + i * 0.11);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.5);
                         osc.connect(gain);
                         gain.connect(audioCtx.destination);
-                        osc.start(now + idx * 0.11);
-                        osc.stop(now + idx * 0.11 + 0.52);
+                        osc.start(now + i * 0.11);
+                        osc.stop(now + i * 0.11 + 0.52);
                     });
                 }
-            } catch (e) {
-                console.warn("AudioContext warning:", e);
-            }
+            } catch (_) {}
         }
 
-        function setSpeakingVisual(active) {
-            const headerWave = document.getElementById('headerSoundWave');
-            const feedbackWave = document.getElementById('feedbackSoundWave');
-            if (active) {
-                if (headerWave) headerWave.classList.add('is-speaking');
-                if (feedbackWave) feedbackWave.classList.add('is-speaking');
-            } else {
-                if (headerWave) headerWave.classList.remove('is-speaking');
-                if (feedbackWave) feedbackWave.classList.remove('is-speaking');
-            }
-        }
-
-        // Đọc văn bản tiếng Anh qua Web Speech API
-        function speakEnglish(text, rate = 0.95) {
-            if (!voiceEnabled || !('speechSynthesis' in window)) return;
+        function speakEn(text, rate = 0.95) {
+            if (!voiceEnabled || !("speechSynthesis" in window) || !text) return;
             try {
                 window.speechSynthesis.cancel();
-                const cleanText = text.replace(/Ø/g, "zero article");
-                const utter = new SpeechSynthesisUtterance(cleanText);
-                if (selectedVoice) utter.voice = selectedVoice;
-                utter.lang = 'en-US';
+                const cleaned = String(text)
+                    .replace(/Ø\s*\(([^)]+)\)/g, "$1")
+                    .replace(/Ø/g, "zero article");
+                const utter = new SpeechSynthesisUtterance(cleaned);
+                if (preferredVoice) utter.voice = preferredVoice;
+                utter.lang = "en-US";
                 utter.rate = rate;
                 utter.pitch = 1.04;
 
-                utter.onstart = () => setSpeakingVisual(true);
-                utter.onend = () => setSpeakingVisual(false);
-                utter.onerror = () => setSpeakingVisual(false);
+                utter.onstart = () => setWaveActive(true);
+                utter.onend = () => setWaveActive(false);
+                utter.onerror = () => setWaveActive(false);
 
                 window.speechSynthesis.speak(utter);
-            } catch (err) {
-                console.warn("SpeechSynthesis error:", err);
-                setSpeakingVisual(false);
+            } catch (_) {
+                setWaveActive(false);
             }
         }
 
         function toggleVoice() {
             voiceEnabled = !voiceEnabled;
-            const label = document.getElementById('voiceLabel');
-            const headerWave = document.getElementById('headerSoundWave');
+            const label = document.getElementById("voiceLabel");
+            const wave = document.getElementById("headerWave");
             if (voiceEnabled) {
-                label.textContent = 'Giọng đọc: BẬT';
-                headerWave.classList.remove('text-rose-300', 'opacity-50');
-                headerWave.classList.add('text-emerald-300');
-                speakEnglish("English voice feedback is on!");
+                label.textContent = "Giọng đọc: BẬT";
+                wave.classList.remove("text-rose-300", "opacity-50");
+                wave.classList.add("text-emerald-300");
+                speakEn("English voice feedback is enabled.");
             } else {
-                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-                setSpeakingVisual(false);
-                label.textContent = 'Giọng đọc: TẮT';
-                headerWave.classList.remove('text-emerald-300');
-                headerWave.classList.add('text-rose-300', 'opacity-50');
+                if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+                setWaveActive(false);
+                label.textContent = "Giọng đọc: TẮT";
+                wave.classList.remove("text-emerald-300");
+                wave.classList.add("text-rose-300", "opacity-50");
             }
         }
 
         function toggleAutoReadExplanation() {
             autoReadExplanation = !autoReadExplanation;
-            const label = document.getElementById('autoExplainLabel');
-            const shortLabel = document.getElementById('autoExplainShort');
+            const fullLabel = document.getElementById("autoExplainLabel");
+            const shortLabel = document.getElementById("autoExplainShort");
             if (autoReadExplanation) {
-                label.textContent = 'Đọc giải thích: BẬT';
-                shortLabel.textContent = 'Giải thích: BẬT';
-                showToast("Đã bật tự động đọc giải thích bằng tiếng Anh", "📖");
+                fullLabel.textContent = "Đọc giải thích: BẬT";
+                shortLabel.textContent = "Giải thích: BẬT";
+                showToast("Đã bật tự động đọc giải thích tiếng Anh", "📖");
             } else {
-                label.textContent = 'Đọc giải thích: TẮT';
-                shortLabel.textContent = 'Giải thích: TẮT';
-                showToast("Đã tắt tự động đọc giải thích (vẫn đọc lời khen/động viên)", "🔇");
+                fullLabel.textContent = "Đọc giải thích: TẮT";
+                shortLabel.textContent = "Giải thích: TẮT";
+                showToast("Đã tắt tự động đọc giải thích tiếng Anh", "🔇");
             }
         }
 
-        function testVoiceWelcome() {
+        function testVoiceSample() {
             if (!voiceEnabled) toggleVoice();
-            speakEnglish("Awesome job! You nailed it! We use 'an' before 'hour' because the letter 'h' is silent.");
+            speakEn("Awesome job! You nailed it! We say 'an hour' because the 'h' is silent.");
+        }
+
+        function showToast(msg, icon = "✅") {
+            const banner = document.getElementById("toastBanner");
+            document.getElementById("toastMessage").textContent = msg;
+            document.getElementById("toastIcon").textContent = icon;
+            banner.classList.remove("hidden");
+            clearTimeout(window.__toastTimeout);
+            window.__toastTimeout = setTimeout(() => {
+                banner.classList.add("hidden");
+            }, 3000);
+        }
+
+        // =========================================================================
+        // 4. QUIZ ENGINE (STUDENT FLOW)
+        // =========================================================================
+        let studentInfo = { name: "", className: "" };
+        let currentQIndex = 0;
+        let currentScore = 0;
+        let currentStreak = 0;
+        let bestStreak = 0;
+        let questionAnswered = false;
+        let sessionAnswers = [];
+        let activeOptionValues = [];
+        let cheatSheetExpanded = true;
+
+        const SCREEN_IDS = [
+            "startScreen",
+            "quizScreen",
+            "resultScreen",
+            "teacherPasswordGate",
+            "teacherDashboardScreen"
+        ];
+
+        function showOnlyScreen(targetId) {
+            SCREEN_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === targetId) el.classList.remove("hidden");
+                    else el.classList.add("hidden");
+                }
+            });
+
+            const statsEl = document.getElementById("headerStats");
+            if (targetId === "quizScreen") {
+                statsEl.classList.remove("hidden");
+                statsEl.classList.add("flex");
+            } else {
+                statsEl.classList.add("hidden");
+                statsEl.classList.remove("flex");
+            }
         }
 
         function toggleCheatSheet() {
-            cheatSheetOpen = !cheatSheetOpen;
-            const body = document.getElementById('cheatSheetBody');
-            const chevron = document.getElementById('cheatSheetChevron');
-            if (cheatSheetOpen) {
-                body.classList.remove('hidden');
-                chevron.textContent = 'Thu gọn ▲';
+            cheatSheetExpanded = !cheatSheetExpanded;
+            const body = document.getElementById("cheatSheetBody");
+            const label = document.getElementById("cheatSheetToggleLabel");
+            if (cheatSheetExpanded) {
+                body.classList.remove("hidden");
+                label.textContent = "Thu gọn ▲";
             } else {
-                body.classList.add('hidden');
-                chevron.textContent = 'Mở rộng ▼';
+                body.classList.add("hidden");
+                label.textContent = "Mở rộng ▼";
             }
-        }
-
-        // ============================================================
-        // 4. ĐIỀU KHIỂN LUỒNG GAME HỌC SINH
-        // ============================================================
-        function hideAllScreens() {
-            ['startScreen', 'quizScreen', 'resultScreen', 'teacherPinModal', 'teacherDashboardScreen'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
         }
 
         function startGame() {
-            const nameVal = document.getElementById('studentNameInput').value.trim();
-            const classVal = document.getElementById('studentClassInput').value.trim();
-            const errEl = document.getElementById('studentFormError');
+            const nameInput = document.getElementById("studentNameInput");
+            const classInput = document.getElementById("studentClassInput");
+            const errMsg = document.getElementById("studentFormError");
+
+            const nameVal = nameInput.value.trim();
+            const classVal = classInput.value.trim();
 
             if (!nameVal || !classVal) {
-                errEl.classList.remove('hidden');
-                if (!nameVal) document.getElementById('studentNameInput').focus();
-                else document.getElementById('studentClassInput').focus();
+                errMsg.classList.remove("hidden");
+                if (!nameVal) nameInput.focus();
+                else classInput.focus();
                 return;
             }
-            errEl.classList.add('hidden');
+            errMsg.classList.add("hidden");
 
-            currentStudent = { name: nameVal, className: classVal.toUpperCase() };
-            currentIndex = 0;
-            score = 0;
-            streak = 0;
-            maxStreak = 0;
-            userHistory = [];
+            studentInfo = { name: nameVal, className: classVal.toUpperCase() };
+            currentQIndex = 0;
+            currentScore = 0;
+            currentStreak = 0;
+            bestStreak = 0;
+            sessionAnswers = [];
+            lastSpokenText = "";
 
-            hideAllScreens();
-            document.getElementById('quizScreen').classList.remove('hidden');
-            document.getElementById('headerStats').classList.remove('hidden');
-            document.getElementById('headerStats').classList.add('flex');
-            document.getElementById('activeStudentPill').textContent = `👤 ${currentStudent.name} (${currentStudent.className})`;
-
-            updateHeaderStats();
-            renderQuestion();
+            showOnlyScreen("quizScreen");
+            document.getElementById("activeStudentPill").textContent = `👤 ${studentInfo.name} • Lớp ${studentInfo.className}`;
+            updateQuizHeaderStats();
+            renderCurrentQuestion();
         }
 
         function backToHome() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            setSpeakingVisual(false);
-            hideAllScreens();
-            document.getElementById('headerStats').classList.add('hidden');
-            document.getElementById('headerStats').classList.remove('flex');
-            document.getElementById('startScreen').classList.remove('hidden');
+            if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+            setWaveActive(false);
+            showOnlyScreen("startScreen");
         }
 
-        function updateHeaderStats() {
-            document.getElementById('scoreDisplay').textContent = score;
-            document.getElementById('streakDisplay').textContent = streak;
+        function updateQuizHeaderStats() {
+            document.getElementById("scoreDisplay").textContent = String(currentScore);
+            document.getElementById("streakDisplay").textContent = String(currentStreak);
         }
 
-        function renderQuestion() {
-            answered = false;
-            const q = QUESTIONS[currentIndex];
+        function renderCurrentQuestion() {
+            questionAnswered = false;
+            const q = QUESTIONS[currentQIndex];
             const total = QUESTIONS.length;
 
-            document.getElementById('questionNumberBadge').textContent = `Câu ${currentIndex + 1} / ${total}`;
-            document.getElementById('categoryBadge').textContent = `Rule: ${q.category}`;
-            const pct = Math.round(((currentIndex + 1) / total) * 100);
-            document.getElementById('progressPercent').textContent = `${pct}%`;
-            document.getElementById('progressBar').style.width = `${pct}%`;
+            document.getElementById("questionNumberBadge").textContent = `Câu ${currentQIndex + 1} / ${total}`;
+            document.getElementById("categoryBadge").textContent = q.category;
+            const pct = Math.round(((currentQIndex + 1) / total) * 100);
+            document.getElementById("progressPercent").textContent = `${pct}%`;
+            document.getElementById("progressBar").style.width = `${pct}%`;
 
-            const formattedQuestion = q.question.replace(
-                /_______/g,
-                '<span class="inline-block min-w-[95px] border-b-4 border-indigo-400 text-indigo-600 px-2 text-center">___</span>'
-            );
-            document.getElementById('questionText').innerHTML = formattedQuestion;
-            document.getElementById('questionHintVi').textContent = `💡 Nghĩa tiếng Việt: ${q.meaningVi}`;
+            const blankHtml = '<span class="inline-block min-w-[92px] border-b-4 border-indigo-400 text-indigo-600 px-2 text-center">___</span>';
+            document.getElementById("questionText").innerHTML = q.question.replace(/_______/g, blankHtml);
+            document.getElementById("questionMeaningVi").textContent = `💡 Nghĩa tiếng Việt: ${q.meaningVi}`;
 
-            document.getElementById('feedbackBox').classList.add('hidden');
+            document.getElementById("feedbackBox").classList.add("hidden");
 
-            currentOptionsList = [...q.options];
+            activeOptionValues = [...q.options];
+            const container = document.getElementById("optionsContainer");
+            container.innerHTML = "";
+            const letters = ["A", "B", "C", "D"];
 
-            const container = document.getElementById('optionsContainer');
-            container.innerHTML = '';
-            const letters = ['A', 'B', 'C', 'D'];
-
-            currentOptionsList.forEach((optText, idx) => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.id = `optBtn_${idx}`;
-                btn.onclick = () => selectAnswer(idx);
-                btn.className = 'option-btn w-full text-left p-4 sm:p-5 rounded-2xl bg-white border-2 border-slate-200 hover:border-indigo-400 flex items-center gap-3.5 cursor-pointer group';
+            activeOptionValues.forEach((optText, idx) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.id = `quizOptionBtn_${idx}`;
+                btn.onclick = () => handleSelectOption(idx);
+                btn.className = "option-btn w-full text-left p-4 sm:p-5 rounded-2xl bg-white border-2 border-slate-200 hover:border-indigo-400 flex items-center gap-3.5 cursor-pointer group";
 
                 btn.innerHTML = `
-                    <span id="optBadge_${idx}" class="w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-indigo-100 text-slate-700 group-hover:text-indigo-700 font-black text-sm flex items-center justify-center shrink-0 transition">
+                    <span id="quizOptionBadge_${idx}" class="w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-indigo-100 text-slate-700 group-hover:text-indigo-700 font-black text-sm flex items-center justify-center shrink-0 transition">
                         ${letters[idx]}
                     </span>
                     <span class="font-extrabold text-base sm:text-lg text-slate-800">${optText}</span>
@@ -1250,185 +1417,170 @@
                 container.appendChild(btn);
             });
 
-            document.getElementById('nextBtnLabel').textContent =
-                currentIndex === total - 1 ? 'Nộp Bài & Xem Kết Quả' : 'Câu Tiếp Theo';
+            document.getElementById("nextBtnLabel").textContent =
+                currentQIndex === total - 1 ? "Nộp Bài & Xem Kết Quả" : "Câu Tiếp Theo";
         }
 
         function speakCurrentSentence() {
-            const q = QUESTIONS[currentIndex];
-            const sentence = answered ? q.fullSentence : q.question.replace(/_______/g, 'blank');
-            speakEnglish(sentence, 0.92);
+            const q = QUESTIONS[currentQIndex];
+            const toSpeak = questionAnswered ? q.fullSentence : q.question.replace(/_______/g, "blank");
+            speakEn(toSpeak, 0.92);
         }
 
-        function speakOnlyExplanation() {
-            const q = QUESTIONS[currentIndex];
-            speakEnglish(q.explanationEn, 0.94);
+        function speakOnlyExplanationEn() {
+            const q = QUESTIONS[currentQIndex];
+            speakEn(q.explanationEn, 0.94);
         }
 
         function replayFullFeedback() {
-            if (lastSpokenFeedback) {
-                speakEnglish(lastSpokenFeedback, 0.95);
-            } else {
-                speakCurrentSentence();
-            }
+            if (lastSpokenText) speakEn(lastSpokenText, 0.95);
+            else speakCurrentSentence();
         }
 
-        function selectAnswer(selectedIdx) {
-            if (answered) return;
-            answered = true;
+        function handleSelectOption(optionIdx) {
+            if (questionAnswered) return;
+            questionAnswered = true;
 
-            const q = QUESTIONS[currentIndex];
-            const chosenValue = currentOptionsList[selectedIdx];
-            const isCorrect = chosenValue === q.correctAnswer;
+            const q = QUESTIONS[currentQIndex];
+            const chosenOpt = activeOptionValues[optionIdx];
+            const isCorrect = chosenOpt === q.correctAnswer;
 
-            // Update Score & Streak
             if (isCorrect) {
-                streak++;
-                if (streak > maxStreak) maxStreak = streak;
-                const streakBonus = streak >= 3 ? 2 : 0;
-                score += (10 + streakBonus);
-                playChime('correct');
+                currentStreak += 1;
+                if (currentStreak > bestStreak) bestStreak = currentStreak;
+                const bonus = currentStreak >= 3 ? 2 : 0;
+                currentScore += (10 + bonus);
+                playToneFeedback("correct");
             } else {
-                streak = 0;
-                playChime('wrong');
+                currentStreak = 0;
+                playToneFeedback("wrong");
             }
-            updateHeaderStats();
+            updateQuizHeaderStats();
 
-            // Record history
-            userHistory.push({
+            sessionAnswers.push({
                 id: q.id,
                 category: q.category,
                 question: q.question,
                 fullSentence: q.fullSentence,
-                userAnswer: chosenValue,
+                userAnswer: chosenOpt,
                 correctAnswer: q.correctAnswer,
                 explanationEn: q.explanationEn,
+                explanationVi: q.explanationVi,
                 isCorrect
             });
 
-            // Show completed sentence
-            document.getElementById('questionText').textContent = q.fullSentence;
+            document.getElementById("questionText").textContent = q.fullSentence;
 
-            // Style option buttons
-            currentOptionsList.forEach((optVal, idx) => {
-                const btn = document.getElementById(`optBtn_${idx}`);
-                const badge = document.getElementById(`optBadge_${idx}`);
+            activeOptionValues.forEach((optVal, idx) => {
+                const btn = document.getElementById(`quizOptionBtn_${idx}`);
+                const badge = document.getElementById(`quizOptionBadge_${idx}`);
                 btn.disabled = true;
-                btn.classList.remove('hover:border-indigo-400', 'cursor-pointer');
+                btn.classList.remove("hover:border-indigo-400", "cursor-pointer");
 
                 if (optVal === q.correctAnswer) {
-                    btn.classList.remove('bg-white', 'border-slate-200');
-                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-950');
-                    badge.className = 'w-9 h-9 rounded-xl bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0';
-                    badge.textContent = '✓';
-                } else if (idx === selectedIdx && !isCorrect) {
-                    btn.classList.remove('bg-white', 'border-slate-200');
-                    btn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-950');
-                    badge.className = 'w-9 h-9 rounded-xl bg-rose-500 text-white font-black text-sm flex items-center justify-center shrink-0';
-                    badge.textContent = '✕';
+                    btn.classList.remove("bg-white", "border-slate-200");
+                    btn.classList.add("bg-emerald-50", "border-emerald-500", "text-emerald-950");
+                    badge.className = "w-9 h-9 rounded-xl bg-emerald-500 text-white font-black text-sm flex items-center justify-center shrink-0";
+                    badge.textContent = "✓";
+                } else if (idx === optionIdx && !isCorrect) {
+                    btn.classList.remove("bg-white", "border-slate-200");
+                    btn.classList.add("bg-rose-50", "border-rose-500", "text-rose-950");
+                    badge.className = "w-9 h-9 rounded-xl bg-rose-500 text-white font-black text-sm flex items-center justify-center shrink-0";
+                    badge.textContent = "✕";
                 } else {
-                    btn.classList.add('opacity-50');
+                    btn.classList.add("opacity-50");
                 }
             });
 
-            // Build Feedback Banner & English Voice Comment + English Explanation
-            const feedbackBox = document.getElementById('feedbackBox');
-            const badgeEmoji = document.getElementById('feedbackBadgeEmoji');
-            const feedbackTitle = document.getElementById('feedbackTitle');
-            const voiceCommentText = document.getElementById('voiceCommentText');
-            const explanationTextEn = document.getElementById('explanationTextEn');
-            const ruleTipEn = document.getElementById('ruleTipEn');
+            const fbBox = document.getElementById("feedbackBox");
+            const fbEmoji = document.getElementById("feedbackBadgeEmoji");
+            const fbTitleVi = document.getElementById("feedbackTitleVi");
+            const fbPhraseEn = document.getElementById("voicePhraseEn");
+            const expEnEl = document.getElementById("explanationTextEn");
+            const ruleBadgeEl = document.getElementById("ruleBadgeEn");
+            const expViEl = document.getElementById("explanationTextVi").querySelector("span");
 
-            feedbackBox.classList.remove('hidden', 'bg-emerald-50/95', 'border-emerald-300', 'bg-amber-50/95', 'border-amber-300');
+            fbBox.classList.remove("hidden", "bg-emerald-50/95", "border-emerald-300", "bg-amber-50/95", "border-amber-300");
 
             if (isCorrect) {
-                const praise = PRAISE_PHRASES[Math.floor(Math.random() * PRAISE_PHRASES.length)];
-                feedbackBox.classList.add('bg-emerald-50/95', 'border-emerald-300');
-                badgeEmoji.className = 'w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shrink-0 shadow-sm';
-                badgeEmoji.textContent = '🎉';
-                feedbackTitle.className = 'font-black text-lg leading-tight text-emerald-900';
-                feedbackTitle.textContent = streak >= 3
-                    ? `${praise.vi} (Chuỗi ${streak} câu đúng! 🔥)`
+                const praise = PRAISE_LIST[Math.floor(Math.random() * PRAISE_LIST.length)];
+                fbBox.classList.add("bg-emerald-50/95", "border-emerald-300");
+                fbEmoji.className = "w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shrink-0 shadow-sm";
+                fbEmoji.textContent = "🎉";
+                fbTitleVi.className = "font-black text-lg leading-tight text-emerald-900";
+                fbTitleVi.textContent = currentStreak >= 3
+                    ? `${praise.vi} (Chuỗi ${currentStreak} câu đúng! 🔥)`
                     : praise.vi;
-                voiceCommentText.className = 'text-xs sm:text-sm font-extrabold italic text-emerald-700';
-                voiceCommentText.textContent = `"${praise.en}"`;
+                fbPhraseEn.className = "text-xs sm:text-sm font-extrabold italic text-emerald-700";
+                fbPhraseEn.textContent = `"${praise.en}"`;
 
-                lastSpokenFeedback = autoReadExplanation
+                lastSpokenText = autoReadExplanation
                     ? `${praise.en} ${q.fullSentence}. ${q.explanationEn}`
                     : `${praise.en} ${q.fullSentence}.`;
             } else {
-                const encourage = ENCOURAGE_PHRASES[Math.floor(Math.random() * ENCOURAGE_PHRASES.length)];
-                feedbackBox.classList.add('bg-amber-50/95', 'border-amber-300');
-                badgeEmoji.className = 'w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shrink-0 shadow-sm';
-                badgeEmoji.textContent = '💪';
-                feedbackTitle.className = 'font-black text-lg leading-tight text-amber-950';
-                feedbackTitle.textContent = encourage.vi;
-                voiceCommentText.className = 'text-xs sm:text-sm font-extrabold italic text-amber-800';
-                voiceCommentText.textContent = `"${encourage.en}"`;
+                const encourage = ENCOURAGE_LIST[Math.floor(Math.random() * ENCOURAGE_LIST.length)];
+                fbBox.classList.add("bg-amber-50/95", "border-amber-300");
+                fbEmoji.className = "w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shrink-0 shadow-sm";
+                fbEmoji.textContent = "💪";
+                fbTitleVi.className = "font-black text-lg leading-tight text-amber-950";
+                fbTitleVi.textContent = encourage.vi;
+                fbPhraseEn.className = "text-xs sm:text-sm font-extrabold italic text-amber-800";
+                fbPhraseEn.textContent = `"${encourage.en}"`;
 
-                lastSpokenFeedback = autoReadExplanation
+                lastSpokenText = autoReadExplanation
                     ? `${encourage.en} The correct sentence is: ${q.fullSentence}. ${q.explanationEn}`
                     : `${encourage.en} The correct sentence is: ${q.fullSentence}.`;
             }
 
-            explanationTextEn.textContent = q.explanationEn;
-            ruleTipEn.textContent = `Key Rule: ${q.ruleEn}`;
+            expEnEl.textContent = q.explanationEn;
+            ruleBadgeEl.textContent = `Rule: ${q.ruleEn}`;
+            expViEl.textContent = q.explanationVi;
 
-            // Speak praise/encouragement + completed sentence + English explanation
-            speakEnglish(lastSpokenFeedback, 0.95);
+            speakEn(lastSpokenText, 0.95);
 
             setTimeout(() => {
-                feedbackBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                fbBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
             }, 100);
         }
 
         function nextQuestion() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            setSpeakingVisual(false);
-
-            if (currentIndex < QUESTIONS.length - 1) {
-                currentIndex++;
-                renderQuestion();
+            if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+            setWaveActive(false);
+            if (currentQIndex < QUESTIONS.length - 1) {
+                currentQIndex += 1;
+                renderCurrentQuestion();
             } else {
-                showResults();
+                finishAndSubmitQuiz();
             }
         }
 
-        // ============================================================
-        // 5. MÀN HÌNH TỔNG KẾT & LƯU KẾT QUẢ VÀO BẢNG GIÁO VIÊN
-        // ============================================================
-        function formatTimestamp(dateObj) {
-            const pad = n => String(n).padStart(2, '0');
-            return `${pad(dateObj.getDate())}/${pad(dateObj.getMonth() + 1)}/${dateObj.getFullYear()} ${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
-        }
-
-        function showResults() {
-            hideAllScreens();
-            document.getElementById('resultScreen').classList.remove('hidden');
+        function finishAndSubmitQuiz() {
+            showOnlyScreen("resultScreen");
 
             const total = QUESTIONS.length;
-            const correctCount = userHistory.filter(h => h.isCorrect).length;
+            const correctCount = sessionAnswers.filter(a => a.isCorrect).length;
             const accuracy = Math.round((correctCount / total) * 100);
+            const now = new Date();
 
-            // Save student submission to localStorage for Teacher Dashboard
-            const submissionRecord = {
-                id: "sub_" + Date.now(),
-                studentName: currentStudent.name,
-                studentClass: currentStudent.className,
-                score: score,
-                correctCount: correctCount,
+            const savedRecord = addStudentSubmission({
+                id: `sub_${now.getTime()}_${Math.random().toString(36).slice(2, 7)}`,
+                studentName: studentInfo.name,
+                className: studentInfo.className,
+                score: currentScore,
+                correctCount,
                 totalQuestions: total,
-                accuracy: accuracy,
-                maxStreak: maxStreak,
-                submittedAt: formatTimestamp(new Date()),
-                details: [...userHistory]
-            };
-            saveSubmission(submissionRecord);
+                accuracy,
+                maxStreak: bestStreak,
+                timestamp: formatDateTime(now),
+                submittedAtMs: now.getTime(),
+                answers: [...sessionAnswers]
+            });
 
-            document.getElementById('resultStudentMeta').textContent = `Học sinh: ${currentStudent.name} • Lớp: ${currentStudent.className}`;
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('finalAccuracy').textContent = `${accuracy}% (${correctCount}/${total})`;
-            document.getElementById('finalMaxStreak').textContent = maxStreak;
+            document.getElementById("resultStudentSummary").textContent =
+                `Học sinh: ${savedRecord.studentName} • Lớp: ${savedRecord.className} • Nộp lúc: ${savedRecord.timestamp}`;
+            document.getElementById("finalScore").textContent = String(savedRecord.score);
+            document.getElementById("finalAccuracy").textContent = `${accuracy}% (${correctCount}/${total})`;
+            document.getElementById("finalMaxStreak").textContent = String(bestStreak);
 
             let stars = "⭐⭐⭐";
             let headline = "";
@@ -1437,56 +1589,56 @@
 
             if (accuracy >= 85) {
                 stars = "⭐⭐⭐";
-                headline = "Siêu Đẳng Cấp! 🏆";
-                subtext = `Chúc mừng ${currentStudent.name}! Bạn trả lời đúng ${correctCount}/${total} câu (${accuracy}%) và làm chủ ngữ pháp Mạo từ A2.`;
-                voiceSummary = `Congratulations ${currentStudent.name}! You scored ${correctCount} out of ${total}. You are a true master of English articles!`;
-                fireConfetti();
+                headline = "Xuất Sắc Tuyệt Đối! 🏆";
+                subtext = `Chúc mừng ${studentInfo.name}! Bạn trả lời đúng ${correctCount}/${total} câu (${accuracy}%) chủ đề Mạo từ A2.`;
+                voiceSummary = `Congratulations ${studentInfo.name}! You scored ${correctCount} out of ${total}. Amazing mastery of English articles!`;
+                launchConfetti();
             } else if (accuracy >= 60) {
                 stars = "⭐⭐";
-                headline = "Làm Tốt Lắm! 🌟";
-                subtext = `Bạn đạt ${correctCount}/${total} câu đúng (${accuracy}%). Xem lại các giải thích tiếng Anh bên dưới để đạt 100% nhé!`;
-                voiceSummary = `Great job ${currentStudent.name}! You got ${correctCount} out of ${total} correct. Review the English explanations and try again!`;
-                fireConfetti();
+                headline = "Làm Rất Tốt! 🌟";
+                subtext = `Bạn đạt ${correctCount}/${total} câu đúng (${accuracy}%). Xem lại các giải thích bên dưới để nâng cao điểm số nhé!`;
+                voiceSummary = `Great job ${studentInfo.name}! You got ${correctCount} out of ${total} correct. Review the explanations and try again!`;
+                launchConfetti();
             } else {
                 stars = "⭐";
-                headline = "Cố Gắng Rất Tốt! 💪";
-                subtext = `Bạn đúng ${correctCount}/${total} câu (${accuracy}%). Hãy đọc kỹ giải thích tiếng Anh từng câu và thử lại để bứt phá điểm số nhé!`;
-                voiceSummary = `Nice effort ${currentStudent.name}! You got ${correctCount} out of ${total}. Review the English grammar rules and give it another try!`;
+                headline = "Cố Gắng Lên Nhé! 💪";
+                subtext = `Bạn đúng ${correctCount}/${total} câu (${accuracy}%). Hãy đọc kỹ giải thích từng câu và thử làm lại nhé!`;
+                voiceSummary = `Good effort ${studentInfo.name}! You got ${correctCount} out of ${total}. Let's review the rules and practice again!`;
             }
 
-            document.getElementById('starRatingRow').textContent = stars;
-            document.getElementById('resultHeadline').textContent = headline;
-            document.getElementById('resultSubtext').textContent = subtext;
+            document.getElementById("resultStars").textContent = stars;
+            document.getElementById("resultHeadline").textContent = headline;
+            document.getElementById("resultSubtext").textContent = subtext;
 
-            playChime('fanfare');
-            setTimeout(() => speakEnglish(voiceSummary, 0.95), 400);
+            playToneFeedback("complete");
+            setTimeout(() => speakEn(voiceSummary, 0.95), 400);
 
-            renderCategoryBreakdown();
-            renderReviewList('all');
+            renderCategoryMastery();
+            renderStudentReview("all");
         }
 
-        function renderCategoryBreakdown() {
-            const map = {};
-            userHistory.forEach(item => {
-                if (!map[item.category]) {
-                    map[item.category] = { total: 0, correct: 0 };
+        function renderCategoryMastery() {
+            const statsMap = {};
+            sessionAnswers.forEach(item => {
+                if (!statsMap[item.category]) {
+                    statsMap[item.category] = { correct: 0, total: 0 };
                 }
-                map[item.category].total++;
-                if (item.isCorrect) map[item.category].correct++;
+                statsMap[item.category].total += 1;
+                if (item.isCorrect) statsMap[item.category].correct += 1;
             });
 
-            const container = document.getElementById('categoryBreakdown');
-            container.innerHTML = '';
+            const container = document.getElementById("categoryBreakdown");
+            container.innerHTML = "";
 
-            Object.entries(map).forEach(([catName, stat]) => {
-                const pct = Math.round((stat.correct / stat.total) * 100);
-                const barColor = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500';
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-xl p-3 border border-slate-200/80';
+            Object.entries(statsMap).forEach(([cat, st]) => {
+                const pct = Math.round((st.correct / st.total) * 100);
+                const barColor = pct >= 80 ? "bg-emerald-500" : pct >= 50 ? "bg-amber-500" : "bg-rose-500";
+                const card = document.createElement("div");
+                card.className = "bg-white rounded-xl p-3 border border-slate-200/80";
                 card.innerHTML = `
                     <div class="flex items-center justify-between text-xs font-extrabold text-slate-700 mb-1.5">
-                        <span>${catName}</span>
-                        <span class="text-indigo-700">${stat.correct}/${stat.total} (${pct}%)</span>
+                        <span>${cat}</span>
+                        <span class="text-indigo-700">${st.correct}/${st.total} (${pct}%)</span>
                     </div>
                     <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div class="h-full ${barColor} rounded-full" style="width: ${pct}%"></div>
@@ -1496,61 +1648,61 @@
             });
         }
 
-        function renderReviewList(mode) {
-            const allBtn = document.getElementById('filterAllBtn');
-            const missedBtn = document.getElementById('filterMissedBtn');
+        function renderStudentReview(filterMode) {
+            const allBtn = document.getElementById("reviewFilterAllBtn");
+            const missedBtn = document.getElementById("reviewFilterMissedBtn");
 
-            if (mode === 'all') {
-                allBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs cursor-pointer';
-                missedBtn.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer';
+            if (filterMode === "all") {
+                allBtn.className = "px-3 py-1.5 rounded-lg bg-white text-indigo-700 shadow-xs cursor-pointer";
+                missedBtn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer";
             } else {
-                missedBtn.className = 'px-3 py-1.5 rounded-lg bg-white text-rose-700 shadow-xs cursor-pointer';
-                allBtn.className = 'px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer';
+                missedBtn.className = "px-3 py-1.5 rounded-lg bg-white text-rose-700 shadow-xs cursor-pointer";
+                allBtn.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer";
             }
 
-            const items = mode === 'missed'
-                ? userHistory.filter(h => !h.isCorrect)
-                : userHistory;
+            const items = filterMode === "missed"
+                ? sessionAnswers.filter(a => !a.isCorrect)
+                : sessionAnswers;
 
-            const listEl = document.getElementById('reviewList');
-            listEl.innerHTML = '';
+            const listEl = document.getElementById("studentReviewList");
+            listEl.innerHTML = "";
 
-            if (items.length === 0) {
+            if (!items.length) {
                 listEl.innerHTML = `
                     <div class="text-center py-6 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-800 font-bold text-sm">
-                        🎉 Tuyệt vời! Bạn không làm sai câu nào cả!
+                        🎉 Không có câu nào làm sai. Tuyệt vời!
                     </div>
                 `;
                 return;
             }
 
             items.forEach(item => {
-                const row = document.createElement('div');
+                const row = document.createElement("div");
                 row.className = `p-3.5 rounded-2xl border flex items-start justify-between gap-3 ${
-                    item.isCorrect ? 'bg-emerald-50/75 border-emerald-200' : 'bg-rose-50/75 border-rose-200'
+                    item.isCorrect ? "bg-emerald-50/75 border-emerald-200" : "bg-rose-50/75 border-rose-200"
                 }`;
-
-                const escapedSpoken = `${item.fullSentence}. ${item.explanationEn}`.replace(/'/g, "\\'");
+                const spoken = `${item.fullSentence}. ${item.explanationEn}`.replace(/'/g, "\\'");
 
                 row.innerHTML = `
                     <div class="flex items-start gap-2.5">
                         <span class="mt-0.5 w-6 h-6 rounded-full text-xs font-black flex items-center justify-center shrink-0 ${
-                            item.isCorrect ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                            item.isCorrect ? "bg-emerald-500 text-white" : "bg-rose-500 text-white"
                         }">${item.id}</span>
                         <div>
                             <p class="font-bold text-sm text-slate-900">${item.fullSentence}</p>
                             ${!item.isCorrect ? `
                                 <p class="text-xs text-rose-700 mt-1">
-                                    Bạn chọn: <span class="line-through font-semibold">${item.userAnswer}</span> • 
+                                    Bạn chọn: <span class="line-through font-semibold">${item.userAnswer}</span> •
                                     Đáp án đúng: <span class="font-extrabold text-emerald-700">${item.correctAnswer}</span>
                                 </p>
                             ` : `
-                                <p class="text-xs text-emerald-700 font-semibold mt-0.5">Correct: ${item.correctAnswer}</p>
+                                <p class="text-xs text-emerald-700 font-semibold mt-0.5">Đáp án đúng: ${item.correctAnswer}</p>
                             `}
-                            <p class="text-xs text-slate-600 mt-1 italic">${item.explanationEn}</p>
+                            <p class="text-xs text-slate-700 mt-1 font-medium">${item.explanationEn}</p>
+                            <p class="text-xs text-slate-500 mt-0.5 italic">${item.explanationVi || ""}</p>
                         </div>
                     </div>
-                    <button onclick="speakEnglish('${escapedSpoken}', 0.94)" title="Listen to sentence & English explanation"
+                    <button type="button" onclick="speakEn('${spoken}', 0.94)" title="Nghe câu & giải thích tiếng Anh"
                         class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-indigo-50 text-indigo-700 border border-slate-200 text-xs font-bold shrink-0 cursor-pointer transition">
                         🔊
                     </button>
@@ -1559,175 +1711,197 @@
             });
         }
 
-        function fireConfetti() {
-            if (typeof confetti !== 'function') return;
+        function launchConfetti() {
+            if (typeof confetti !== "function") return;
             confetti({
-                particleCount: 95,
-                spread: 80,
+                particleCount: 90,
+                spread: 75,
                 origin: { y: 0.6 }
             });
         }
 
-        // ============================================================
-        // 6. BẢNG ĐIỀU KHIỂN GIÁO VIÊN (TEACHER DASHBOARD)
-        // ============================================================
-        let teacherUnlocked = false;
+        // =========================================================================
+        // 5. TEACHER AUTHENTICATION & DASHBOARD
+        // =========================================================================
+        let isTeacherAuthenticated = false;
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById("teacherPasswordInput");
+            const btn = document.getElementById("togglePasswordEyeBtn");
+            if (!input || !btn) return;
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "🙈";
+            } else {
+                input.type = "password";
+                btn.textContent = "👁️";
+            }
+        }
 
         function openTeacherGate() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            setSpeakingVisual(false);
-            document.getElementById('headerStats').classList.add('hidden');
-            document.getElementById('headerStats').classList.remove('flex');
+            if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+            setWaveActive(false);
+            syncAllStores(false);
 
-            if (teacherUnlocked) {
-                openTeacherDashboard();
+            if (isTeacherAuthenticated) {
+                openTeacherDashboardView();
                 return;
             }
-            hideAllScreens();
-            document.getElementById('pinErrorMsg').classList.add('hidden');
-            document.getElementById('teacherPinInput').value = '';
-            document.getElementById('teacherPinModal').classList.remove('hidden');
-            setTimeout(() => document.getElementById('teacherPinInput').focus(), 100);
+
+            showOnlyScreen("teacherPasswordGate");
+            const input = document.getElementById("teacherPasswordInput");
+            input.type = "password";
+            input.value = "";
+            document.getElementById("togglePasswordEyeBtn").textContent = "👁️";
+            document.getElementById("passwordErrorMsg").classList.add("hidden");
+            setTimeout(() => input.focus(), 80);
         }
 
-        function closeTeacherGate() {
-            backToHome();
-        }
-
-        function verifyTeacherPin() {
-            const val = document.getElementById('teacherPinInput').value.trim();
-            if (val === TEACHER_PIN) {
-                teacherUnlocked = true;
-                openTeacherDashboard();
+        function verifyTeacherPassword() {
+            const input = document.getElementById("teacherPasswordInput");
+            const entered = input.value.trim();
+            if (entered === getTeacherPassword()) {
+                isTeacherAuthenticated = true;
+                input.value = "";
+                document.getElementById("passwordErrorMsg").classList.add("hidden");
+                openTeacherDashboardView();
             } else {
-                document.getElementById('pinErrorMsg').classList.remove('hidden');
+                document.getElementById("passwordErrorMsg").classList.remove("hidden");
             }
         }
 
-        function quickUnlockTeacher() {
-            teacherUnlocked = true;
-            openTeacherDashboard();
+        function lockTeacherDashboard() {
+            isTeacherAuthenticated = false;
+            closeStudentDetailDrawer();
+            cancelClearAllSubmissions();
+            showToast("Đã khóa khu vực Giáo viên", "🔒");
+            openTeacherGate();
         }
 
-        function openTeacherDashboard() {
-            hideAllScreens();
-            document.getElementById('teacherDashboardScreen').classList.remove('hidden');
-            document.getElementById('tdStudentDetailPanel').classList.add('hidden');
-            cancelClearTeacherData();
-            populateClassFilterOptions();
-            renderTeacherAnalyticsAndTable();
+        function openTeacherDashboardView() {
+            syncAllStores(false);
+            showOnlyScreen("teacherDashboardScreen");
+            closeStudentDetailDrawer();
+            cancelClearAllSubmissions();
+            rebuildTeacherClassFilter();
+            renderTeacherAnalytics();
+            renderTeacherTable();
         }
 
-        function populateClassFilterOptions() {
-            const submissions = loadSubmissions();
-            const select = document.getElementById('tdClassFilter');
-            const currentVal = select.value;
-            const classes = [...new Set(submissions.map(s => s.studentClass).filter(Boolean))].sort();
+        function refreshTeacherDashboard(showNotice = false) {
+            syncAllStores(false);
+            rebuildTeacherClassFilter();
+            renderTeacherAnalytics();
+            renderTeacherTable();
+            if (showNotice) {
+                showToast("Đã cập nhật dữ liệu mới nhất", "🔄");
+            }
+        }
+
+        function rebuildTeacherClassFilter() {
+            const submissions = getSubmissionsList();
+            const select = document.getElementById("tdClassFilter");
+            const previousValue = select.value;
+            const classes = Array.from(new Set(submissions.map(s => s.className).filter(Boolean))).sort();
 
             select.innerHTML = '<option value="ALL">Tất cả các lớp</option>';
             classes.forEach(cls => {
-                const opt = document.createElement('option');
+                const opt = document.createElement("option");
                 opt.value = cls;
                 opt.textContent = `Lớp ${cls}`;
                 select.appendChild(opt);
             });
 
-            if (classes.includes(currentVal)) {
-                select.value = currentVal;
-            }
+            select.value = classes.includes(previousValue) ? previousValue : "ALL";
         }
 
-        function renderTeacherAnalyticsAndTable() {
-            const submissions = loadSubmissions();
-            const totalSubs = submissions.length;
+        function renderTeacherAnalytics() {
+            const submissions = getSubmissionsList();
+            const total = submissions.length;
 
-            document.getElementById('tdTotalSubmissions').textContent = totalSubs;
+            document.getElementById("tdTotalSubmissions").textContent = String(total);
 
-            if (totalSubs === 0) {
-                document.getElementById('tdAvgAccuracy').textContent = "0%";
-                document.getElementById('tdAvgScore').textContent = "0";
-                document.getElementById('tdHardestQuestion').textContent = "Chưa có dữ liệu";
-                document.getElementById('tdMissedStatsList').innerHTML =
+            if (total === 0) {
+                document.getElementById("tdAvgAccuracy").textContent = "0%";
+                document.getElementById("tdAvgScore").textContent = "0";
+                document.getElementById("tdHardestQuestion").textContent = "Chưa có dữ liệu";
+                document.getElementById("tdMissedQuestionsGrid").innerHTML =
                     '<p class="text-xs text-slate-500 col-span-3">Chưa có bài nộp nào của học sinh.</p>';
-                renderTeacherTable();
                 return;
             }
 
-            const avgAcc = Math.round(submissions.reduce((sum, s) => sum + s.accuracy, 0) / totalSubs);
-            const avgScore = Math.round(submissions.reduce((sum, s) => sum + s.score, 0) / totalSubs);
+            const avgAcc = Math.round(submissions.reduce((sum, s) => sum + (Number(s.accuracy) || 0), 0) / total);
+            const avgScore = Math.round(submissions.reduce((sum, s) => sum + (Number(s.score) || 0), 0) / total);
 
-            document.getElementById('tdAvgAccuracy').textContent = `${avgAcc}%`;
-            document.getElementById('tdAvgScore').textContent = avgScore;
+            document.getElementById("tdAvgAccuracy").textContent = `${avgAcc}%`;
+            document.getElementById("tdAvgScore").textContent = String(avgScore);
 
-            // Tính toán các câu học sinh sai nhiều nhất cả lớp
-            const missMap = {};
+            const missCounter = {};
             QUESTIONS.forEach(q => {
-                missMap[q.id] = { id: q.id, question: q.question, fullSentence: q.fullSentence, missCount: 0, attempts: 0 };
+                missCounter[q.id] = {
+                    id: q.id,
+                    fullSentence: q.fullSentence,
+                    missCount: 0
+                };
             });
 
             submissions.forEach(sub => {
-                if (Array.isArray(sub.details)) {
-                    sub.details.forEach(d => {
-                        if (missMap[d.id]) {
-                            missMap[d.id].attempts++;
-                            if (!d.isCorrect) missMap[d.id].missCount++;
-                        }
-                    });
-                }
+                const list = Array.isArray(sub.answers) ? sub.answers : [];
+                list.forEach(ans => {
+                    if (!ans.isCorrect && missCounter[ans.id]) {
+                        missCounter[ans.id].missCount += 1;
+                    }
+                });
             });
 
-            const sortedMissed = Object.values(missMap)
-                .filter(item => item.missCount > 0)
+            const missedSorted = Object.values(missCounter)
+                .filter(m => m.missCount > 0)
                 .sort((a, b) => b.missCount - a.missCount);
 
-            const hardestEl = document.getElementById('tdHardestQuestion');
-            const missedContainer = document.getElementById('tdMissedStatsList');
-            missedContainer.innerHTML = '';
+            const hardestEl = document.getElementById("tdHardestQuestion");
+            const gridEl = document.getElementById("tdMissedQuestionsGrid");
+            gridEl.innerHTML = "";
 
-            if (sortedMissed.length === 0) {
-                hardestEl.textContent = "Không có câu sai!";
-                missedContainer.innerHTML = '<p class="text-xs text-emerald-700 font-bold col-span-3">🎉 Tuyệt vời! Cả lớp chưa làm sai câu nào.</p>';
+            if (!missedSorted.length) {
+                hardestEl.textContent = "Không có câu sai";
+                gridEl.innerHTML = '<p class="text-xs text-emerald-700 font-bold col-span-3">🎉 Tuyệt vời! Không có câu hỏi nào bị làm sai.</p>';
             } else {
-                const top1 = sortedMissed[0];
-                hardestEl.textContent = `Câu ${top1.id} (${top1.missCount}/${totalSubs} HS sai)`;
-
-                sortedMissed.slice(0, 3).forEach(item => {
-                    const missRate = Math.round((item.missCount / totalSubs) * 100);
-                    const card = document.createElement('div');
-                    card.className = 'bg-white border border-rose-200 rounded-xl p-3 shadow-xs';
+                hardestEl.textContent = `Câu ${missedSorted[0].id} (${missedSorted[0].missCount}/${total} HS sai)`;
+                missedSorted.slice(0, 3).forEach(item => {
+                    const rate = Math.round((item.missCount / total) * 100);
+                    const card = document.createElement("div");
+                    card.className = "bg-white border border-rose-200 rounded-xl p-3 shadow-xs";
                     card.innerHTML = `
                         <div class="flex items-center justify-between mb-1">
                             <span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 font-black text-xs">Câu ${item.id}</span>
-                            <span class="text-xs font-extrabold text-rose-600">${item.missCount}/${totalSubs} HS sai (${missRate}%)</span>
+                            <span class="text-xs font-extrabold text-rose-600">${item.missCount}/${total} HS sai (${rate}%)</span>
                         </div>
-                        <p class="text-xs font-bold text-slate-800 line-clamp-2">${item.fullSentence}</p>
+                        <p class="text-xs font-bold text-slate-800">${item.fullSentence}</p>
                     `;
-                    missedContainer.appendChild(card);
+                    gridEl.appendChild(card);
                 });
             }
-
-            renderTeacherTable();
         }
 
         function renderTeacherTable() {
-            const submissions = loadSubmissions();
-            const searchQuery = document.getElementById('tdSearchInput').value.trim().toLowerCase();
-            const classFilter = document.getElementById('tdClassFilter').value;
+            const submissions = getSubmissionsList();
+            const nameQuery = (document.getElementById("tdSearchInput").value || "").trim().toLowerCase();
+            const classFilter = document.getElementById("tdClassFilter").value || "ALL";
 
             const filtered = submissions.filter(sub => {
-                const matchName = sub.studentName.toLowerCase().includes(searchQuery);
-                const matchClass = classFilter === 'ALL' || sub.studentClass === classFilter;
-                return matchName && matchClass;
+                const matchesName = sub.studentName.toLowerCase().includes(nameQuery);
+                const matchesClass = classFilter === "ALL" || sub.className === classFilter;
+                return matchesName && matchesClass;
             });
 
-            const tbody = document.getElementById('tdSubmissionsTbody');
-            tbody.innerHTML = '';
+            const tbody = document.getElementById("tdSubmissionsBody");
+            tbody.innerHTML = "";
 
-            if (filtered.length === 0) {
+            if (!filtered.length) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="7" class="py-8 text-center text-slate-500 font-semibold text-sm">
-                            Không tìm thấy dữ liệu bài làm phù hợp.
+                            Chưa có dữ liệu bài làm nào để hiển thị.
                         </td>
                     </tr>
                 `;
@@ -1735,31 +1909,35 @@
             }
 
             filtered.forEach(sub => {
-                const badgeColor = sub.accuracy >= 80
-                    ? 'bg-emerald-100 text-emerald-800'
+                const badgeStyle = sub.accuracy >= 80
+                    ? "bg-emerald-100 text-emerald-800"
                     : sub.accuracy >= 50
-                        ? 'bg-amber-100 text-amber-800'
-                        : 'bg-rose-100 text-rose-800';
+                        ? "bg-amber-100 text-amber-800"
+                        : "bg-rose-100 text-rose-800";
 
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-indigo-50/50 transition';
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-indigo-50/40 transition";
                 tr.innerHTML = `
                     <td class="py-3.5 px-4 font-extrabold text-slate-900">${sub.studentName}</td>
                     <td class="py-3.5 px-3">
-                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-extrabold text-xs">${sub.studentClass}</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-extrabold text-xs">${sub.className}</span>
                     </td>
                     <td class="py-3.5 px-3 font-black text-indigo-700">${sub.score}</td>
                     <td class="py-3.5 px-3">
-                        <span class="px-2.5 py-1 rounded-lg font-extrabold text-xs ${badgeColor}">
+                        <span class="px-2.5 py-1 rounded-lg font-extrabold text-xs ${badgeStyle}">
                             ${sub.correctCount}/${sub.totalQuestions} (${sub.accuracy}%)
                         </span>
                     </td>
                     <td class="py-3.5 px-3 font-bold text-amber-700">🔥 ${sub.maxStreak}</td>
-                    <td class="py-3.5 px-3 text-xs text-slate-500 font-semibold">${sub.submittedAt}</td>
-                    <td class="py-3.5 px-4 text-right">
-                        <button onclick="viewStudentSubmissionDetail('${sub.id}')"
-                            class="px-3 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-600 text-indigo-800 hover:text-white font-extrabold text-xs transition cursor-pointer">
-                            Xem bài làm
+                    <td class="py-3.5 px-3 text-xs text-slate-500 font-semibold">${sub.timestamp}</td>
+                    <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                        <button type="button" onclick="openStudentDetailDrawer('${sub.id}')"
+                            class="px-3 py-1.5 rounded-xl bg-indigo-100 hover:bg-indigo-600 text-indigo-800 hover:text-white font-extrabold text-xs transition cursor-pointer mr-1.5">
+                            Xem chi tiết
+                        </button>
+                        <button type="button" onclick="deleteSubmissionById('${sub.id}')" title="Xóa bài làm này"
+                            class="px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white font-extrabold text-xs transition cursor-pointer">
+                            Xóa
                         </button>
                     </td>
                 `;
@@ -1767,48 +1945,50 @@
             });
         }
 
-        function viewStudentSubmissionDetail(subId) {
-            const submissions = loadSubmissions();
-            const sub = submissions.find(s => s.id === subId);
+        function openStudentDetailDrawer(subId) {
+            const submissions = getSubmissionsList();
+            const sub = submissions.find(s => String(s.id) === String(subId));
             if (!sub) return;
 
-            const panel = document.getElementById('tdStudentDetailPanel');
-            document.getElementById('tdDetailStudentHeader').textContent =
-                `${sub.studentName} • Lớp ${sub.studentClass} — Điểm: ${sub.score} (${sub.correctCount}/${sub.totalQuestions} câu đúng - ${sub.accuracy}%)`;
+            const drawer = document.getElementById("tdDetailDrawer");
+            drawer.dataset.submissionId = String(sub.id);
+            document.getElementById("tdDetailTitle").textContent =
+                `${sub.studentName} • Lớp ${sub.className} — Điểm: ${sub.score} (${sub.correctCount}/${sub.totalQuestions} câu đúng • ${sub.accuracy}%)`;
 
-            const listEl = document.getElementById('tdDetailQuestionsList');
-            listEl.innerHTML = '';
+            const listEl = document.getElementById("tdDetailItemsList");
+            listEl.innerHTML = "";
 
-            if (!Array.isArray(sub.details) || sub.details.length === 0) {
-                listEl.innerHTML = '<p class="text-sm text-slate-600">Không có dữ liệu chi tiết từng câu.</p>';
+            const items = Array.isArray(sub.answers) ? sub.answers : [];
+            if (!items.length) {
+                listEl.innerHTML = '<p class="text-sm text-slate-600">Không có chi tiết câu hỏi cho lượt nộp này.</p>';
             } else {
-                sub.details.forEach(item => {
-                    const row = document.createElement('div');
+                items.forEach(item => {
+                    const row = document.createElement("div");
                     row.className = `p-3.5 rounded-xl border bg-white flex items-start justify-between gap-3 ${
-                        item.isCorrect ? 'border-emerald-200' : 'border-rose-300 bg-rose-50/40'
+                        item.isCorrect ? "border-emerald-200" : "border-rose-300 bg-rose-50/40"
                     }`;
-
-                    const escapedSpoken = `${item.fullSentence}. ${item.explanationEn || ''}`.replace(/'/g, "\\'");
+                    const spoken = `${item.fullSentence}. ${item.explanationEn || ""}`.replace(/'/g, "\\'");
 
                     row.innerHTML = `
                         <div class="flex items-start gap-2.5">
                             <span class="mt-0.5 w-6 h-6 rounded-full text-xs font-black flex items-center justify-center shrink-0 ${
-                                item.isCorrect ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                                item.isCorrect ? "bg-emerald-500 text-white" : "bg-rose-500 text-white"
                             }">${item.id}</span>
                             <div>
                                 <p class="font-bold text-sm text-slate-900">${item.fullSentence}</p>
                                 ${item.isCorrect ? `
-                                    <p class="text-xs font-bold text-emerald-700 mt-0.5">✓ Học sinh chọn đúng: ${item.userAnswer}</p>
+                                    <p class="text-xs font-bold text-emerald-700 mt-0.5">✓ Chọn đúng: ${item.userAnswer}</p>
                                 ` : `
                                     <p class="text-xs font-bold text-rose-700 mt-0.5">
-                                        ✕ Học sinh chọn: <span class="line-through">${item.userAnswer}</span> → 
+                                        ✕ Chọn: <span class="line-through">${item.userAnswer}</span> →
                                         <span class="text-emerald-700 font-extrabold">Đáp án đúng: ${item.correctAnswer}</span>
                                     </p>
                                 `}
-                                <p class="text-xs text-slate-600 mt-1 italic">${item.explanationEn || ''}</p>
+                                <p class="text-xs text-slate-700 mt-1">${item.explanationEn || ""}</p>
+                                <p class="text-xs text-slate-500 mt-0.5 italic">${item.explanationVi || ""}</p>
                             </div>
                         </div>
-                        <button onclick="speakEnglish('${escapedSpoken}', 0.94)" title="Nghe đọc câu & giải thích tiếng Anh"
+                        <button type="button" onclick="speakEn('${spoken}', 0.94)" title="Nghe câu & giải thích tiếng Anh"
                             class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-indigo-100 text-indigo-700 text-xs font-bold shrink-0 cursor-pointer">
                             🔊
                         </button>
@@ -1817,19 +1997,41 @@
                 });
             }
 
-            panel.classList.remove('hidden');
-            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            drawer.classList.remove("hidden");
+            drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
 
-        function closeStudentDetailPanel() {
-            document.getElementById('tdStudentDetailPanel').classList.add('hidden');
+        function closeStudentDetailDrawer() {
+            const drawer = document.getElementById("tdDetailDrawer");
+            if (drawer) {
+                drawer.classList.add("hidden");
+                delete drawer.dataset.submissionId;
+            }
         }
 
-        // Xuất file CSV (hỗ trợ UTF-8 BOM để mở Excel tiếng Việt không bị lỗi font)
+        function promptClearAllSubmissions() {
+            document.getElementById("clearAllStep1Btn").classList.add("hidden");
+            const box = document.getElementById("clearAllConfirmBox");
+            box.classList.remove("hidden");
+            box.classList.add("flex");
+        }
+
+        function cancelClearAllSubmissions() {
+            document.getElementById("clearAllStep1Btn").classList.remove("hidden");
+            const box = document.getElementById("clearAllConfirmBox");
+            box.classList.add("hidden");
+            box.classList.remove("flex");
+        }
+
+        function confirmClearAllSubmissions() {
+            cancelClearAllSubmissions();
+            clearAllSubmissionsPermanently();
+        }
+
         function exportTeacherCSV() {
-            const submissions = loadSubmissions();
+            const submissions = getSubmissionsList();
             if (!submissions.length) {
-                showToast("Chưa có dữ liệu để xuất CSV!", "⚠️");
+                showToast("Chưa có dữ liệu để xuất CSV", "⚠️");
                 return;
             }
 
@@ -1837,105 +2039,109 @@
             const rows = submissions.map((s, idx) => [
                 idx + 1,
                 `"${s.studentName.replace(/"/g, '""')}"`,
-                `"${s.studentClass.replace(/"/g, '""')}"`,
+                `"${s.className.replace(/"/g, '""')}"`,
                 s.score,
                 s.correctCount,
                 s.totalQuestions,
                 `${s.accuracy}%`,
                 s.maxStreak,
-                `"${s.submittedAt}"`
+                `"${s.timestamp}"`
             ]);
 
             const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `Ket_Qua_Mao_Tu_A2_${new Date().toISOString().slice(0, 10)}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = `Ket_Qua_Mao_Tu_A2_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
             URL.revokeObjectURL(url);
 
-            showToast("Đã tải xuống file báo cáo CSV!", "📥");
+            showToast("Đã xuất file CSV thành công", "📥");
         }
 
-        // Sao chép báo cáo nhanh bằng document.execCommand('copy')
-        function copyTeacherReport() {
-            const submissions = loadSubmissions();
+        function copyTeacherSummaryReport() {
+            const submissions = getSubmissionsList();
             if (!submissions.length) {
-                showToast("Chưa có dữ liệu để sao chép!", "⚠️");
+                showToast("Chưa có dữ liệu để sao chép", "⚠️");
                 return;
             }
 
-            const lines = [
-                "BÁO CÁO KẾT QUẢ BÀI TẬP MẠO TỪ (ARTICLES A2)",
-                "--------------------------------------------------",
+            const summaryLines = [
+                "BÁO CÁO KẾT QUẢ BÀI TẬP MẠO TỪ TIẾNG ANH (A2)",
+                "------------------------------------------------",
                 ...submissions.map((s, i) =>
-                    `${i + 1}. ${s.studentName} (${s.studentClass}) - Điểm: ${s.score} - Đúng: ${s.correctCount}/${s.totalQuestions} (${s.accuracy}%) - Nộp lúc: ${s.submittedAt}`
+                    `${i + 1}. ${s.studentName} (${s.className}) - Điểm: ${s.score} - Đúng: ${s.correctCount}/${s.totalQuestions} (${s.accuracy}%) - Nộp lúc: ${s.timestamp}`
                 )
             ];
 
-            const textarea = document.createElement("textarea");
-            textarea.value = lines.join("\n");
-            textarea.style.position = "fixed";
-            textarea.style.opacity = "0";
-            document.body.appendChild(textarea);
-            textarea.select();
+            const ta = document.createElement("textarea");
+            ta.value = summaryLines.join("\n");
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
             try {
                 document.execCommand("copy");
-                showToast("Đã sao chép bảng điểm vào bộ nhớ tạm!", "📋");
-            } catch (err) {
-                showToast("Không thể sao chép tự động.", "⚠️");
+                showToast("Đã sao chép báo cáo vào bộ nhớ tạm", "📋");
+            } catch (_) {
+                showToast("Không thể sao chép tự động", "⚠️");
             }
-            document.body.removeChild(textarea);
+            document.body.removeChild(ta);
         }
 
-        // Xóa dữ liệu an toàn 2 bước (không dùng confirm())
-        function requestClearTeacherData() {
-            document.getElementById('clearDataStep1Btn').classList.add('hidden');
-            document.getElementById('clearDataConfirmGroup').classList.remove('hidden');
-            document.getElementById('clearDataConfirmGroup').classList.add('flex');
-        }
+        // Subscribe Teacher Dashboard UI updates to store changes
+        subscribeStore(() => {
+            const dashVisible = !document.getElementById("teacherDashboardScreen").classList.contains("hidden");
+            if (dashVisible) {
+                rebuildTeacherClassFilter();
+                renderTeacherAnalytics();
+                renderTeacherTable();
+            }
+        });
 
-        function cancelClearTeacherData() {
-            document.getElementById('clearDataStep1Btn').classList.remove('hidden');
-            document.getElementById('clearDataConfirmGroup').classList.add('hidden');
-            document.getElementById('clearDataConfirmGroup').classList.remove('flex');
-        }
+        // Cross-tab & visibility synchronization
+        window.addEventListener("storage", (e) => {
+            if (!e || !e.key || Object.values(STORAGE_KEYS).includes(e.key)) {
+                syncAllStores(true);
+            }
+        });
 
-        function confirmClearTeacherData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-            updateSubmissionBadge();
-            cancelClearTeacherData();
-            closeStudentDetailPanel();
-            populateClassFilterOptions();
-            renderTeacherAnalyticsAndTable();
-            showToast("Đã xóa toàn bộ dữ liệu bài làm!", "🗑️");
-        }
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                syncAllStores(true);
+            }
+        });
 
-        // Hỗ trợ phím tắt (1-4, A-D, Enter) khi đang làm bài
-        document.addEventListener('keydown', (e) => {
-            const quizVisible = !document.getElementById('quizScreen').classList.contains('hidden');
-            if (!quizVisible) return;
+        // Keyboard shortcuts during quiz
+        document.addEventListener("keydown", (e) => {
+            const onQuiz = !document.getElementById("quizScreen").classList.contains("hidden");
+            if (!onQuiz) return;
 
-            const key = e.key.toUpperCase();
-            if (!answered) {
-                if (key === '1' || key === 'A') selectAnswer(0);
-                else if (key === '2' || key === 'B') selectAnswer(1);
-                else if (key === '3' || key === 'C') selectAnswer(2);
-                else if (key === '4' || key === 'D') selectAnswer(3);
-            } else if (e.key === 'Enter' || e.key === ' ') {
+            const k = e.key.toUpperCase();
+            if (!questionAnswered) {
+                if (k === "1" || k === "A") handleSelectOption(0);
+                else if (k === "2" || k === "B") handleSelectOption(1);
+                else if (k === "3" || k === "C") handleSelectOption(2);
+                else if (k === "4" || k === "D") handleSelectOption(3);
+            } else if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 nextQuestion();
             }
         });
 
-        // Khởi tạo dữ liệu ban đầu khi tải trang
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSubmissions();
-            updateSubmissionBadge();
+        window.addEventListener("DOMContentLoaded", () => {
+            syncAllStores(true);
         });
     </script>
 </body>
-</html>
+</html>   
+
+        
+            
+                
+                    
+                    
+                    
